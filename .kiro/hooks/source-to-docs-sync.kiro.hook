@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "name": "Source to Docs Sync",
+  "description": "Monitors all TypeScript source files, React components, services, contracts, and configuration files. When changes are detected, triggers documentation updates in README.md to keep it synchronized with the codebase.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.sol",
+      "package.json",
+      "tsconfig.json",
+      "vite.config.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Source code files have been modified. Review the changes and update the README.md file to reflect any new features, API changes, component additions, architectural updates, or configuration changes. Ensure the documentation accurately describes the current state of the codebase, including setup instructions, usage examples, and any new dependencies or environment variables."
+  }
+}

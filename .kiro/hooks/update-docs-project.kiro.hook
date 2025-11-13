@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "name": "Update Docs & GitHub Project",
+  "description": "Monitors key project files and automatically updates the GitHub Project board while regenerating Technical Guide and User Guide documentation to reflect current implementation",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/**/*.tsx",
+      "src/**/*.ts",
+      "src/**/*.sol",
+      "README.md",
+      ".kiro/specs/**/*",
+      "package.json"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Files have been modified in the GangGreen platform. Please:\n\n1. **Update GitHub Project Board**:\n   - Review the changed files and determine which project tasks/issues are affected\n   - Update task statuses (e.g., In Progress, Completed, Blocked)\n   - Add new tasks if the changes reveal additional work needed\n   - Update task descriptions with implementation details\n\n2. **Regenerate Technical Guide**:\n   - Document the current architecture based on actual implementation\n   - Include API endpoints, database schema, component structure\n   - Document smart contract interfaces and deployment details\n   - Add code examples and integration patterns\n   - Update technology stack and dependencies\n\n3. **Regenerate User Guide**:\n   - Document all user-facing features with screenshots/descriptions\n   - Provide step-by-step instructions for key workflows\n   - Include troubleshooting and FAQ sections\n   - Document Web3 wallet setup and cryptocurrency donation process\n   - Explain gamification features, NFT badges, and carbon credit marketplace\n\nOutput both guides as markdown files and provide a summary of GitHub Project updates made."
+  }
+}
