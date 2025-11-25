@@ -48,3 +48,10 @@ export const PAGINATION = {
   DEFAULT_PAGE_SIZE: 20,
   MAX_PAGE_SIZE: 100,
 } as const;
+
+// GG Coin Configuration
+export const GG_COIN_CONFIG = {
+  WELCOME_BONUS_AMOUNT: 10.000,  // Initial allocation for new users
+  DECIMAL_PRECISION: 3,           // Number of decimal places
+  REWARD_RATIO: 200,              // 1 GG Coin per 200 KES
+} as const;

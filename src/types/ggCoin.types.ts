@@ -21,6 +21,8 @@ export type GGCoinReferenceType =
   | 'achievement'
   | 'admin'
   | 'hero_reward'
+  | 'welcome_bonus'
+  | 'retroactive_allocation'
   | 'other';
 
 export interface GGCoinTransaction {
