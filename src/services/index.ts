@@ -34,3 +34,10 @@ export { heroBadgeIntegrationService } from './heroBadgeIntegration.service';
 export { heroRewardEngineService } from './heroRewardEngine.service';
 export { heroRewardSchedulerService } from './heroRewardScheduler.service';
 export { heroBenefitsService } from './heroBenefits.service';
+export { 
+  BadgeRendererService, 
+  getBadgeRenderer, 
+  resetBadgeRenderer 
+} from './badgeRenderer.service';
+export { badgeGeneratorService, BadgeGeneratorService } from './badgeGenerator.service';
+export { badgeMigrationService, BadgeMigrationService } from './badgeMigration.service';

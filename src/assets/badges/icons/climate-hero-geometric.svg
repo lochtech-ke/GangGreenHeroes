@@ -1,0 +1,22 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <title>Geometric Star</title>
+  
+  <!-- Star points -->
+  <polygon points="60,20 65,45 70,50" fill="#FFD700"/>
+  <polygon points="70,50 90,55 75,60" fill="#FFA500"/>
+  <polygon points="75,60 85,80 70,75" fill="#FF8C00"/>
+  <polygon points="70,75 65,95 60,80" fill="#FF6347"/>
+  <polygon points="60,80 55,95 50,75" fill="#FFD700"/>
+  <polygon points="50,75 35,80 45,60" fill="#FFA500"/>
+  <polygon points="45,60 30,55 50,50" fill="#FF8C00"/>
+  <polygon points="50,50 55,45 60,20" fill="#FF6347"/>
+  
+  <!-- Center -->
+  <polygon points="55,50 60,55 65,50" fill="#DC143C"/>
+  <polygon points="65,50 70,55 65,60" fill="#B22222"/>
+  <polygon points="65,60 60,65 55,60" fill="#8B0000"/>
+  <polygon points="55,60 50,55 55,50" fill="#DC143C"/>
+  
+  <!-- Inner star -->
+  <polygon points="60,45 62,52 60,55 58,52" fill="#FFFFFF" opacity="0.5"/>
+</svg>

@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GangGreen Platform - Development Wiki</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #3b82f6;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a2332 100%);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Section */
+        .section {
+            margin: 4rem 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .section-header i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            color: var(--text);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3.5rem;
+            top: 2rem;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border: 3px solid var(--dark);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .timeline-badge {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-item h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item h4 {
+            font-size: 1.2rem;
+            color: var(--text);
+            margin: 1rem 0 0.5rem;
+        }
+
+        .timeline-item ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .timeline-item li {
+            padding: 0.3rem 0;
+            color: var(--text-muted);
+        }
+
+        .timeline-item li::before {
+            content: '▹';
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        /* Tech Stack Grid */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .tech-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .tech-card h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-card ul {
+            list-style: none;
+        }
+
+        .tech-card li {
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-card li strong {
+            color: var(--text);
+            min-width: 120px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .arch-layer {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .arch-layer h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .arch-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .arch-box {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .arch-box:hover {
+            transform: scale(1.05);
+        }
+
+        .arch-arrow {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2rem;
+            margin: 1rem 0;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Lessons Grid */
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .lesson-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .lesson-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-card .challenge {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .lesson-card .solution {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .lesson-card .learning {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Roadmap */
+        .roadmap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .roadmap-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .roadmap-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .roadmap-card ul {
+            list-style: none;
+        }
+
+        .roadmap-card li {
+            padding: 0.5rem 0;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .roadmap-card li::before {
+            content: '☐';
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            padding: 0.3rem 0;
+        }
+
+        .footer-section a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            .timeline-item::before {
+                left: -2.5rem;
+            }
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Pulse Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tree"></i>
+                    <h1>#GangGreen Development Wiki</h1>
+                </div>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#overview">Overview</a></li>
+                        <li><a href="#tech-stack">Tech Stack</a></li>
+                        <li><a href="#journey">Journey</a></li>
+                        <li><a href="#architecture">Architecture</a></li>
+                        <li><a href="#metrics">Metrics</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="container">
+        <div class="hero">
+            <h2>Building a Carbon-Negative Africa</h2>
+            <p>An interactive journey through the development of the GangGreen Platform - connecting stakeholders in environmental conservation, carbon credit markets, and sustainable development.</p>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-code" style="color: var(--primary);"></i>
+                <h3>50,000+</h3>
+                <p>Lines of Code</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-puzzle-piece" style="color: var(--secondary);"></i>
+                <h3>25+</h3>
+                <p>Features Delivered</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-file-alt" style="color: var(--accent);"></i>
+                <h3>26</h3>
+                <p>Specs Created</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-database" style="color: var(--success);"></i>
+                <h3>19</h3>
+                <p>Database Migrations</p>
+            </div>
+        </div>
+
+        <!-- Project Overview -->
+        <section id="overview" class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-info-circle"></i>
+                <h2>Project Overview</h2>
+            </div>
+            <div class="tech-card">
+                <h3><i class="fas fa-bullseye"></i> Mission</h3>
+                <p style="color: var(--text-muted); line-height: 1.8;">
+                    Built for Track 3 (Community Engagement and Sustainability) of the Wangari Maathai Hackathon, 
+                    <strong style="color: var(--primary);">#GangGreen</strong> is a comprehensive digital platform designed to catalyze a 
+                    carbon-negative Africa by connecting stakeholders in environmental conservation, carbon credit markets, and sustainable development.
+                </p>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">🌲 Pilot Forests</h3>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <h3><i class="fas fa-map-marker-alt"></i> Kakamega Forest</h3>
+                        <p style="color: var(--text-muted);">Primary pilot site for technology-driven forest conservation</p>
+                    </div>
+                    <div class="tech-card">
+                        <h3><i class="fas fa-city"></i> Karura Forest</h3>
+                        <p style="color: var(--text-muted);">Urban conservation area demonstrating city-nature integration</p>
+                    </div>
+                    <div class="tech-card">
+                        <h3><i class="fas fa-water"></i> Mau Forest</h3>
+                        <p style="color: var(--text-muted);">Critical water tower ecosystem supporting regional sustainability</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Stack -->
+        <section id="tech-stack" class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-layer-group"></i>
+                <h2>Technology Stack</h2>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3><i class="fab fa-react"></i> Frontend</h3>
+                    <ul>
+                        <li><strong>Framework:</strong> React 18+ with TypeScript</li>
+                        <li><strong>Build Tool:</strong> Vite</li>
+                        <li><strong>Styling:</strong> Tailwind CSS</li>
+                        <li><strong>State:</strong> React Context API</li>
+                        <li><strong>Routing:</strong> React Router v6</li>
+                        <li><strong>Maps:</strong> Leaflet.js</li>
+                        <li><strong>Charts:</strong> Recharts</li>
+                        <li><strong>Animation:</strong> PixiJS</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-server"></i> Backend</h3>
+                    <ul>
+                        <li><strong>BaaS:</strong> Supabase</li>
+                        <li><strong>Database:</strong> PostgreSQL + PostGIS</li>
+                        <li><strong>Auth:</strong> Supabase Auth (JWT)</li>
+                        <li><strong>Storage:</strong> Supabase Storage</li>
+                        <li><strong>Real-time:</strong> Subscriptions</li>
+                        <li><strong>Functions:</strong> Deno Edge Functions</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fab fa-ethereum"></i> Blockchain & Web3</h3>
+                    <ul>
+                        <li><strong>Networks:</strong> Ethereum, Polygon</li>
+                        <li><strong>Contracts:</strong> Solidity (ERC-721)</li>
+                        <li><strong>Library:</strong> ethers.js</li>
+                        <li><strong>Wallets:</strong> MetaMask, WalletConnect</li>
+                        <li><strong>Dev Tools:</strong> Hardhat</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-plug"></i> Integrations</h3>
+                    <ul>
+                        <li><strong>Antugrow:</strong> AI tree monitoring</li>
+                        <li><strong>Paystack:</strong> Payment processing</li>
+                        <li><strong>Strapi:</strong> Content management</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Development Journey -->
+        <section id="journey" class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-route"></i>
+                <h2>Feature Development Journey</h2>
+            </div>
+
+            <div class="timeline">
+                <!-- Phase 1 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge">Phase 1: Foundation</span>
+                    <h3>Weeks 1-2: Building the Core</h3>
+                    
+                    <h4>🔐 Authentication System</h4>
+                    <ul>
+                        <li>Email/password authentication</li>
+                        <li>Web3 wallet integration (MetaMask)</li>
+                        <li>User profile management</li>
+                        <li>Session management with retry logic</li>
+                    </ul>
+
+                    <h4>🎨 Design System</h4>
+                    <ul>
+                        <li>Glassmorphism UI components</li>
+                        <li>Consistent icon system (Lucide React)</li>
+                        <li>Responsive design patterns</li>
+                        <li>Accessibility compliance</li>
+                    </ul>
+
+                    <h4>🧭 Navigation System</h4>
+                    <ul>
+                        <li>Responsive mega menu with hover effects</li>
+                        <li>Mobile-friendly bottom navigation</li>
+                        <li>GG Coin balance display</li>
+                        <li>Notification center</li>
+                    </ul>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge">Phase 2: Core Features</span>
+                    <h3>Weeks 3-5: Building the Platform</h3>
+                    
+                    <h4>🏠 Home Page Redesign</h4>
+                    <ul>
+                        <li>Interactive hero with PixiJS preloader</li>
+                        <li>Impact metrics dashboard</li>
+                        <li>Pilot forests map</li>
+                        <li>NFT badge showcase</li>
+                        <li>Feature highlights & partnerships</li>
+                    </ul>
+
+                    <h4>🌱 Initiatives & Tree Management</h4>
+                    <ul>
+                        <li>Create and manage conservation initiatives</li>
+                        <li>Geospatial location picker with Leaflet</li>
+                        <li>Initiative progress tracking</li>
+                        <li>Tree registry with health monitoring</li>
+                    </ul>
+
+                    <h4>🤖 Antugrow API Integration</h4>
+                    <ul>
+                        <li>AI-powered tree health analysis</li>
+                        <li>Growth tracking and predictions</li>
+                        <li>Disease detection</li>
+                        <li>Automated monitoring sync</li>
+                    </ul>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge">Phase 3: Gamification & Economy</span>
+                    <h3>Weeks 6-8: Engaging Users</h3>
+                    
+                    <h4>🪙 GG Coin System</h4>
+                    <ul>
+                        <li>Virtual currency for platform engagement</li>
+                        <li>Earn coins through actions</li>
+                        <li>Spend coins on NFT badges</li>
+                        <li>Transaction history</li>
+                        <li>Migrated to DECIMAL for precision</li>
+                    </ul>
+
+                    <h4>🏆 NFT Badge System</h4>
+                    <ul>
+                        <li>Dynamic SVG badge generation</li>
+                        <li>Forest-themed designs (Kakamega, Karura, Mau)</li>
+                        <li>Achievement tiers (Bronze to Diamond)</li>
+                        <li>Pattern library & icon system</li>
+                    </ul>
+
+                    <h4>💳 Paystack Integration</h4>
+                    <ul>
+                        <li>Secure payment processing</li>
+                        <li>Test mode support</li>
+                        <li>Payment verification</li>
+                        <li>Webhook integration</li>
+                    </ul>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge">Phase 4: Social & Governance</span>
+                    <h3>Weeks 9-11: Community Building</h3>
+                    
+                    <h4>📱 Social Media Feed</h4>
+                    <ul>
+                        <li>User-generated content feed</li>
+                        <li>Like, comment, share functionality</li>
+                        <li>Feed filters (forest, content type)</li>
+                        <li>AI-powered content moderation</li>
+                    </ul>
+
+                    <h4>🗳️ Governance Token System</h4>
+                    <ul>
+                        <li>Proposal creation and voting</li>
+                        <li>Petition system with blockchain</li>
+                        <li>Tie-breaker mechanism</li>
+                        <li>Voting power based on contributions</li>
+                    </ul>
+
+                    <h4>🚀 Individual User Journey</h4>
+                    <ul>
+                        <li>Personalized journey dashboard</li>
+                        <li>Micro-challenges system</li>
+                        <li>Referral program</li>
+                        <li>Achievement milestones</li>
+                    </ul>
+                </div>
+
+                <!-- Phase 5 -->
+                <div class="timeline-item">
+                    <span class="timeline-badge">Phase 5: Content & Legal</span>
+                    <h3>Weeks 12-13: Compliance & Polish</h3>
+                    
+                    <h4>📄 Legal Pages</h4>
+                    <ul>
+                        <li>Terms of Service</li>
+                        <li>Privacy Policy</li>
+                        <li>Cookie Policy</li>
+                        <li>Acceptable Use Policy</li>
+                    </ul>
+
+                    <h4>📝 Strapi CMS Integration</h4>
+                    <ul>
+                        <li>Dynamic content management</li>
+                        <li>Legal document versioning</li>
+                        <li>Content API integration</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture -->
+        <section id="architecture" class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-sitemap"></i>
+                <h2>System Architecture</h2>
+            </div>
+
+            <div class="architecture">
+                <div class="arch-layer">
+                    <h4>Frontend Layer (React + Vite)</h4>
+                    <div class="arch-boxes">
+                        <div class="arch-box">
+                            <i class="fas fa-file-code"></i>
+                            <p>Pages</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fas fa-puzzle-piece"></i>
+                            <p>Components</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fas fa-cogs"></i>
+                            <p>Services</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fas fa-link"></i>
+                            <p>Hooks</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+
+                <div class="arch-layer">
+                    <h4>Backend Layer (Supabase)</h4>
+                    <div class="arch-boxes">
+                        <div class="arch-box">
+                            <i class="fas fa-database"></i>
+                            <p>PostgreSQL + PostGIS</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fas fa-lock"></i>
+                            <p>Authentication</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fas fa-folder"></i>
+                            <p>Storage</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fas fa-bolt"></i>
+                            <p>Edge Functions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+
+                <div class="arch-layer">
+                    <h4>External Integrations</h4>
+                    <div class="arch-boxes">
+                        <div class="arch-box">
+                            <i class="fas fa-brain"></i>
+                            <p>Antugrow AI</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fas fa-credit-card"></i>
+                            <p>Paystack</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fab fa-ethereum"></i>
+                            <p>Polygon Network</p>
+                        </div>
+                        <div class="arch-box">
+                            <i class="fas fa-edit"></i>
+                            <p>Strapi CMS</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Metrics & Charts -->
+        <section id="metrics" class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-chart-line"></i>
+                <h2>Key Metrics & Achievements</h2>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Development Progress Over Time</h3>
+                <div class="chart-wrapper">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Feature Distribution by Phase</h3>
+                <div class="chart-wrapper">
+                    <canvas id="featureChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Technology Stack Distribution</h3>
+                <div class="chart-wrapper">
+                    <canvas id="techChart"></canvas>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">Performance Metrics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-tachometer-alt" style="color: var(--success);"></i>
+                        <h3>&lt; 3s</h3>
+                        <p>Initial Load Time</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle" style="color: var(--primary);"></i>
+                        <h3>90+</h3>
+                        <p>Lighthouse Score</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-shield-alt" style="color: var(--secondary);"></i>
+                        <h3>75%+</h3>
+                        <p>Test Coverage</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-compress" style="color: var(--accent);"></i>
+                        <h3>&lt; 500KB</h3>
+                        <p>Bundle Size (gzipped)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons Learned -->
+        <section class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-lightbulb"></i>
+                <h2>Lessons Learned</h2>
+            </div>
+
+            <div class="lessons-grid">
+                <div class="lesson-card">
+                    <h4>1. Type Safety is Critical</h4>
+                    <p><span class="challenge">Challenge:</span> Inconsistent types between service and components</p>
+                    <p><span class="solution">Solution:</span> Centralized type definitions in src/types/</p>
+                    <p><span class="learning">Learning:</span> Always define interfaces before implementation</p>
+                </div>
+
+                <div class="lesson-card">
+                    <h4>2. Service API Consistency</h4>
+                    <p><span class="challenge">Challenge:</span> Different return patterns across services</p>
+                    <p><span class="solution">Solution:</span> Standardized { data, error } pattern</p>
+                    <p><span class="learning">Learning:</span> Establish patterns early and document them</p>
+                </div>
+
+                <div class="lesson-card">
+                    <h4>3. Geospatial Data Handling</h4>
+                    <p><span class="challenge">Challenge:</span> GeoJSON vs. lat/lng confusion</p>
+                    <p><span class="solution">Solution:</span> Consistent GeoPoint interface</p>
+                    <p><span class="learning">Learning:</span> PostGIS requires specific formats</p>
+                </div>
+
+                <div class="lesson-card">
+                    <h4>4. Decimal Precision for Currency</h4>
+                    <p><span class="challenge">Challenge:</span> INTEGER type caused rounding errors</p>
+                    <p><span class="solution">Solution:</span> Migrated to DECIMAL(10,2)</p>
+                    <p><span class="learning">Learning:</span> Always use DECIMAL for financial data</p>
+                </div>
+
+                <div class="lesson-card">
+                    <h4>5. Spec-Driven Development Works</h4>
+                    <p><span class="challenge">Challenge:</span> Unclear requirements and scope creep</p>
+                    <p><span class="solution">Solution:</span> Created detailed specs before coding</p>
+                    <p><span class="learning">Learning:</span> Invest time in good specs upfront</p>
+                </div>
+
+                <div class="lesson-card">
+                    <h4>6. Glassmorphism Requires Care</h4>
+                    <p><span class="challenge">Challenge:</span> Readability with transparency</p>
+                    <p><span class="solution">Solution:</span> Careful backdrop blur and contrast</p>
+                    <p><span class="learning">Learning:</span> Test on different backgrounds</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Roadmap -->
+        <section class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-rocket"></i>
+                <h2>Future Roadmap</h2>
+            </div>
+
+            <div class="roadmap">
+                <div class="roadmap-card">
+                    <h3>Q1 2026</h3>
+                    <ul>
+                        <li>GSMA NFC Payments integration</li>
+                        <li>Mobile app (React Native)</li>
+                        <li>Advanced analytics dashboard</li>
+                        <li>Multi-language support</li>
+                    </ul>
+                </div>
+
+                <div class="roadmap-card">
+                    <h3>Q2 2026</h3>
+                    <ul>
+                        <li>Carbon credit verification system</li>
+                        <li>Satellite imagery integration</li>
+                        <li>Community forums</li>
+                        <li>Gamification leaderboards</li>
+                    </ul>
+                </div>
+
+                <div class="roadmap-card">
+                    <h3>Q3 2026</h3>
+                    <ul>
+                        <li>Corporate partnership portal</li>
+                        <li>API for third-party integrations</li>
+                        <li>Advanced reporting tools</li>
+                        <li>Blockchain carbon credits</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Database Schema -->
+        <section class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-database"></i>
+                <h2>Database Schema Highlights</h2>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3><i class="fas fa-users"></i> User Management</h3>
+                    <ul>
+                        <li>users</li>
+                        <li>user_profiles</li>
+                        <li>web3_wallets</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-seedling"></i> Conservation</h3>
+                    <ul>
+                        <li>initiatives</li>
+                        <li>initiative_participants</li>
+                        <li>trees</li>
+                        <li>tree_images</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-coins"></i> Economy</h3>
+                    <ul>
+                        <li>gg_coin_transactions</li>
+                        <li>carbon_credits</li>
+                        <li>transactions</li>
+                        <li>crypto_donations</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-trophy"></i> Gamification</h3>
+                    <ul>
+                        <li>nft_badges</li>
+                        <li>badge_purchases</li>
+                        <li>user_gamification</li>
+                        <li>achievements</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-comments"></i> Social</h3>
+                    <ul>
+                        <li>social_posts</li>
+                        <li>post_likes</li>
+                        <li>post_comments</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-vote-yea"></i> Governance</h3>
+                    <ul>
+                        <li>proposals</li>
+                        <li>votes</li>
+                        <li>petitions</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Example -->
+        <section class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-code"></i>
+                <h2>Service Layer Pattern</h2>
+            </div>
+
+            <div class="code-block">
+                <pre>
+// All services follow a consistent pattern
+export const serviceNameService = {
+  // CRUD operations
+  create: (data) => Promise&lt;{ data, error }&gt;,
+  read: (id) => Promise&lt;{ data, error }&gt;,
+  update: (id, data) => Promise&lt;{ data, error }&gt;,
+  delete: (id) => Promise&lt;{ error }&gt;,
+  
+  // List operations
+  list: (filters) => Promise&lt;{ data, error }&gt;,
+  
+  // Business logic
+  customOperation: (params) => Promise&lt;{ data, error }&gt;,
+};
+
+// Example: GG Coin Service
+export const ggCoinService = {
+  async getBalance(userId: string) {
+    const { data, error } = await supabase
+      .from('user_gamification')
+      .select('gg_coins')
+      .eq('user_id', userId)
+      .single();
+    
+    return { data: data?.gg_coins || 0, error };
+  },
+  
+  async addCoins(userId: string, amount: number, reason: string) {
+    // Transaction logic here
+    return { data: newBalance, error: null };
+  }
+};
+                </pre>
+            </div>
+        </section>
+
+        <!-- Testing Strategy -->
+        <section class="section fade-in">
+            <div class="section-header">
+                <i class="fas fa-vial"></i>
+                <h2>Testing Strategy</h2>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h3><i class="fas fa-flask"></i> Unit Testing</h3>
+                    <ul>
+                        <li><strong>Framework:</strong> Vitest</li>
+                        <li><strong>Coverage:</strong> 80% target</li>
+                        <li><strong>Focus:</strong> Services & utilities</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-link"></i> Integration Testing</h3>
+                    <ul>
+                        <li>Database integration tests</li>
+                        <li>API endpoint tests</li>
+                        <li>Service layer tests</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fas fa-robot"></i> E2E Testing</h3>
+                    <ul>
+                        <li><strong>Framework:</strong> Playwright (planned)</li>
+                        <li>User registration flow</li>
+                        <li>Initiative creation</li>
+                        <li>Badge purchase flow</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About GangGreen</h3>
+                    <p style="color: var(--text-muted); line-height: 1.8;">
+                        Building a carbon-negative Africa through technology-driven conservation, 
+                        community engagement, and sustainable development.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#overview">Project Overview</a></li>
+                        <li><a href="#tech-stack">Technology Stack</a></li>
+                        <li><a href="#journey">Development Journey</a></li>
+                        <li><a href="#architecture">Architecture</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="https://github.com/ganggreen">GitHub Repository</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Contributing Guide</a></li>
+                        <li><a href="#">Code of Conduct</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@ganggreen.org</li>
+                        <li><i class="fab fa-twitter"></i> @GangGreenAfrica</li>
+                        <li><i class="fab fa-discord"></i> Discord Community</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>MIT License - Copyright © 2025 Loch Tech Solutions</p>
+                <p style="margin-top: 0.5rem;">Last Updated: November 27, 2025 | Version 1.0.0</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Progress Chart
+        const progressCtx = document.getElementById('progressChart').getContext('2d');
+        new Chart(progressCtx, {
+            type: 'line',
+            data: {
+                labels: ['Week 1-2', 'Week 3-5', 'Week 6-8', 'Week 9-11', 'Week 12-13'],
+                datasets: [{
+                    label: 'Features Completed',
+                    data: [3, 6, 10, 13, 16],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Database Migrations',
+                    data: [2, 5, 10, 15, 19],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#e2e8f0' }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                    }
+                }
+            }
+        });
+
+        // Feature Distribution Chart
+        const featureCtx = document.getElementById('featureChart').getContext('2d');
+        new Chart(featureCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Foundation', 'Core Features', 'Gamification', 'Social & Governance', 'Content & Legal'],
+                datasets: [{
+                    data: [3, 3, 4, 3, 3],
+                    backgroundColor: [
+                        '#10b981',
+                        '#3b82f6',
+                        '#f59e0b',
+                        '#8b5cf6',
+                        '#ec4899'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#0f172a'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { 
+                            color: '#e2e8f0',
+                            padding: 15
+                        }
+                    }
+                }
+            }
+        });
+
+        // Technology Stack Chart
+        const techCtx = document.getElementById('techChart').getContext('2d');
+        new Chart(techCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Frontend', 'Backend', 'Blockchain', 'Integrations', 'Testing'],
+                datasets: [{
+                    label: 'Technologies Used',
+                    data: [8, 6, 5, 3, 3],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(139, 92, 246, 0.8)',
+                        'rgba(236, 72, 153, 0.8)'
+                    ],
+                    borderColor: [
+                        '#10b981',
+                        '#3b82f6',
+                        '#f59e0b',
+                        '#8b5cf6',
+                        '#ec4899'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { 
+                            color: '#94a3b8',
+                            stepSize: 1
+                        },
+                        grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add pulse animation to stats on scroll
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('pulse');
+                    setTimeout(() => {
+                        entry.target.classList.remove('pulse');
+                    }, 2000);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            statsObserver.observe(card);
+        });
+    </script>
+</body>
+</html>

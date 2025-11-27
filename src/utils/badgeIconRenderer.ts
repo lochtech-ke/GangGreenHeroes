@@ -1,10 +1,12 @@
 /**
  * Badge Icon Renderer
  * Utilities for rendering achievement icons in badges
+ * Updated to use geometric designs as default
  */
 
 import { AchievementType } from '../types/badge.types';
 import { getAchievementConfig } from '../assets/badges/styles/achievementConfig';
+import { generateGeometricIcon } from './geometricBadgeGenerator';
 
 /**
  * Icon rendering configuration
@@ -32,18 +34,53 @@ export const DEFAULT_ICON_CONFIG: IconRenderConfig = {
 
 /**
  * Get icon file path for an achievement type
+ * Now defaults to geometric icons as per migration requirements (Requirement 2.2)
+ * 
+ * @param achievementType - The type of achievement
+ * @param useGeometric - Use geometric design (default: true)
+ * @returns Path to the icon file
  */
-export function getIconPath(achievementType: AchievementType): string {
+export function getIconPath(achievementType: AchievementType, useGeometric: boolean = true): string {
+  // Geometric icon mapping (default)
+  const geometricIconMap: Record<AchievementType, string> = {
+    tree_planter: 'tree-planter-geometric.svg',
+    carbon_warrior: 'carbon-warrior-geometric.svg',
+    water_guardian: 'water-guardian-geometric.svg',
+    biodiversity_champion: 'biodiversity-champion-geometric.svg',
+    community_leader: 'community-leader-geometric.svg',
+    climate_hero: 'climate-hero-geometric.svg',
+    forest_protector: 'forest-protector-geometric.svg',
+    green_ambassador: 'green-ambassador-geometric.svg',
+    welcome_badge: 'hummingbird-geometric.svg',
+    ganggreen_hero: 'ganggreen-hero-geometric.svg',
+  };
+  
+  if (useGeometric) {
+    return `/src/assets/badges/icons/${geometricIconMap[achievementType]}`;
+  }
+  
+  // Fallback to original icons for backward compatibility
   const config = getAchievementConfig(achievementType);
   return `/src/assets/badges/icons/${config.iconFile}`;
 }
 
 /**
  * Load icon SVG content
+ * Now generates geometric icons directly instead of loading from files (Requirement 2.2)
+ * 
+ * @param achievementType - The type of achievement
+ * @param useGeometric - Use geometric design (default: true)
+ * @returns Promise resolving to SVG string
  */
-export async function loadIconSVG(achievementType: AchievementType): Promise<string> {
+export async function loadIconSVG(achievementType: AchievementType, useGeometric: boolean = true): Promise<string> {
   try {
-    const iconPath = getIconPath(achievementType);
+    if (useGeometric) {
+      // Generate geometric icon directly (no file loading needed)
+      return generateGeometricIcon(achievementType, 120);
+    }
+    
+    // Fallback to loading classic icons from files
+    const iconPath = getIconPath(achievementType, false);
     const response = await fetch(iconPath);
     
     if (!response.ok) {
@@ -53,7 +90,8 @@ export async function loadIconSVG(achievementType: AchievementType): Promise<str
     return await response.text();
   } catch (error) {
     console.error(`Error loading icon for ${achievementType}:`, error);
-    return getFallbackIcon();
+    // Fallback to geometric icon on error
+    return generateGeometricIcon(achievementType, 120);
   }
 }
 
@@ -112,15 +150,24 @@ export function createIconShadow(
 
 /**
  * Render single icon with backdrop and effects
+ * Now defaults to geometric design as per migration requirements (Requirement 2.2)
+ * 
+ * @param achievementType - The type of achievement to render
+ * @param x - X coordinate for icon placement
+ * @param y - Y coordinate for icon placement
+ * @param config - Optional rendering configuration
+ * @param useGeometric - Use geometric design (default: true)
+ * @returns Promise resolving to SVG string of rendered icon
  */
 export async function renderIcon(
   achievementType: AchievementType,
   x: number,
   y: number,
-  config: Partial<IconRenderConfig> = {}
+  config: Partial<IconRenderConfig> = {},
+  useGeometric: boolean = true
 ): Promise<string> {
   const finalConfig = { ...DEFAULT_ICON_CONFIG, ...config };
-  const iconSVG = await loadIconSVG(achievementType);
+  const iconSVG = await loadIconSVG(achievementType, useGeometric);
   const iconContent = extractSVGContent(iconSVG);
   
   const backdropRadius = finalConfig.size / 2 + 10;
@@ -145,13 +192,22 @@ export async function renderIcon(
 
 /**
  * Render multiple icons in a balanced composition
- * Supports up to 3 icons as per requirements
+ * Supports up to 3 icons as per requirements (Requirement 2.2)
+ * Now defaults to geometric design for all icons
+ * 
+ * @param achievementTypes - Array of achievement types to render (max 3)
+ * @param centerX - X coordinate for composition center
+ * @param centerY - Y coordinate for composition center
+ * @param config - Optional rendering configuration
+ * @param useGeometric - Use geometric design (default: true)
+ * @returns Promise resolving to SVG string of all rendered icons
  */
 export async function renderMultipleIcons(
   achievementTypes: AchievementType[],
   centerX: number,
   centerY: number,
-  config: Partial<IconRenderConfig> = {}
+  config: Partial<IconRenderConfig> = {},
+  useGeometric: boolean = true
 ): Promise<string> {
   if (achievementTypes.length === 0) {
     return '';
@@ -173,7 +229,7 @@ export async function renderMultipleIcons(
     renderIcon(type, positions[index].x, positions[index].y, {
       ...config,
       size: iconSize,
-    })
+    }, useGeometric)
   );
   
   const renderedIcons = await Promise.all(iconPromises);

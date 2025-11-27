@@ -4,7 +4,91 @@ This directory contains Supabase Edge Functions for the #GangGreen platform.
 
 ## Functions
 
-### 1. verify-paystack-payment
+### Badge Management Functions
+
+#### 1. create-badge
+
+Creates a new badge using geometric generator by default.
+
+**Endpoint:** `POST /functions/v1/create-badge`
+
+**Request Body:**
+```json
+{
+  "userId": "user-uuid",
+  "tier": "gold",
+  "forest": "kakamega",
+  "achievement": "tree_planter",
+  "badgeType": "geometric",
+  "saveToDatabase": true
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "badgeId": "badge-uuid",
+  "svg": "<svg>...</svg>",
+  "metadata": {}
+}
+```
+
+See [Badge Endpoints Documentation](./badge-endpoints/README.md) for full details.
+
+#### 2. get-badge
+
+Retrieves a badge by ID with caching support.
+
+**Endpoint:** `GET /functions/v1/get-badge/{badgeId}?format=svg&cache=true`
+
+**Response:** Returns badge SVG or JSON with badge data.
+
+See [Badge Endpoints Documentation](./badge-endpoints/README.md) for full details.
+
+#### 3. migrate-badges
+
+Triggers badge migration to geometric designs (admin only).
+
+**Endpoint:** `POST /functions/v1/migrate-badges`
+
+**Request Body:**
+```json
+{
+  "userId": "user-uuid",
+  "batchSize": 100,
+  "dryRun": false,
+  "createBackup": true
+}
+```
+
+See [Badge Endpoints Documentation](./badge-endpoints/README.md) for full details.
+
+#### 4. migration-status
+
+Returns current migration status and progress.
+
+**Endpoint:** `GET /functions/v1/migration-status?history=true`
+
+**Response:**
+```json
+{
+  "success": true,
+  "status": {
+    "inProgress": true,
+    "progress": 45,
+    "totalBadges": 500,
+    "migratedBadges": 225,
+    "failedBadges": 3
+  }
+}
+```
+
+See [Badge Endpoints Documentation](./badge-endpoints/README.md) for full details.
+
+### Payment Functions
+
+#### 5. verify-paystack-payment
 
 Verifies Paystack payment transactions server-side using the Paystack API.
 
@@ -33,7 +117,7 @@ Verifies Paystack payment transactions server-side using the Paystack API.
 }
 ```
 
-### 2. paystack-webhook
+#### 6. paystack-webhook
 
 Handles webhook events from Paystack for real-time payment status updates.
 
@@ -71,7 +155,15 @@ Deploy all functions:
 supabase functions deploy
 ```
 
-Deploy a specific function:
+Deploy badge functions:
+```bash
+supabase functions deploy create-badge
+supabase functions deploy get-badge
+supabase functions deploy migrate-badges
+supabase functions deploy migration-status
+```
+
+Deploy payment functions:
 ```bash
 supabase functions deploy verify-paystack-payment
 supabase functions deploy paystack-webhook

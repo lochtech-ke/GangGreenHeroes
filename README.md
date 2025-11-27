@@ -45,6 +45,7 @@ Facilitate tree planting initiatives, carbon credit trading, community engagemen
 - **AI-Powered Monitoring** - Antugrow API integration for tree health tracking
 - **Interactive Maps** - Leaflet.js with geospatial features
 - **Payment Integration** - Paystack for secure transactions
+- **Geometric Badge System** - Low-poly, nature-inspired NFT badge designs with 5 icon types
 - **Gamification** - GG Coins, NFT badges, and leaderboards (coming soon)
 - **Social Features** - Community feed and engagement (coming soon)
 
@@ -59,6 +60,7 @@ Facilitate tree planting initiatives, carbon credit trading, community engagemen
 - ✅ Initiative management with geospatial support
 - ✅ Tree registry with AI monitoring
 - ✅ Paystack payment integration
+- ✅ Geometric badge generator with 5 icon types and 10 achievement configs
 - ✅ Comprehensive testing infrastructure
 
 ### In Development
@@ -106,6 +108,7 @@ npm run dev
 - **Blockchain**: Ethereum/Polygon with Solidity smart contracts
 - **AI Integration**: Antugrow API for tree monitoring
 - **Payments**: Paystack integration
+- **Badge System**: SVG-based geometric badge generator with polygon rendering
 - **Testing**: Vitest with Testing Library
 
 *For complete technical details, see [Technical Guide](docs/TECHNICAL_GUIDE_NOVEMBER_19_2025.md)*
@@ -128,6 +131,25 @@ ganggreen-platform/
 
 *For detailed structure, see [Technical Guide](docs/TECHNICAL_GUIDE_NOVEMBER_19_2025.md)*
 
+## 🎨 Geometric Badge System
+
+The platform features a modern geometric badge generator that creates low-poly, nature-inspired NFT badges.
+
+### Features
+- **5 Icon Types**: Hummingbird, Tree, Water Drop, Shield, Star
+- **10 Achievement Configs**: Unique color schemes for each achievement type
+- **Scalable SVG**: Polygon-based design for crisp rendering at any size
+- **Zero Dependencies**: Pure TypeScript/SVG implementation
+- **Accessible**: Includes title elements for screen readers
+
+### Design Philosophy
+- **Nature-Inspired**: All designs reflect environmental themes
+- **Low-Poly Aesthetic**: Modern geometric art style
+- **Configurable**: Adjustable complexity (simple/medium/complex) and style (angular/organic/mixed)
+- **Performant**: Lightweight SVG with fast generation (< 5ms per badge)
+
+*For detailed documentation, see [Geometric Badge System](wiki/geometric-badge-system.md) and [Design Guide](src/assets/badges/GEOMETRIC_DESIGN.md)*
+
 ## 📖 API & Development
 
 ### Authentication
@@ -140,6 +162,7 @@ ganggreen-platform/
 - **Initiative Service**: CRUD operations for tree planting projects
 - **Tree Service**: Registry and monitoring with AI integration
 - **Antugrow Service**: AI-powered tree health analysis
+- **Badge Generator**: Geometric badge creation with 5 icon types (hummingbird, tree, water, shield, star)
 
 ### TypeScript Support
 Fully typed with comprehensive interfaces for:
@@ -147,8 +170,29 @@ Fully typed with comprehensive interfaces for:
 - Initiative management and geospatial data
 - Tree registry and monitoring
 - Payment processing
+- Badge generation and geometric configurations
 
-*For complete API documentation, see [Technical Guide](docs/TECHNICAL_GUIDE_NOVEMBER_19_2025.md)*nitiative, error } = await initiativeService.getInitiative(initiativeId);
+### Badge System Usage
+```typescript
+import { generateGeometricBadge, generateGeometricIcon } from '@/utils/geometricBadgeGenerator';
+
+// Generate a complete badge with background
+const badge = generateGeometricBadge('tree_planter', 'gold', 400);
+
+// Generate just the icon
+const icon = generateGeometricIcon('water_guardian', 120);
+```
+
+**Available Icon Types:**
+- 🐦 Hummingbird (biodiversity, ambassador, welcome badges)
+- 🌳 Tree (tree planter, forest protector)
+- 💧 Water Drop (water guardian)
+- 🛡️ Shield (carbon warrior, community leader)
+- ⭐ Star (climate hero, ganggreen hero)
+
+**Achievement Configurations:** 10 unique color schemes and complexity levels for different achievement types
+
+*For complete API documentation, see [Technical Guide](docs/TECHNICAL_GUIDE_NOVEMBER_19_2025.md) and [Geometric Badge System](wiki/geometric-badge-system.md)*
 
 ## 🧪 Testing & Quality
 

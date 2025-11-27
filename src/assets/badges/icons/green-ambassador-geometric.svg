@@ -1,0 +1,26 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <title>Geometric Leaf</title>
+  
+  <!-- Main leaf shape -->
+  <polygon points="60,20 75,35 80,55" fill="#00FA9A"/>
+  <polygon points="60,20 45,35 40,55" fill="#00FF7F"/>
+  <polygon points="40,55 60,90 80,55" fill="#3CB371"/>
+  
+  <!-- Leaf veins -->
+  <polygon points="60,25 62,25 70,50 68,50" fill="#2E8B57" opacity="0.4"/>
+  <polygon points="60,25 58,25 50,50 52,50" fill="#2E8B57" opacity="0.4"/>
+  <polygon points="60,50 62,50 68,70 66,70" fill="#2E8B57" opacity="0.4"/>
+  <polygon points="60,50 58,50 52,70 54,70" fill="#2E8B57" opacity="0.4"/>
+  
+  <!-- Center vein -->
+  <polygon points="59,20 61,20 61,90 59,90" fill="#228B22" opacity="0.5"/>
+  
+  <!-- Highlights -->
+  <polygon points="55,30 60,25 58,35" fill="#FFFFFF" opacity="0.4"/>
+  <polygon points="50,45 55,40 52,50" fill="#FFFFFF" opacity="0.3"/>
+  
+  <!-- Accent sparkles -->
+  <polygon points="70,40 72,42 70,44 68,42" fill="#FFD700"/>
+  <polygon points="75,60 77,62 75,64 73,62" fill="#FFA500"/>
+  <polygon points="65,75 67,77 65,79 63,77" fill="#FF8C00"/>
+</svg>

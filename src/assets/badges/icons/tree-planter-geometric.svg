@@ -1,0 +1,27 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <title>Geometric Tree</title>
+  
+  <!-- Trunk -->
+  <polygon points="50,70 55,70 58,100 47,100" fill="#8B4513"/>
+  <polygon points="55,70 58,100 62,100 60,70" fill="#A0522D"/>
+  <polygon points="60,70 70,70 68,100 62,100" fill="#CD853F"/>
+  
+  <!-- Lower canopy -->
+  <polygon points="30,70 60,70 50,80" fill="#2E8B57"/>
+  <polygon points="60,70 90,70 70,80" fill="#3CB371"/>
+  <polygon points="50,80 70,80 60,90" fill="#90EE90"/>
+  
+  <!-- Middle canopy -->
+  <polygon points="35,50 60,50 45,60" fill="#3CB371"/>
+  <polygon points="60,50 85,50 75,60" fill="#90EE90"/>
+  <polygon points="45,60 75,60 60,70" fill="#228B22"/>
+  
+  <!-- Upper canopy -->
+  <polygon points="40,30 60,30 50,40" fill="#90EE90"/>
+  <polygon points="60,30 80,30 70,40" fill="#228B22"/>
+  <polygon points="50,40 70,40 60,50" fill="#2E8B57"/>
+  
+  <!-- Top -->
+  <polygon points="50,20 60,20 55,30" fill="#3CB371"/>
+  <polygon points="55,30 60,20 65,30" fill="#90EE90"/>
+</svg>

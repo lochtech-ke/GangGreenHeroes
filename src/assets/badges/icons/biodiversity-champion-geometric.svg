@@ -1,0 +1,35 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <title>Geometric Butterfly</title>
+  
+  <!-- Body -->
+  <polygon points="58,40 62,40 62,80 58,80" fill="#8A2BE2"/>
+  <polygon points="56,35 64,35 60,40" fill="#9370DB"/>
+  
+  <!-- Upper left wing -->
+  <polygon points="58,45 40,30 35,40" fill="#FF6347"/>
+  <polygon points="58,45 35,40 38,50" fill="#FF7F50"/>
+  <polygon points="58,45 38,50 42,58" fill="#FFA07A"/>
+  <polygon points="58,45 42,58 50,60" fill="#FFD700"/>
+  
+  <!-- Upper right wing -->
+  <polygon points="62,45 80,30 85,40" fill="#9370DB"/>
+  <polygon points="62,45 85,40 82,50" fill="#8A2BE2"/>
+  <polygon points="62,45 82,50 78,58" fill="#9932CC"/>
+  <polygon points="62,45 78,58 70,60" fill="#BA55D3"/>
+  
+  <!-- Lower left wing -->
+  <polygon points="58,65 42,75 38,85" fill="#FFA500"/>
+  <polygon points="58,65 38,85 40,92" fill="#FFB347"/>
+  <polygon points="58,65 40,92 48,90" fill="#FFDAB9"/>
+  
+  <!-- Lower right wing -->
+  <polygon points="62,65 78,75 82,85" fill="#9932CC"/>
+  <polygon points="62,65 82,85 80,92" fill="#BA55D3"/>
+  <polygon points="62,65 80,92 72,90" fill="#DDA0DD"/>
+  
+  <!-- Wing patterns -->
+  <circle cx="45" cy="48" r="3" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="75" cy="48" r="3" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="45" cy="78" r="2" fill="#FFFFFF" opacity="0.5"/>
+  <circle cx="75" cy="78" r="2" fill="#FFFFFF" opacity="0.5"/>
+</svg>

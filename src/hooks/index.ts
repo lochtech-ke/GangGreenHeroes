@@ -4,3 +4,8 @@
  */
 
 export { useAppReady } from './useAppReady';
+export { 
+  useLazyBadges, 
+  usePreloadBadges, 
+  useBadgeLoading 
+} from './useLazyBadges';
