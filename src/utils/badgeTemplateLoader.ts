@@ -8,6 +8,9 @@ import { getTierStyle, getTierDisplayName } from '../assets/badges/styles/tierSt
 import { getForestTheme } from '../assets/badges/styles/forestThemes';
 import { getAchievementConfig } from '../assets/badges/styles/achievementConfig';
 
+// Re-export extractSVGContent from badgeIconRenderer to maintain backward compatibility
+export { extractSVGContent } from './badgeIconRenderer';
+
 /**
  * Load base template
  */
@@ -91,13 +94,7 @@ function getAchievementUnit(achievement: string): string {
   return units[achievement] || 'Achievements';
 }
 
-/**
- * Extract SVG content without wrapper
- */
-export function extractSVGContent(svgString: string): string {
-  const match = svgString.match(/<svg[^>]*>([\s\S]*)<\/svg>/i);
-  return match ? match[1] : svgString;
-}
+
 
 /**
  * Embed metadata in SVG

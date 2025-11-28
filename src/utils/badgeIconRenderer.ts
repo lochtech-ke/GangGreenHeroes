@@ -269,18 +269,7 @@ function calculateIconPositions(
   }
 }
 
-/**
- * Fallback icon (simple star) when icon loading fails
- */
-function getFallbackIcon(): string {
-  return `
-    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <title>Achievement Icon</title>
-      <path d="M 60 20 L 68 48 L 98 48 L 74 66 L 82 94 L 60 76 L 38 94 L 46 66 L 22 48 L 52 48 Z" 
-            fill="none" stroke="white" stroke-width="4" stroke-linejoin="round"/>
-    </svg>
-  `;
-}
+
 
 /**
  * Validate icon rendering configuration

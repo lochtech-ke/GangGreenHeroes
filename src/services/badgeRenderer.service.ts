@@ -20,6 +20,7 @@ import {
   getGlobalCache,
 } from '../utils/badgeCache';
 import { renderIcon as renderIconUtil } from '../utils/badgeIconRenderer';
+import { badgePerformanceMonitor } from './badgePerformanceMonitor.service';
 
 /**
  * Rendering options for badge generation
@@ -79,12 +80,29 @@ export class BadgeRendererService {
       );
 
     // Check cache first
+    const cacheCheckStart = performance.now();
     const cached = await this.getCachedBadge(cacheKey);
+    const cacheCheckDuration = performance.now() - cacheCheckStart;
+
     if (cached) {
+      // Track cache hit
+      await badgePerformanceMonitor.trackCacheHit(
+        config.achievement,
+        config.tier,
+        cacheCheckDuration
+      );
       return cached;
     }
 
+    // Track cache miss
+    await badgePerformanceMonitor.trackCacheMiss(
+      config.achievement,
+      config.tier,
+      cacheCheckDuration
+    );
+
     // Generate badge
+    const generationStart = performance.now();
     let svg: string;
 
     if (finalOptions.useGeometric) {
@@ -106,6 +124,33 @@ export class BadgeRendererService {
     } else {
       // Fallback to classic badge rendering
       svg = await this.renderClassicBadge(config, finalOptions);
+    }
+
+    const generationDuration = performance.now() - generationStart;
+
+    // Track badge generation performance
+    const deviceType = finalOptions.optimizeForMobile ? 'mobile' : 'desktop';
+    await badgePerformanceMonitor.trackBadgeGeneration(
+      config.achievement,
+      config.tier,
+      generationDuration,
+      finalOptions.size,
+      deviceType,
+      {
+        useGeometric: finalOptions.useGeometric,
+        fileSize: new Blob([svg]).size,
+      }
+    );
+
+    // Track mobile-specific metrics
+    if (finalOptions.optimizeForMobile) {
+      const fileSize = new Blob([svg]).size;
+      await badgePerformanceMonitor.trackMobileRender(
+        config.achievement,
+        config.tier,
+        generationDuration,
+        fileSize
+      );
     }
 
     // Cache the result
@@ -163,6 +208,7 @@ export class BadgeRendererService {
     configs: BadgeConfig[],
     options: RenderOptions = {}
   ): Promise<Map<string, string>> {
+    const startTime = performance.now();
     const results = new Map<string, string>();
 
     // Process badges in parallel
@@ -178,6 +224,17 @@ export class BadgeRendererService {
     rendered.forEach(({ key, svg }) => {
       results.set(key, svg);
     });
+
+    // Track batch render performance
+    const duration = performance.now() - startTime;
+    await badgePerformanceMonitor.trackBatchRender(
+      configs.length,
+      duration,
+      {
+        avgPerBadge: duration / configs.length,
+        useGeometric: options.useGeometric ?? true,
+      }
+    );
 
     return results;
   }

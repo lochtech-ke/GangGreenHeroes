@@ -8,6 +8,7 @@ import { supabase } from './supabase';
 import { badgeSvgService } from './badgeSvg.service';
 import { hummingbirdBadgeService } from './hummingbirdBadge.service';
 import { generateGeometricBadgeWithTier } from '../utils/geometricBadgeGenerator';
+import { badgeAnalyticsService } from './badgeAnalytics.service';
 import type {
   BadgeConfig,
   BadgeGenerationResult,
@@ -80,11 +81,30 @@ class BadgeGeneratorService {
         svgSize: new Blob([svg]).size,
       });
 
+      // Track badge generation analytics
+      if (config.metadata.userId) {
+        await badgeAnalyticsService.trackBadgeGeneration(
+          config.metadata.userId,
+          config.achievement,
+          config.tier,
+          'geometric'
+        );
+      }
+
       // Save to database if requested
       if (saveToDatabase) {
         const saveResult = await this.saveBadgeToDatabase(config, svg);
         if (!saveResult.success) {
           console.warn('[BadgeGeneratorService] Failed to save badge to database:', saveResult.error);
+        } else if (saveResult.badgeId) {
+          // Track achievement unlock
+          await badgeAnalyticsService.trackAchievementUnlock(
+            config.metadata.userId,
+            saveResult.badgeId,
+            config.achievement,
+            config.tier,
+            'geometric'
+          );
         }
       }
 

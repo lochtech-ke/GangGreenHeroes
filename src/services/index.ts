@@ -41,3 +41,5 @@ export {
 } from './badgeRenderer.service';
 export { badgeGeneratorService, BadgeGeneratorService } from './badgeGenerator.service';
 export { badgeMigrationService, BadgeMigrationService } from './badgeMigration.service';
+export { badgePerformanceMonitor } from './badgePerformanceMonitor.service';
+export { badgeMigrationMonitor } from './badgeMigrationMonitor.service';

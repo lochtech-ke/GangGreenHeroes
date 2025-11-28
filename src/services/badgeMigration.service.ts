@@ -7,6 +7,7 @@
 import { supabase } from './supabase';
 import { generateGeometricBadgeWithTier } from '../utils/geometricBadgeGenerator';
 import type { AchievementType, BadgeTier, BadgeMetadata } from '../types/badge.types';
+import { badgeMigrationMonitor } from './badgeMigrationMonitor.service';
 
 /**
  * Migration options for configuring the migration process
@@ -155,6 +156,14 @@ class BadgeMigrationService {
       const badges = await this.getBadgesToMigrate(finalOptions.userId);
       totalBadges = badges.length;
 
+      // Track migration start
+      await badgeMigrationMonitor.trackMigrationStart(
+        migrationId,
+        totalBadges,
+        finalOptions.batchSize,
+        { dryRun: finalOptions.dryRun, userId: finalOptions.userId }
+      );
+
       if (totalBadges === 0) {
         console.log('[BadgeMigrationService] No badges to migrate');
         await this.completeMigrationLog(migrationId, 'completed', totalBadges, 0, 0, []);
@@ -184,16 +193,31 @@ class BadgeMigrationService {
         console.log(`[BadgeMigrationService] Processing batch ${this.currentBatch}/${this.totalBatches} (${batch.length} badges)`);
 
         // Process batch
+        const batchStartTime = Date.now();
         const batchResult = await this.processBatch(
           batch,
           migrationId,
           finalOptions
         );
+        const batchDuration = Date.now() - batchStartTime;
 
         migratedBadges += batchResult.migrated;
         failedBadges += batchResult.failed;
         skippedBadges += batchResult.skipped;
         errors.push(...batchResult.errors);
+
+        // Track batch completion
+        await badgeMigrationMonitor.trackBatchComplete(
+          migrationId,
+          this.currentBatch,
+          batchResult.migrated + batchResult.skipped,
+          batchResult.failed,
+          batchDuration,
+          {
+            batchSize: batch.length,
+            skipped: batchResult.skipped,
+          }
+        );
 
         // Update progress
         this.currentProgress = Math.round((i + batch.length) / totalBadges * 100);
@@ -225,6 +249,18 @@ class BadgeMigrationService {
 
       const duration = Date.now() - this.startTime.getTime();
 
+      // Track migration completion
+      await badgeMigrationMonitor.trackMigrationComplete(
+        migrationId,
+        migratedBadges + skippedBadges,
+        failedBadges,
+        duration,
+        {
+          skippedBadges,
+          dryRun: finalOptions.dryRun,
+        }
+      );
+
       console.log('[BadgeMigrationService] Migration completed:', {
         migrationId,
         totalBadges,
@@ -248,6 +284,13 @@ class BadgeMigrationService {
       };
     } catch (error) {
       console.error('[BadgeMigrationService] Migration failed:', error);
+
+      // Track migration failure
+      await badgeMigrationMonitor.trackMigrationFailed(
+        migrationId,
+        error instanceof Error ? error.message : String(error),
+        { totalBadges, migratedBadges, failedBadges }
+      );
 
       // Mark migration as failed
       await this.completeMigrationLog(
@@ -629,13 +672,26 @@ class BadgeMigrationService {
         });
 
         failed++;
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         errors.push({
           badgeId: badge.id,
           userId: badge.user_id,
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: errorMessage,
           timestamp: new Date(),
           badgeData: badge,
         });
+
+        // Track individual badge error
+        await badgeMigrationMonitor.trackMigrationError(
+          migrationId,
+          badge.id,
+          errorMessage,
+          {
+            userId: badge.user_id,
+            badgeType: badge.badge_type,
+            tier: badge.tier,
+          }
+        );
 
         // Stop processing if skipErrors is false
         if (!options.skipErrors) {
