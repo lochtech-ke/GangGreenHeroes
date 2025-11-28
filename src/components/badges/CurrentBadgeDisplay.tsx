@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Award, Sparkles } from 'lucide-react';
-import { hummingbirdBadgeService } from '../../services/hummingbirdBadge.service';
+import { Sparkles, AlertCircle } from 'lucide-react';
+import { BadgeCard } from './BadgeCard';
+import { BadgePlaceholder } from './BadgePlaceholder';
+import { mapBadgeToBadgeConfig } from '../../utils/badgeMapping';
+import { getBadgeRenderer } from '../../services/badgeRenderer.service';
 import type { Badge } from '../../types/badgeProgression.types';
 
 interface CurrentBadgeDisplayProps {
@@ -12,52 +15,81 @@ interface CurrentBadgeDisplayProps {
 /**
  * Displays the user's current badge with animation
  * Supports both regular badges and hummingbird welcome badges
+ * Now uses the geometric badge rendering system via BadgeCard
  */
 export const CurrentBadgeDisplay: React.FC<CurrentBadgeDisplayProps> = ({
   badge,
   className = '',
 }) => {
-  const [badgeSvg, setBadgeSvg] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Check if this is a hummingbird badge and generate SVG
+  // Map the badge to BadgeConfig for geometric rendering
+  // Use useMemo to cache the mapped config and prevent unnecessary recalculations
+  const badgeConfig = useMemo(() => mapBadgeToBadgeConfig(badge), [badge]);
+  const isHummingbird = badge.tier === 'hummingbird';
+
+  // Preload current badge for immediate display
   useEffect(() => {
-    const generateHummingbirdBadge = async () => {
-      if (badge.tier !== 'hummingbird') {
-        return; // Not a hummingbird badge, use default display
-      }
-
-      setIsLoading(true);
-      setHasError(false);
-
+    const preloadCurrentBadge = async () => {
+      const startTime = performance.now();
+      const renderer = getBadgeRenderer();
+      
       try {
-        // Create hummingbird badge configuration
-        const config = hummingbirdBadgeService.createDefaultHummingbirdConfig(
-          'display-user', // Placeholder user ID for display
-          'bronze',
-          'kakamega'
-        );
-
-        // Generate the badge SVG
-        const result = await hummingbirdBadgeService.generateHummingbirdBadge(config);
+        // Preload the badge to ensure it's cached
+        await renderer.renderBadge(badgeConfig, {
+          size: 256,
+          optimizeForMobile: false,
+        });
         
-        if (result.success && result.svg) {
-          setBadgeSvg(result.svg);
-        } else {
-          console.error('[CurrentBadgeDisplay] Failed to generate hummingbird badge:', result.error);
-          setHasError(true);
-        }
+        const duration = performance.now() - startTime;
+        console.log(`[CurrentBadgeDisplay] Preloaded current badge in ${duration.toFixed(2)}ms`);
       } catch (error) {
-        console.error('[CurrentBadgeDisplay] Error generating hummingbird badge:', error);
-        setHasError(true);
-      } finally {
-        setIsLoading(false);
+        console.error('[CurrentBadgeDisplay] Failed to preload badge:', error);
       }
     };
 
-    generateHummingbirdBadge();
-  }, [badge.tier]);
+    preloadCurrentBadge();
+  }, [badgeConfig]);
+
+  // Handle badge loading error
+  const handleError = (error: Error) => {
+    console.error('Failed to load current badge:', error);
+    setHasError(true);
+    setIsLoading(false);
+  };
+
+  // Handle badge load success
+  const handleLoad = () => {
+    setIsLoading(false);
+    setHasError(false);
+  };
+
+  // Show error state if badge failed to load
+  if (hasError) {
+    return (
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className={`flex flex-col items-center ${className}`}
+      >
+        <div className="relative mb-4">
+          <div className="w-64 h-64 rounded-xl bg-red-50 border-2 border-red-200 flex flex-col items-center justify-center p-6 text-center">
+            <AlertCircle className="w-12 h-12 text-red-500 mb-3" />
+            <p className="text-red-700 font-semibold mb-2">Failed to Load Badge</p>
+            <p className="text-sm text-red-600">
+              We couldn't display your {badge.name} badge. Please try refreshing the page.
+            </p>
+          </div>
+        </div>
+        <div className="text-center">
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">{badge.name}</h3>
+          <p className="text-sm text-gray-600 max-w-xs">{badge.description}</p>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
@@ -66,55 +98,55 @@ export const CurrentBadgeDisplay: React.FC<CurrentBadgeDisplayProps> = ({
       transition={{ duration: 0.3 }}
       className={`flex flex-col items-center ${className}`}
     >
-      {/* Badge Icon */}
+      {/* Badge Display with Geometric Design */}
       <div className="relative mb-4">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <BadgePlaceholder size={256} animated={true} />
+          </div>
+        )}
         <motion.div
           animate={{
             rotate: [0, 5, -5, 0],
             scale: [1, 1.05, 1],
           }}
           transition={{
-            duration: badge.tier === 'hummingbird' ? 1.5 : 2,
+            duration: isHummingbird ? 1.5 : 2,
             repeat: Infinity,
-            repeatDelay: badge.tier === 'hummingbird' ? 2 : 3,
+            repeatDelay: isHummingbird ? 2 : 3,
           }}
           className="relative"
+          style={{ opacity: isLoading ? 0 : 1 }}
         >
-          {/* Hummingbird Badge SVG Display */}
-          {badge.tier === 'hummingbird' && badgeSvg && !hasError && !isLoading ? (
-            <div 
-              className="w-32 h-32 rounded-full overflow-hidden shadow-lg"
-              dangerouslySetInnerHTML={{ __html: badgeSvg }}
-            />
-          ) : badge.tier === 'hummingbird' && isLoading ? (
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-teal-400 to-green-600 flex items-center justify-center shadow-lg">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white"></div>
-            </div>
-          ) : (
-            /* Default Badge Display */
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-lg">
-              <Award className="w-20 h-20 text-white" strokeWidth={1.5} />
-            </div>
-          )}
+          {/* BadgeCard with geometric rendering */}
+          <BadgeCard
+            config={badgeConfig}
+            size={256}
+            showMetadata={false}
+            lazyLoad={true}
+            className="shadow-lg"
+            onLoad={handleLoad}
+            onError={handleError}
+          />
           
-          {/* Enhanced Sparkle Effect for Hummingbird Badge */}
+          {/* Enhanced Sparkle Effect */}
           <motion.div
             animate={{
-              scale: badge.tier === 'hummingbird' ? [1, 1.3, 1] : [1, 1.2, 1],
+              scale: isHummingbird ? [1, 1.3, 1] : [1, 1.2, 1],
               opacity: [0.5, 1, 0.5],
-              rotate: badge.tier === 'hummingbird' ? [0, 360] : [0, 0],
+              rotate: isHummingbird ? [0, 360] : [0, 0],
             }}
             transition={{
-              duration: badge.tier === 'hummingbird' ? 3 : 2,
+              duration: isHummingbird ? 3 : 2,
               repeat: Infinity,
             }}
             className="absolute -top-2 -right-2"
           >
-            <Sparkles className={`${badge.tier === 'hummingbird' ? 'w-10 h-10 text-teal-400' : 'w-8 h-8 text-yellow-400'}`} />
+            <Sparkles className={`${isHummingbird ? 'w-10 h-10 text-teal-400' : 'w-8 h-8 text-yellow-400'}`} />
           </motion.div>
 
           {/* Special Welcome Badge Indicator */}
-          {badge.tier === 'hummingbird' && (
+          {isHummingbird && (
             <motion.div
               animate={{
                 scale: [1, 1.1, 1],
@@ -141,7 +173,7 @@ export const CurrentBadgeDisplay: React.FC<CurrentBadgeDisplayProps> = ({
         <p className="text-sm text-gray-600 max-w-xs">{badge.description}</p>
         
         {/* Special message for hummingbird badge */}
-        {badge.tier === 'hummingbird' && (
+        {isHummingbird && (
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

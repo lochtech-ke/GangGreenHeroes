@@ -92,9 +92,9 @@ CREATE POLICY "Admin can view performance metrics"
   FOR SELECT
   USING (
     EXISTS (
-      SELECT 1 FROM user_profiles
-      WHERE user_profiles.user_id = auth.uid()
-      AND user_profiles.role = 'admin'
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role = 'admin'
     )
   );
 
@@ -111,9 +111,9 @@ CREATE POLICY "Admin can view performance alerts"
   FOR SELECT
   USING (
     EXISTS (
-      SELECT 1 FROM user_profiles
-      WHERE user_profiles.user_id = auth.uid()
-      AND user_profiles.role = 'admin'
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role = 'admin'
     )
   );
 
@@ -122,9 +122,9 @@ CREATE POLICY "Admin can update performance alerts"
   FOR UPDATE
   USING (
     EXISTS (
-      SELECT 1 FROM user_profiles
-      WHERE user_profiles.user_id = auth.uid()
-      AND user_profiles.role = 'admin'
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role = 'admin'
     )
   );
 
@@ -146,9 +146,9 @@ CREATE POLICY "Admin can view all analytics events"
   FOR SELECT
   USING (
     EXISTS (
-      SELECT 1 FROM user_profiles
-      WHERE user_profiles.user_id = auth.uid()
-      AND user_profiles.role = 'admin'
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role = 'admin'
     )
   );
 
@@ -165,9 +165,9 @@ CREATE POLICY "Admin can view migration monitoring"
   FOR SELECT
   USING (
     EXISTS (
-      SELECT 1 FROM user_profiles
-      WHERE user_profiles.user_id = auth.uid()
-      AND user_profiles.role = 'admin'
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role = 'admin'
     )
   );
 

@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Award, Check, Lock, ChevronDown } from 'lucide-react';
+import { Lock, ChevronDown, AlertCircle } from 'lucide-react';
 import type { Badge } from '../../types/badgeProgression.types';
+import { CompactBadgeCard } from './BadgeCard';
+import { BadgePlaceholder } from './BadgePlaceholder';
+import { mapBadgeToBadgeConfig } from '../../utils/badgeMapping';
+import { getBadgeRenderer } from '../../services/badgeRenderer.service';
 
 interface BadgeTimelineProps {
   allBadges: Badge[];
@@ -19,7 +23,61 @@ export const BadgeTimeline: React.FC<BadgeTimelineProps> = ({
   className = '',
 }) => {
   const [expandedBadgeId, setExpandedBadgeId] = useState<string | null>(null);
+  const [badgeErrors, setBadgeErrors] = useState<Set<string>>(new Set());
+  const [loadingBadges, setLoadingBadges] = useState<Set<string>>(new Set(allBadges.map(b => b.id)));
   const sortedBadges = [...allBadges].sort((a, b) => a.tier_order - b.tier_order);
+
+  // Preload all badges in parallel for optimal performance
+  useEffect(() => {
+    const preloadBadges = async () => {
+      const startTime = performance.now();
+      const renderer = getBadgeRenderer();
+      
+      // Map all badges to configs
+      const badgeConfigs = sortedBadges.map(badge => mapBadgeToBadgeConfig(badge));
+      
+      // Render all badges in parallel using Promise.all
+      try {
+        await Promise.all(
+          badgeConfigs.map(config => 
+            renderer.renderBadge(config, {
+              size: 48,
+              optimizeForMobile: false,
+            })
+          )
+        );
+        
+        const duration = performance.now() - startTime;
+        console.log(`[BadgeTimeline] Preloaded ${sortedBadges.length} badges in ${duration.toFixed(2)}ms (${(duration / sortedBadges.length).toFixed(2)}ms per badge)`);
+      } catch (error) {
+        console.error('[BadgeTimeline] Failed to preload badges:', error);
+      }
+    };
+
+    if (sortedBadges.length > 0) {
+      preloadBadges();
+    }
+  }, [sortedBadges]);
+
+  // Handle badge loading error
+  const handleBadgeError = (badgeId: string) => (error: Error) => {
+    console.error(`Failed to load badge ${badgeId}:`, error);
+    setBadgeErrors(prev => new Set(prev).add(badgeId));
+    setLoadingBadges(prev => {
+      const next = new Set(prev);
+      next.delete(badgeId);
+      return next;
+    });
+  };
+
+  // Handle badge load success
+  const handleBadgeLoad = (badgeId: string) => () => {
+    setLoadingBadges(prev => {
+      const next = new Set(prev);
+      next.delete(badgeId);
+      return next;
+    });
+  };
 
   const toggleExpanded = (badgeId: string) => {
     setExpandedBadgeId(expandedBadgeId === badgeId ? null : badgeId);
@@ -63,24 +121,29 @@ export const BadgeTimeline: React.FC<BadgeTimelineProps> = ({
               >
                 {/* Badge Icon */}
                 <div className="relative z-10 flex-shrink-0">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center shadow-md transition-all cursor-pointer ${
-                      isEarned
-                        ? 'bg-gradient-to-br from-green-400 to-green-600'
-                        : 'bg-gray-200'
-                    }`}
-                    onClick={() => toggleExpanded(badge.id)}
-                  >
-                    {isEarned ? (
-                      <Check className="w-6 h-6 text-white" strokeWidth={2.5} />
-                    ) : (
-                      <Award
-                        className={`w-6 h-6 ${isEarned ? 'text-white' : 'text-gray-400'}`}
-                        strokeWidth={1.5}
+                  {badgeErrors.has(badge.id) ? (
+                    <div className="w-12 h-12 rounded-lg bg-red-50 border-2 border-red-200 flex items-center justify-center">
+                      <AlertCircle className="w-6 h-6 text-red-500" />
+                    </div>
+                  ) : loadingBadges.has(badge.id) ? (
+                    <BadgePlaceholder size={48} animated={true} />
+                  ) : (
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      className="cursor-pointer"
+                      onClick={() => toggleExpanded(badge.id)}
+                    >
+                      <CompactBadgeCard
+                        config={mapBadgeToBadgeConfig(badge)}
+                        size={48}
+                        showTierOnly={true}
+                        lazyLoad={false}
+                        className={`transition-all ${isLocked ? 'opacity-60' : 'opacity-100'}`}
+                        onLoad={handleBadgeLoad(badge.id)}
+                        onError={handleBadgeError(badge.id)}
                       />
-                    )}
-                  </motion.div>
+                    </motion.div>
+                  )}
                   
                   {/* Lock Icon for Locked Badges */}
                   {isLocked && (
@@ -105,7 +168,7 @@ export const BadgeTimeline: React.FC<BadgeTimelineProps> = ({
                         duration: 2,
                         repeat: Infinity,
                       }}
-                      className="absolute inset-0 rounded-full border-2 border-green-500"
+                      className="absolute inset-0 rounded-lg border-2 border-green-500"
                     />
                   )}
                 </div>

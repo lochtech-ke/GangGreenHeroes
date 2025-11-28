@@ -4,6 +4,7 @@
  */
 
 export * from './badgeIconRenderer';
+export * from './badgeMapping';
 export * from './badgeMetadata';
 export * from './badgeTemplateLoader';
 export * from './geometricBadgeGenerator';

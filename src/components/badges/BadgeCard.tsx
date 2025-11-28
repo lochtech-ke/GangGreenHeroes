@@ -15,6 +15,8 @@ export interface BadgeCardProps {
   showMetadata?: boolean;
   onClick?: () => void;
   lazyLoad?: boolean;
+  onLoad?: () => void;
+  onError?: (error: Error) => void;
 }
 
 /**
@@ -97,6 +99,8 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
   showMetadata = true,
   onClick,
   lazyLoad = true,
+  onLoad,
+  onError,
 }) => {
   const tierStyles = getTierStyles(config.tier);
   const achievementName = formatAchievementName(config.achievement);
@@ -136,7 +140,10 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
             config={config}
             size={size}
             optimizeForMobile={true}
-            rootMargin="100px"
+            rootMargin="200px"
+            threshold={0.01}
+            onLoad={onLoad}
+            onError={onError}
           />
         ) : (
           <div
@@ -194,6 +201,8 @@ export const CompactBadgeCard: React.FC<CompactBadgeCardProps> = ({
   showTierOnly = false,
   onClick,
   lazyLoad = true,
+  onLoad,
+  onError,
 }) => {
   const tierStyles = getTierStyles(config.tier);
   const tierName = formatTierName(config.tier);
@@ -223,7 +232,10 @@ export const CompactBadgeCard: React.FC<CompactBadgeCardProps> = ({
             config={config}
             size={size}
             optimizeForMobile={true}
-            rootMargin="50px"
+            rootMargin="100px"
+            threshold={0.01}
+            onLoad={onLoad}
+            onError={onError}
           />
         ) : (
           <div
