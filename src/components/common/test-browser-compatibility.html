@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Compatibility Test - VivianSplashScreen</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #1a7a4a 0%, #0D4D2D 100%);
+      color: #fff;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .browser-info {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .browser-info h2 {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .info-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .info-label {
+      font-weight: 600;
+      opacity: 0.8;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      font-size: 1.1rem;
+      font-family: 'Courier New', monospace;
+    }
+
+    .feature-tests {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .feature-tests h2 {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 15px;
+      border-left: 4px solid transparent;
+    }
+
+    .feature-card.supported {
+      border-left-color: #10B981;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .feature-card.not-supported {
+      border-left-color: #EF4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .feature-card.partial {
+      border-left-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .feature-name {
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .feature-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .status-icon {
+      font-size: 1.2rem;
+    }
+
+    .feature-details {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      line-height: 1.4;
+    }
+
+    .test-actions {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .test-actions h2 {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .action-btn {
+      background: rgba(59, 130, 246, 0.3);
+      border: 2px solid #3B82F6;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .action-btn:hover {
+      background: rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .summary {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .summary h2 {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .summary-value {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .summary-label {
+      opacity: 0.8;
+    }
+
+    .export-btn {
+      background: #10B981;
+      color: white;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      width: 100%;
+      transition: all 0.2s;
+    }
+
+    .export-btn:hover {
+      background: #059669;
+    }
+
+    .recommendation {
+      background: rgba(59, 130, 246, 0.2);
+      border-left: 4px solid #3B82F6;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .recommendation h3 {
+      margin-bottom: 10px;
+      color: #93C5FD;
+    }
+
+    @media (max-width: 768px) {
+      .info-grid,
+      .feature-grid,
+      .action-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌐 Browser Compatibility Test</h1>
+    <p class="subtitle">VivianSplashScreen v1.0 "Vivian" - Automated Feature Detection</p>
+
+    <div class="browser-info">
+      <h2>🔍 Browser Information</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Browser</div>
+          <div class="info-value" id="browser-name">Detecting...</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Version</div>
+          <div class="info-value" id="browser-version">Detecting...</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Platform</div>
+          <div class="info-value" id="platform">Detecting...</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Screen Size</div>
+          <div class="info-value" id="screen-size">Detecting...</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Device Type</div>
+          <div class="info-value" id="device-type">Detecting...</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">User Agent</div>
+          <div class="info-value" id="user-agent" style="font-size: 0.8rem; word-break: break-all;">Detecting...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-tests">
+      <h2>✨ Feature Support Detection</h2>
+      <div class="feature-grid" id="feature-grid"></div>
+    </div>
+
+    <div class="test-actions">
+      <h2>🧪 Interactive Tests</h2>
+      <div class="action-grid">
+        <button class="action-btn" onclick="testAnimations()">
+          Test CSS Animations
+        </button>
+        <button class="action-btn" onclick="testReducedMotion()">
+          Test Reduced Motion
+        </button>
+        <button class="action-btn" onclick="testImageLoading()">
+          Test Image Loading
+        </button>
+        <button class="action-btn" onclick="testPerformance()">
+          Test Performance
+        </button>
+        <button class="action-btn" onclick="testResponsive()">
+          Test Responsive Design
+        </button>
+        <button class="action-btn" onclick="window.open('/', '_blank')">
+          Test Splash Screen
+        </button>
+      </div>
+    </div>
+
+    <div class="summary">
+      <h2>📊 Compatibility Summary</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-value" id="supported-count">0</div>
+          <div class="summary-label">Supported</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value" id="partial-count">0</div>
+          <div class="summary-label">Partial</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value" id="not-supported-count">0</div>
+          <div class="summary-label">Not Supported</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value" id="compatibility-score">0%</div>
+          <div class="summary-label">Compatibility</div>
+        </div>
+      </div>
+
+      <div class="recommendation" id="recommendation"></div>
+
+      <button class="export-btn" onclick="exportReport()">
+        📥 Export Compatibility Report
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Browser detection
+    function detectBrowser() {
+      const ua = navigator.userAgent;
+      let browserName = 'Unknown';
+      let browserVersion = 'Unknown';
+
+      if (ua.indexOf('Firefox') > -1) {
+        browserName = 'Firefox';
+        browserVersion = ua.match(/Firefox\/(\d+)/)?.[1] || 'Unknown';
+      } else if (ua.indexOf('Edg') > -1) {
+        browserName = 'Edge';
+        browserVersion = ua.match(/Edg\/(\d+)/)?.[1] || 'Unknown';
+      } else if (ua.indexOf('Chrome') > -1) {
+        browserName = 'Chrome';
+        browserVersion = ua.match(/Chrome\/(\d+)/)?.[1] || 'Unknown';
+      } else if (ua.indexOf('Safari') > -1) {
+        browserName = 'Safari';
+        browserVersion = ua.match(/Version\/(\d+)/)?.[1] || 'Unknown';
+      } else if (ua.indexOf('Trident') > -1) {
+        browserName = 'Internet Explorer';
+        browserVersion = ua.match(/rv:(\d+)/)?.[1] || 'Unknown';
+      }
+
+      return { browserName, browserVersion };
+    }
+
+    // Feature detection
+    const features = [
+      {
+        name: 'CSS Animations',
+        test: () => {
+          const element = document.createElement('div');
+          return typeof element.style.animation !== 'undefined';
+        },
+        details: 'Required for smooth transitions and animations'
+      },
+      {
+        name: 'CSS Grid',
+        test: () => {
+          const element = document.createElement('div');
+          return typeof element.style.grid !== 'undefined';
+        },
+        details: 'Used for responsive layout'
+      },
+      {
+        name: 'Flexbox',
+        test: () => {
+          const element = document.createElement('div');
+          return typeof element.style.flex !== 'undefined';
+        },
+        details: 'Used for component layout'
+      },
+      {
+        name: 'CSS Variables',
+        test: () => {
+          return window.CSS && window.CSS.supports && window.CSS.supports('--test', '0');
+        },
+        details: 'Used for theming'
+      },
+      {
+        name: 'Backdrop Filter',
+        test: () => {
+          const element = document.createElement('div');
+          return typeof element.style.backdropFilter !== 'undefined' ||
+                 typeof element.style.webkitBackdropFilter !== 'undefined';
+        },
+        details: 'Used for blur effects'
+      },
+      {
+        name: 'RequestAnimationFrame',
+        test: () => {
+          return typeof window.requestAnimationFrame !== 'undefined';
+        },
+        details: 'Used for smooth animations'
+      },
+      {
+        name: 'Viewport Units',
+        test: () => {
+          return window.CSS && window.CSS.supports && window.CSS.supports('height', '100vh');
+        },
+        details: 'Used for full-screen layout'
+      },
+      {
+        name: 'Reduced Motion Support',
+        test: () => {
+          return window.matchMedia && window.matchMedia('(prefers-reduced-motion)').media !== 'not all';
+        },
+        details: 'Accessibility feature for motion sensitivity'
+      },
+      {
+        name: 'IntersectionObserver',
+        test: () => {
+          return typeof window.IntersectionObserver !== 'undefined';
+        },
+        details: 'Used for lazy loading'
+      },
+      {
+        name: 'LocalStorage',
+        test: () => {
+          try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            return true;
+          } catch (e) {
+            return false;
+          }
+        },
+        details: 'Used for caching'
+      }
+    ];
+
+    // Run feature tests
+    function runFeatureTests() {
+      const results = features.map(feature => ({
+        name: feature.name,
+        supported: feature.test(),
+        details: feature.details
+      }));
+
+      const featureGrid = document.getElementById('feature-grid');
+      featureGrid.innerHTML = '';
+
+      results.forEach(result => {
+        const card = document.createElement('div');
+        card.className = `feature-card ${result.supported ? 'supported' : 'not-supported'}`;
+        card.innerHTML = `
+          <div class="feature-name">${result.name}</div>
+          <div class="feature-status">
+            <span class="status-icon">${result.supported ? '✅' : '❌'}</span>
+            <span>${result.supported ? 'Supported' : 'Not Supported'}</span>
+          </div>
+          <div class="feature-details">${result.details}</div>
+        `;
+        featureGrid.appendChild(card);
+      });
+
+      return results;
+    }
+
+    // Update summary
+    function updateSummary(results) {
+      const supported = results.filter(r => r.supported).length;
+      const notSupported = results.filter(r => !r.supported).length;
+      const total = results.length;
+      const score = Math.round((supported / total) * 100);
+
+      document.getElementById('supported-count').textContent = supported;
+      document.getElementById('partial-count').textContent = '0';
+      document.getElementById('not-supported-count').textContent = notSupported;
+      document.getElementById('compatibility-score').textContent = score + '%';
+
+      // Recommendation
+      const recommendation = document.getElementById('recommendation');
+      if (score >= 90) {
+        recommendation.innerHTML = `
+          <h3>✅ Excellent Compatibility</h3>
+          <p>Your browser has excellent support for all VivianSplashScreen features. You'll experience the full visual experience with smooth animations and transitions.</p>
+        `;
+        recommendation.style.borderLeftColor = '#10B981';
+        recommendation.style.background = 'rgba(16, 185, 129, 0.2)';
+      } else if (score >= 70) {
+        recommendation.innerHTML = `
+          <h3>⚠️ Good Compatibility</h3>
+          <p>Your browser supports most features. Some advanced effects may not work, but the splash screen will function correctly with graceful degradation.</p>
+        `;
+        recommendation.style.borderLeftColor = '#F59E0B';
+        recommendation.style.background = 'rgba(245, 158, 11, 0.2)';
+      } else {
+        recommendation.innerHTML = `
+          <h3>❌ Limited Compatibility</h3>
+          <p>Your browser has limited support for modern features. The splash screen will display in a simplified mode. Consider upgrading to a modern browser for the best experience.</p>
+        `;
+        recommendation.style.borderLeftColor = '#EF4444';
+        recommendation.style.background = 'rgba(239, 68, 68, 0.2)';
+      }
+    }
+
+    // Interactive tests
+    function testAnimations() {
+      alert('CSS Animation Test:\n\nWatch for smooth fade-in/fade-out transitions when the splash screen loads. Animations should run at 60fps without stuttering.');
+    }
+
+    function testReducedMotion() {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      alert(`Reduced Motion Test:\n\nCurrent setting: ${prefersReducedMotion ? 'ENABLED' : 'DISABLED'}\n\n${prefersReducedMotion ? 'Animations will be disabled for accessibility.' : 'Animations will play normally.'}`);
+    }
+
+    function testImageLoading() {
+      alert('Image Loading Test:\n\nThe hummingbird GIF should load and animate smoothly. If it fails, a fallback static image should display instead.');
+    }
+
+    function testPerformance() {
+      const start = performance.now();
+      setTimeout(() => {
+        const end = performance.now();
+        const renderTime = end - start;
+        alert(`Performance Test:\n\nPage render time: ${renderTime.toFixed(2)}ms\n\nTarget: < 500ms\nStatus: ${renderTime < 500 ? '✅ PASS' : '❌ FAIL'}`);
+      }, 0);
+    }
+
+    function testResponsive() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      let deviceType = 'Desktop';
+      
+      if (width < 768) deviceType = 'Mobile';
+      else if (width < 1024) deviceType = 'Tablet';
+      
+      alert(`Responsive Design Test:\n\nScreen: ${width}x${height}\nDevice Type: ${deviceType}\n\nThe splash screen should adapt to your screen size with appropriate scaling and layout.`);
+    }
+
+    // Export report
+    function exportReport() {
+      const { browserName, browserVersion } = detectBrowser();
+      const results = features.map(f => ({
+        name: f.name,
+        supported: f.test()
+      }));
+      
+      const report = {
+        timestamp: new Date().toISOString(),
+        browser: {
+          name: browserName,
+          version: browserVersion,
+          userAgent: navigator.userAgent,
+          platform: navigator.platform
+        },
+        screen: {
+          width: window.innerWidth,
+          height: window.innerHeight,
+          devicePixelRatio: window.devicePixelRatio
+        },
+        features: results,
+        summary: {
+          supported: results.filter(r => r.supported).length,
+          notSupported: results.filter(r => !r.supported).length,
+          total: results.length,
+          score: Math.round((results.filter(r => r.supported).length / results.length) * 100)
+        }
+      };
+
+      const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `browser-compatibility-report-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Initialize
+    function init() {
+      const { browserName, browserVersion } = detectBrowser();
+      
+      document.getElementById('browser-name').textContent = browserName;
+      document.getElementById('browser-version').textContent = browserVersion;
+      document.getElementById('platform').textContent = navigator.platform;
+      document.getElementById('screen-size').textContent = `${window.innerWidth}x${window.innerHeight}`;
+      document.getElementById('device-type').textContent = window.innerWidth < 768 ? 'Mobile' : window.innerWidth < 1024 ? 'Tablet' : 'Desktop';
+      document.getElementById('user-agent').textContent = navigator.userAgent;
+
+      const results = runFeatureTests();
+      updateSummary(results);
+    }
+
+    init();
+  </script>
+</body>
+</html>

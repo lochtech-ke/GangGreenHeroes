@@ -1,10 +1,13 @@
 /**
  * Impact Dashboard Service
  * Calculates and retrieves impact metrics for conservation efforts
- * Requirements: 4.1, 4.2, 4.3, 4.4, 11.2, 11.3
+ * Extended with age-based content curation
+ * Requirements: 4.1, 4.2, 4.3, 4.4, 11.2, 11.3, B1.1, B2.1, B3.1
  */
 
 import { supabase } from './supabase';
+import { contentCurationService } from './contentCuration.service';
+import type { CurationRequest, CuratedContentItem } from '../types/contentCuration.types';
 
 export interface ImpactMetrics {
   forest: 'kakamega' | 'karura' | 'mau' | 'all';
@@ -44,7 +47,98 @@ export interface ActivityFeedItem {
   user?: string;
 }
 
+export interface CuratedDashboard {
+  metrics: ImpactMetrics;
+  curatedContent: CuratedContentItem[];
+  activities: ActivityFeedItem[];
+  forestStats?: ForestStats[];
+}
+
 export const dashboardService = {
+  /**
+   * Get curated dashboard with age-appropriate content
+   * Requirements: B1.1, B2.1, B3.1
+   */
+  async getCuratedDashboard(
+    userId: string,
+    forest: 'kakamega' | 'karura' | 'mau' | 'all' = 'all',
+    contentLimit: number = 10
+  ): Promise<CuratedDashboard> {
+    try {
+      console.log('[Dashboard] Fetching curated dashboard for user:', userId);
+
+      // Fetch metrics and activities in parallel
+      const [metrics, activities] = await Promise.all([
+        this.getImpactMetrics(forest),
+        this.getActivityFeed(10)
+      ]);
+
+      // Get curated content for the user
+      const curationRequest: CurationRequest = {
+        userId,
+        contentTypes: ['initiative', 'mission', 'educational', 'social_post', 'challenge'],
+        limit: contentLimit
+      };
+
+      const curationResponse = await contentCurationService.getCuratedContent(curationRequest);
+
+      console.log(`[Dashboard] Curated dashboard ready with ${curationResponse.items.length} content items`);
+
+      return {
+        metrics,
+        curatedContent: curationResponse.items,
+        activities
+      };
+
+    } catch (error) {
+      console.error('[Dashboard] Error fetching curated dashboard:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get curated dashboard with forest stats
+   * Requirements: B1.1, B2.1, B3.1, 11.2, 11.3
+   */
+  async getCuratedDashboardWithStats(
+    userId: string,
+    forest: 'kakamega' | 'karura' | 'mau' | 'all' = 'all',
+    contentLimit: number = 10
+  ): Promise<CuratedDashboard> {
+    try {
+      console.log('[Dashboard] Fetching curated dashboard with stats for user:', userId);
+
+      // Fetch all data in parallel
+      const [metrics, activities, forestStats] = await Promise.all([
+        this.getImpactMetrics(forest),
+        this.getActivityFeed(10),
+        this.getForestStats()
+      ]);
+
+      // Get curated content for the user
+      const curationRequest: CurationRequest = {
+        userId,
+        contentTypes: ['initiative', 'mission', 'educational', 'social_post', 'challenge'],
+        limit: contentLimit
+      };
+
+      const curationResponse = await contentCurationService.getCuratedContent(curationRequest);
+
+      console.log(`[Dashboard] Curated dashboard with stats ready`);
+
+      return {
+        metrics,
+        curatedContent: curationResponse.items,
+        activities,
+        forestStats
+      };
+
+    } catch (error) {
+      console.error('[Dashboard] Error fetching curated dashboard with stats:', error);
+      throw error;
+    }
+  },
+
   /**
    * Get aggregated impact metrics
    * Requirements: 4.1, 4.2: Display aggregated impact metrics

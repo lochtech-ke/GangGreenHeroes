@@ -156,12 +156,12 @@ class HeroPlatformIntegrationService {
         },
       });
 
-      if (!creditResult.success) {
+      if (!creditResult || !creditResult.success) {
         return {
           success: false,
           rewardAmount: 0,
           wasMultiplied: false,
-          error: creditResult.error,
+          error: creditResult?.error || 'Failed to credit GG Coins',
         };
       }
 

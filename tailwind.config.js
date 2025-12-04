@@ -30,6 +30,8 @@ export default {
         'slide-in-right': 'slideInRight 0.5s ease-out',
         'scale-in': 'scaleIn 0.5s ease-out',
         'rotate-in': 'rotateIn 0.6s ease-out',
+        'slide-in': 'slideIn 0.3s ease-out',
+        'bounce-subtle': 'bounceSubtle 1s ease-in-out infinite',
       },
       keyframes: {
         float: {
@@ -55,6 +57,14 @@ export default {
         rotateIn: {
           '0%': { opacity: '0', transform: 'rotate(-180deg) scale(0.5)' },
           '100%': { opacity: '1', transform: 'rotate(0deg) scale(1)' },
+        },
+        slideIn: {
+          '0%': { opacity: '0', transform: 'translateX(100%)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        bounceSubtle: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-5px)' },
         },
       },
       typography: {

@@ -5,3 +5,4 @@ export { PasswordResetRequest } from './PasswordResetRequest';
 export { PasswordResetConfirm } from './PasswordResetConfirm';
 export { AuthOptions } from './AuthOptions';
 export { Web3Login } from './Web3Login';
+export { OnboardingWizard } from './OnboardingWizard';

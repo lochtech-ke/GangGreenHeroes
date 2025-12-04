@@ -1,0 +1,40 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Static low-poly hummingbird (no animations) -->
+  
+  <!-- Body (low-poly geometric style) -->
+  <g id="body">
+    <!-- Main body - vibrant green -->
+    <polygon points="200,180 220,200 220,240 200,260 180,240 180,200" fill="#10B981" />
+    <polygon points="220,200 240,210 240,230 220,240" fill="#059669" />
+    <polygon points="180,200 160,210 160,230 180,240" fill="#059669" />
+    
+    <!-- Chest - bright accent -->
+    <polygon points="200,220 210,230 200,240 190,230" fill="#F59E0B" />
+    
+    <!-- Head -->
+    <polygon points="200,160 220,170 220,190 200,180 180,190 180,170" fill="#10B981" />
+    <circle cx="190" cy="175" r="3" fill="#1F2937" />
+    <circle cx="210" cy="175" r="3" fill="#1F2937" />
+    
+    <!-- Beak - long and pointed -->
+    <polygon points="200,160 205,140 200,145 195,140" fill="#DC2626" />
+    <polygon points="200,145 205,140 200,150" fill="#EF4444" />
+    
+    <!-- Tail feathers - geometric -->
+    <polygon points="200,260 210,290 200,285" fill="#3B82F6" />
+    <polygon points="200,260 190,290 200,285" fill="#2563EB" />
+    <polygon points="200,260 205,295 200,290" fill="#1D4ED8" />
+  </g>
+  
+  <!-- Left Wing (static extended position) -->
+  <g id="leftWing">
+    <polygon points="180,200 140,180 120,190 100,200 120,210 140,215 160,210" fill="#10B981" opacity="0.9" />
+    <polygon points="140,180 120,170 100,180 100,200 120,190" fill="#059669" opacity="0.8" />
+  </g>
+  
+  <!-- Right Wing (static extended position) -->
+  <g id="rightWing">
+    <polygon points="220,200 260,180 280,190 300,200 280,210 260,215 240,210" fill="#10B981" opacity="0.9" />
+    <polygon points="260,180 280,170 300,180 300,200 280,190" fill="#059669" opacity="0.8" />
+  </g>
+</svg>

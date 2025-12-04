@@ -1,16 +1,10 @@
 /**
- * Tree Components
- * Components for tree registry and monitoring
+ * Trees Components
+ * Digital Tree Wallet components for tracking planted trees and impact
  */
 
+export { TreeWallet } from './TreeWallet';
 export { TreeCard } from './TreeCard';
-export { TreeRegistry } from './TreeRegistry';
-export { TreeDetails } from './TreeDetails';
-export { SpeciesSelector } from './SpeciesSelector';
-export { TreeImageUpload } from './TreeImageUpload';
-export { ImageGallery } from './ImageGallery';
-export { TreeHealthStatus } from './TreeHealthStatus';
-export { TreeGrowthChart } from './TreeGrowthChart';
-export { AntugrowAnalysisDisplay } from './AntugrowAnalysisDisplay';
-export { AnalysisNotification } from './AnalysisNotification';
-export { SyncStatusIndicator } from './SyncStatusIndicator';
+export { TreeMap } from './TreeMap';
+export { CO2Calculator } from './CO2Calculator';
+export { SocialShareButton } from './SocialShareButton';

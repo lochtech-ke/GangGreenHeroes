@@ -1,8 +1,10 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { initiativeService } from '../../services';
+import { calculateReach, type ReachEstimateResult } from '../../services/reachEstimation.service';
 import type { CreateInitiativeData, Initiative } from '../../types/initiative.types';
 import type { ForestPreference } from '../../types/user.types';
 import { LocationPicker } from './LocationPicker';
+import { AgeTargetingSelector, type AgeTargetingValue } from '../common/AgeTargetingSelector';
 
 interface InitiativeFormProps {
   organizationId: string;
@@ -30,10 +32,15 @@ export function InitiativeForm({
     },
     area_hectares: initialData?.area_hectares || 10,
     organization_id: organizationId,
+    min_age: initialData?.min_age,
+    max_age: initialData?.max_age,
+    target_cohorts: initialData?.target_cohorts,
   });
 
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [reachEstimate, setReachEstimate] = useState<ReachEstimateResult | null>(null);
+  const [loadingReach, setLoadingReach] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -69,6 +76,28 @@ export function InitiativeForm({
       [field]: value,
     }));
   };
+
+  // Calculate reach estimate when age targeting changes
+  useEffect(() => {
+    const fetchReachEstimate = async () => {
+      setLoadingReach(true);
+      try {
+        const result = await calculateReach({
+          min_age: formData.min_age,
+          max_age: formData.max_age,
+          target_cohorts: formData.target_cohorts,
+        });
+        setReachEstimate(result);
+      } catch (err) {
+        console.error('Failed to calculate reach:', err);
+        setReachEstimate(null);
+      } finally {
+        setLoadingReach(false);
+      }
+    };
+
+    fetchReachEstimate();
+  }, [formData.min_age, formData.max_age, formData.target_cohorts]);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
@@ -233,6 +262,61 @@ export function InitiativeForm({
             disabled={loading}
             height="350px"
           />
+        </div>
+
+        {/* Age Targeting */}
+        <div>
+          <AgeTargetingSelector
+            value={{
+              min_age: formData.min_age,
+              max_age: formData.max_age,
+              target_cohorts: formData.target_cohorts,
+            }}
+            onChange={(ageTargeting: AgeTargetingValue) => {
+              setFormData((prev) => ({
+                ...prev,
+                min_age: ageTargeting.min_age,
+                max_age: ageTargeting.max_age,
+                target_cohorts: ageTargeting.target_cohorts,
+              }));
+            }}
+            disabled={loading}
+          />
+
+          {/* Reach Estimate Display */}
+          {loadingReach ? (
+            <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-600">Calculating reach...</p>
+            </div>
+          ) : reachEstimate && reachEstimate.estimatedReach > 0 ? (
+            <div className="mt-3 p-4 bg-green-50 border border-green-200 rounded-md">
+              <h4 className="text-sm font-semibold text-green-800 mb-2">
+                Estimated Reach
+              </h4>
+              <div className="space-y-2">
+                <p className="text-lg font-bold text-green-700">
+                  {reachEstimate.estimatedReach.toLocaleString()} users
+                </p>
+                <p className="text-sm text-green-600">
+                  {reachEstimate.percentageOfPlatform}% of platform users
+                </p>
+                {reachEstimate.breakdown.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-green-200">
+                    <p className="text-xs font-medium text-green-700 mb-1">
+                      Breakdown by cohort:
+                    </p>
+                    <ul className="text-xs text-green-600 space-y-1">
+                      {reachEstimate.breakdown.map((item) => (
+                        <li key={item.cohort}>
+                          {item.cohort}: {item.userCount.toLocaleString()} users
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : null}
         </div>
 
         {/* Action Buttons */}

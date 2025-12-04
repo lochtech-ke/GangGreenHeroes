@@ -207,7 +207,7 @@ class BadgePurchaseService {
           },
         });
 
-        if (creditResult.success) {
+        if (creditResult && creditResult.success) {
           await supabase
             .from('badge_purchases')
             .update({ gg_coins_credited: true })
@@ -311,11 +311,11 @@ class BadgePurchaseService {
         },
       });
 
-      if (!creditResult.success) {
-        console.error('[BadgePurchaseService] Failed to credit GG Coins:', creditResult.error);
+      if (!creditResult || !creditResult.success) {
+        console.error('[BadgePurchaseService] Failed to credit GG Coins:', creditResult?.error);
         return {
           success: false,
-          error: creditResult.error,
+          error: creditResult?.error || 'Failed to credit GG Coins',
         };
       }
 

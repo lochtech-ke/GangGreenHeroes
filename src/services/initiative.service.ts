@@ -96,6 +96,9 @@ export async function createInitiative(initiativeData: CreateInitiativeData) {
     .insert({
       ...initiativeData,
       location: `POINT(${initiativeData.location.coordinates[0]} ${initiativeData.location.coordinates[1]})`,
+      min_age: initiativeData.min_age || null,
+      max_age: initiativeData.max_age || null,
+      target_cohorts: initiativeData.target_cohorts || null,
     })
     .select()
     .single();

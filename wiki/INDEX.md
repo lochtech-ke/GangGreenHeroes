@@ -53,7 +53,7 @@
 - [What is #GangGreen?](./01-platform-overview.md)
 - [How do I get started?](./02-quick-start-guide.md)
 - [What can I do on the platform?](./03-user-roles.md)
-- [How do I earn rewards?](./05-gg-coin-system.md)
+- [How do I earn GG Coins?](./05-gg-coin-system.md)
 
 ### For Active Users
 - [What are micro-challenges?](./04-micro-actions.md)

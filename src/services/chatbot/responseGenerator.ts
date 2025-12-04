@@ -200,9 +200,9 @@ class ResponseGenerator {
             category: 'education',
           },
           {
-            id: 'action-green-coins',
-            label: 'Green Coins',
-            query: 'What are Green Coins?',
+            id: 'action-gg-coins',
+            label: 'GG Coins',
+            query: 'What are GG Coins?',
             category: 'education',
           }
         );

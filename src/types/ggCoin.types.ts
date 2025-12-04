@@ -84,3 +84,9 @@ export interface GGCoinOperationResult {
   amount_debited?: number;
   error?: string;
 }
+
+// Extended transaction type with operation result properties
+export interface GGCoinTransactionResult extends GGCoinTransaction {
+  success?: boolean;
+  error?: string;
+}

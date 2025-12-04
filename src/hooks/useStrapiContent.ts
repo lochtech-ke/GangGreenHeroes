@@ -36,7 +36,7 @@ export function useStrapiContent<T>(
 
   useEffect(() => {
     let mounted = true;
-    let abortController = new AbortController();
+    const abortController = new AbortController();
 
     const fetchData = async () => {
       try {

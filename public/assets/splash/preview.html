@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hummingbird Animation Preview - v1.0 Vivian Splash Screen</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 1200px;
+      width: 100%;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #1F2937;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #6B7280;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background: #F9FAFB;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      text-align: center;
+      border: 2px solid #E5E7EB;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card h2 {
+      color: #1F2937;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+    
+    .card img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    .card p {
+      color: #6B7280;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: #10B981;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+    
+    .badge.static {
+      background: #6B7280;
+    }
+    
+    .info {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .info h3 {
+      color: #1E40AF;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    
+    .info ul {
+      color: #1E3A8A;
+      margin-left: 1.5rem;
+      font-size: 0.875rem;
+      line-height: 1.8;
+    }
+    
+    .toggle {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #FEF3C7;
+      border-radius: 0.5rem;
+      border: 1px solid #FCD34D;
+    }
+    
+    .toggle label {
+      color: #92400E;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .toggle input[type="checkbox"] {
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .card {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🐦 Hummingbird Animation Preview</h1>
+    <p class="subtitle">v1.0 "Vivian" Splash Screen Assets</p>
+    
+    <div class="grid">
+      <div class="card">
+        <h2>Colorful (Recommended)</h2>
+        <img src="hummingbird-colorful.svg" alt="Colorful animated hummingbird" id="colorful">
+        <span class="badge">Animated</span>
+        <p>
+          Vibrant low-poly hummingbird with emerald greens, blues, golden chest, 
+          and pink/purple tail accents. Features wing flapping and hover animation.
+        </p>
+        <p><strong>Size:</strong> ~5KB</p>
+      </div>
+      
+      <div class="card">
+        <h2>Standard Animated</h2>
+        <img src="hummingbird-animated.svg" alt="Standard animated hummingbird" id="animated">
+        <span class="badge">Animated</span>
+        <p>
+          Standard version with green body and blue tail. Simpler color palette 
+          with wing flapping and hover animation.
+        </p>
+        <p><strong>Size:</strong> ~4.7KB</p>
+      </div>
+      
+      <div class="card">
+        <h2>Static Fallback</h2>
+        <img src="hummingbird-static.svg" alt="Static hummingbird" id="static">
+        <span class="badge static">Static</span>
+        <p>
+          Non-animated fallback version for accessibility (prefers-reduced-motion) 
+          or when animations fail to load.
+        </p>
+        <p><strong>Size:</strong> ~1.8KB</p>
+      </div>
+    </div>
+    
+    <div class="toggle">
+      <label>
+        <input type="checkbox" id="motionToggle">
+        Simulate "prefers-reduced-motion" (shows static version)
+      </label>
+    </div>
+    
+    <div class="info">
+      <h3>📋 Asset Specifications</h3>
+      <ul>
+        <li><strong>Style:</strong> Low-poly geometric with visible facets</li>
+        <li><strong>Dimensions:</strong> 400x400px viewBox</li>
+        <li><strong>Format:</strong> SVG (vector, scales perfectly)</li>
+        <li><strong>Total Size:</strong> ~11.6KB for all three files (well under 500KB target)</li>
+        <li><strong>Animation:</strong> Wing flapping (0.3s cycle) + hover effect (2.5s cycle)</li>
+        <li><strong>Colors:</strong> Emerald green, teal, cyan, blue, golden, pink/purple, red</li>
+        <li><strong>Performance:</strong> GPU-accelerated CSS animations</li>
+        <li><strong>Accessibility:</strong> Static fallback for reduced motion preference</li>
+      </ul>
+    </div>
+    
+    <div class="info" style="margin-top: 1rem; background: #F0FDF4; border-color: #BBF7D0;">
+      <h3 style="color: #166534;">✅ Requirements Met</h3>
+      <ul style="color: #15803D;">
+        <li>✓ Colorful low-poly hummingbird animation (Req 1.2, 6.1, 6.2)</li>
+        <li>✓ Smooth wing movement and animation loop (Req 6.3, 6.4)</li>
+        <li>✓ Optimized file size < 500KB target (Req 6.5, 7.5)</li>
+        <li>✓ Fallback static image included (Req 7.2)</li>
+        <li>✓ Assets placed in public/assets/splash/ directory</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    const motionToggle = document.getElementById('motionToggle');
+    const colorfulImg = document.getElementById('colorful');
+    const animatedImg = document.getElementById('animated');
+    
+    motionToggle.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        // Simulate reduced motion by showing static version
+        colorfulImg.src = 'hummingbird-static.svg';
+        animatedImg.src = 'hummingbird-static.svg';
+      } else {
+        // Restore animated versions
+        colorfulImg.src = 'hummingbird-colorful.svg';
+        animatedImg.src = 'hummingbird-animated.svg';
+      }
+    });
+    
+    // Check actual user preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      motionToggle.checked = true;
+      colorfulImg.src = 'hummingbird-static.svg';
+      animatedImg.src = 'hummingbird-static.svg';
+      
+      const notice = document.createElement('div');
+      notice.style.cssText = 'background: #FEF2F2; border: 1px solid #FECACA; border-radius: 0.5rem; padding: 1rem; margin-top: 1rem; text-align: center; color: #991B1B;';
+      notice.innerHTML = '<strong>Note:</strong> Your system preference for reduced motion is enabled. Showing static versions.';
+      document.querySelector('.container').appendChild(notice);
+    }
+  </script>
+</body>
+</html>

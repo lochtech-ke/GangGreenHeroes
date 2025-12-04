@@ -1,258 +1,545 @@
 import { supabase } from './supabase';
-import type {
-  GGCoinTransaction,
-  CreditGGCoinsParams,
-  DebitGGCoinsParams,
-  GGCoinOperationResult,
-} from '../types/ggCoin.types';
 
 /**
  * GG Coin Service
- * Handles GG Coin balance management and transaction operations
+ * Unified service for managing GG Coins (decimal-based reward currency)
+ * 
+ * This service consolidates the functionality from the deprecated Green Coin service
+ * and provides a single source of truth for all coin operations.
+ * 
+ * Features:
+ * - Wallet operations (getWallet, getBalance)
+ * - Transaction operations (creditCoins, debitCoins)
+ * - Reward calculations with multipliers
+ * - Transaction history with pagination
+ * - Real-time balance subscriptions
+ * - Balance caching with 30-second TTL
+ * 
+ * Note: All amounts support decimal precision up to 3 places (e.g., 0.001, 10.500)
  */
+
+export interface GGCoinWallet {
+  userId: string;
+  balance: number; // DECIMAL(10,3) as number
+  totalPoints: number;
+  level: number;
+  lastUpdated: Date;
+}
+
+export interface GGCoinTransaction {
+  id: string;
+  userId: string;
+  type: 'earn' | 'spend' | 'bonus' | 'referral';
+  amount: number; // DECIMAL(10,3) as number
+  balanceBefore: number;
+  balanceAfter: number;
+  referenceType?: string;
+  referenceId?: string;
+  description: string;
+  metadata?: Record<string, any>;
+  timestamp: Date;
+  success?: boolean;
+  error?: string;
+  transaction_id?: string;
+}
+
+export interface RewardRule {
+  actionType: string;
+  baseReward: number;
+  multipliers?: RewardMultiplier[];
+}
+
+export interface RewardMultiplier {
+  condition: string;
+  factor: number;
+}
+
+export interface TransactionHistory {
+  transactions: GGCoinTransaction[];
+  total: number;
+  hasMore: boolean;
+}
+
+export interface TransactionFilters {
+  type?: 'earn' | 'spend' | 'bonus' | 'referral';
+  startDate?: Date;
+  endDate?: Date;
+}
+
+/**
+ * Centralized reward rules configuration
+ * Defines base rewards and multipliers for all action types
+ */
+export const REWARD_RULES: Record<string, RewardRule> = {
+  // Environmental Actions
+  tree_planting: {
+    actionType: 'tree_planting',
+    baseReward: 50,
+    multipliers: [
+      { condition: 'verified_with_photo', factor: 1.2 },
+      { condition: 'native_species', factor: 1.5 },
+    ],
+  },
+  waste_cleanup: {
+    actionType: 'waste_cleanup',
+    baseReward: 30,
+    multipliers: [
+      { condition: 'kg_collected', factor: 1.0 }, // 1 coin per kg
+    ],
+  },
+  
+  // Educational Actions
+  learning_module: {
+    actionType: 'learning_module',
+    baseReward: 20,
+    multipliers: [
+      { condition: 'quiz_perfect_score', factor: 1.5 },
+      { condition: 'advanced_difficulty', factor: 2.0 },
+    ],
+  },
+  
+  // Community Actions
+  mission_completion: {
+    actionType: 'mission_completion',
+    baseReward: 100,
+    multipliers: [
+      { condition: 'team_participation', factor: 1.3 },
+      { condition: 'early_completion', factor: 1.2 },
+    ],
+  },
+  community_post: {
+    actionType: 'community_post',
+    baseReward: 5,
+    multipliers: [
+      { condition: 'with_media', factor: 1.5 },
+      { condition: 'high_engagement', factor: 2.0 },
+    ],
+  },
+  
+  // Engagement Actions
+  petition_signature: {
+    actionType: 'petition_signature',
+    baseReward: 10,
+  },
+  referral: {
+    actionType: 'referral',
+    baseReward: 50,
+    multipliers: [
+      { condition: 'referred_user_active', factor: 2.0 },
+    ],
+  },
+  daily_login: {
+    actionType: 'daily_login',
+    baseReward: 5,
+    multipliers: [
+      { condition: 'streak_7_days', factor: 1.5 },
+      { condition: 'streak_30_days', factor: 2.0 },
+    ],
+  },
+};
+
 class GGCoinService {
-  private balanceCache: Map<string, { balance: number; timestamp: number }> = new Map();
+  private balanceCache = new Map<string, { balance: number; timestamp: number }>();
   private readonly CACHE_TTL = 30000; // 30 seconds
-  private readonly MAX_RETRIES = 3;
-  private readonly RETRY_DELAY = 1000; // 1 second
-  private readonly REWARD_RATIO = 200; // 1 GG Coin per 200 KES
-  private readonly DECIMAL_PRECISION = 3; // 3 decimal places
 
   /**
-   * Calculate GG Coin reward for a purchase amount in KES
-   * 
-   * Formula: GG Coins = round(amount_kes / 200, 3)
-   * 
-   * Examples:
-   * - 200 KES → 1.000 GG Coins
-   * - 100 KES → 0.500 GG Coins
-   * - 50 KES → 0.250 GG Coins
-   * - 10 KES → 0.050 GG Coins
-   * - 1 KES → 0.005 GG Coins
-   * - 1000 KES → 5.000 GG Coins
-   * - 2500 KES → 12.500 GG Coins
-   * 
-   * @param amountKes - Purchase amount in Kenyan Shillings
-   * @returns GG Coin reward rounded to 3 decimal places
+   * Get user's GG Coin wallet information
+   * @param userId - User ID
+   * @returns Wallet information or null if not found
    */
-  calculatePurchaseReward(amountKes: number): number {
-    if (amountKes < 0) {
-      console.warn('[GGCoinService] Negative amount provided to calculatePurchaseReward:', amountKes);
-      return 0;
-    }
-
-    // Calculate reward: amount / 200
-    const reward = amountKes / this.REWARD_RATIO;
-
-    // Round to 3 decimal places
-    const roundedReward = Math.round(reward * Math.pow(10, this.DECIMAL_PRECISION)) / Math.pow(10, this.DECIMAL_PRECISION);
-
-    console.log(`[GGCoinService] Calculated reward for ${amountKes} KES: ${roundedReward} GG Coins`);
-
-    return roundedReward;
-  }
-
-  /**
-   * Credit GG Coins to a user's account
-   * Uses database function for atomic transaction with logging
-   */
-  async creditCoins(params: CreditGGCoinsParams): Promise<GGCoinOperationResult> {
-    const { userId, amount, transactionType, referenceType, referenceId, description, metadata } = params;
-
-    if (amount <= 0) {
-      return {
-        success: false,
-        error: 'Amount must be greater than 0',
-      };
-    }
-
-    let lastError: Error | null = null;
-
-    // Retry logic for failed credit operations
-    for (let attempt = 1; attempt <= this.MAX_RETRIES; attempt++) {
-      try {
-        console.log(`[GGCoinService] Crediting ${amount} coins to user ${userId} (attempt ${attempt})`);
-
-        const { data, error } = await supabase.rpc('credit_gg_coins', {
-          p_user_id: userId,
-          p_amount: amount,
-          p_transaction_type: transactionType,
-          p_reference_type: referenceType || null,
-          p_reference_id: referenceId || null,
-          p_description: description || null,
-          p_metadata: metadata || null,
-        });
-
-        if (error) {
-          console.error(`[GGCoinService] Credit error (attempt ${attempt}):`, error);
-          lastError = error;
-          
-          if (attempt < this.MAX_RETRIES) {
-            await this.delay(this.RETRY_DELAY * attempt);
-            continue;
-          }
-          
-          return {
-            success: false,
-            error: error.message,
-          };
-        }
-
-        // Clear cache for this user
-        this.balanceCache.delete(userId);
-
-        console.log(`[GGCoinService] Successfully credited ${amount} coins to user ${userId}`);
-        return data as GGCoinOperationResult;
-      } catch (error) {
-        console.error(`[GGCoinService] Credit exception (attempt ${attempt}):`, error);
-        lastError = error instanceof Error ? error : new Error('Unknown error');
-        
-        if (attempt < this.MAX_RETRIES) {
-          await this.delay(this.RETRY_DELAY * attempt);
-          continue;
-        }
-      }
-    }
-
-    return {
-      success: false,
-      error: lastError?.message || 'Failed to credit coins after multiple attempts',
-    };
-  }
-
-  /**
-   * Debit GG Coins from a user's account
-   * Uses database function for atomic transaction with logging
-   */
-  async debitCoins(params: DebitGGCoinsParams): Promise<GGCoinOperationResult> {
-    const { userId, amount, transactionType, referenceType, referenceId, description, metadata } = params;
-
-    if (amount <= 0) {
-      return {
-        success: false,
-        error: 'Amount must be greater than 0',
-      };
-    }
-
+  async getWallet(userId: string): Promise<GGCoinWallet | null> {
     try {
-      console.log(`[GGCoinService] Debiting ${amount} coins from user ${userId}`);
-
-      const { data, error } = await supabase.rpc('debit_gg_coins', {
-        p_user_id: userId,
-        p_amount: amount,
-        p_transaction_type: transactionType,
-        p_reference_type: referenceType || null,
-        p_reference_id: referenceId || null,
-        p_description: description || null,
-        p_metadata: metadata || null,
-      });
+      const { data, error } = await supabase
+        .from('user_gamification')
+        .select('id, gg_coins, total_points, level, updated_at')
+        .eq('id', userId)
+        .maybeSingle();
 
       if (error) {
-        console.error('[GGCoinService] Debit error:', error);
-        return {
-          success: false,
-          error: error.message,
-        };
+        console.error('[GGCoinService] Error fetching wallet:', error);
+        return null;
       }
 
-      // Clear cache for this user
-      this.balanceCache.delete(userId);
+      if (!data) {
+        console.warn('[GGCoinService] Wallet not found for user:', userId);
+        return null;
+      }
 
-      console.log(`[GGCoinService] Successfully debited ${amount} coins from user ${userId}`);
-      return data as GGCoinOperationResult;
-    } catch (error) {
-      console.error('[GGCoinService] Debit exception:', error);
       return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Failed to debit coins',
+        userId: data.id,
+        balance: parseFloat(data.gg_coins) || 0,
+        totalPoints: data.total_points || 0,
+        level: data.level || 1,
+        lastUpdated: new Date(data.updated_at),
       };
+    } catch (error) {
+      console.error('[GGCoinService] Exception fetching wallet:', error);
+      return null;
     }
   }
 
   /**
-   * Get user's GG Coin balance
-   * Uses caching to reduce database queries
+   * Get user's GG Coin balance (with caching)
+   * @param userId - User ID
+   * @returns Current balance
    */
   async getBalance(userId: string): Promise<number> {
     // Check cache first
     const cached = this.balanceCache.get(userId);
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
-      console.log(`[GGCoinService] Balance served from cache for user ${userId}`);
       return cached.balance;
     }
 
-    try {
-      const { data, error } = await supabase
-        .from('user_gamification')
-        .select('gg_coins')
-        .eq('id', userId)
-        .maybeSingle();
+    // Query database
+    const { data, error } = await supabase
+      .from('user_gamification')
+      .select('gg_coins')
+      .eq('id', userId)
+      .single();
 
-      if (error) {
-        console.error('[GGCoinService] Error fetching balance:', error);
-        return 0;
+    if (error || !data) {
+      console.error('[GGCoinService] Error fetching balance:', error);
+      return 0;
+    }
+
+    const balance = parseFloat(data.gg_coins) || 0;
+
+    // Update cache
+    this.balanceCache.set(userId, { balance, timestamp: Date.now() });
+
+    return balance;
+  }
+
+  /**
+   * Credit GG Coins to a user's wallet
+   * Uses database function for atomicity
+   * @param userId - User ID
+   * @param amount - Amount to credit (positive number with up to 3 decimal places)
+   * @param type - Transaction type
+   * @param description - Transaction description
+   * @param metadata - Optional metadata
+   * @returns Transaction details or null on failure
+   */
+  async creditCoins(
+    userId: string,
+    amount: number,
+    type: string,
+    description: string,
+    metadata?: any
+  ): Promise<GGCoinTransaction | null> {
+    try {
+      // Validate amount
+      if (amount <= 0) {
+        console.error('[GGCoinService] Invalid credit amount:', amount);
+        return null;
       }
 
-      const balance = data?.gg_coins || 0;
+      // Round to 3 decimal places
+      const roundedAmount = Math.round(amount * 1000) / 1000;
 
-      // Update cache
-      this.balanceCache.set(userId, {
-        balance,
-        timestamp: Date.now(),
+      // Use database function for atomicity
+      const { data, error } = await supabase.rpc('credit_gg_coins', {
+        p_user_id: userId,
+        p_amount: roundedAmount,
+        p_transaction_type: type,
+        p_description: description,
+        p_metadata: metadata || null,
       });
 
-      return balance;
+      if (error || !data?.success) {
+        console.error('[GGCoinService] Credit failed:', error || data?.error);
+        return null;
+      }
+
+      // Clear cache
+      this.balanceCache.delete(userId);
+
+      // Return transaction details
+      return {
+        id: data.transaction_id,
+        userId,
+        type: type as any,
+        amount: roundedAmount,
+        balanceBefore: data.balance_before,
+        balanceAfter: data.balance_after,
+        description,
+        metadata,
+        timestamp: new Date(),
+        success: true,
+        transaction_id: data.transaction_id,
+      };
     } catch (error) {
-      console.error('[GGCoinService] Exception fetching balance:', error);
-      return 0;
+      console.error('[GGCoinService] Exception crediting coins:', error);
+      return null;
     }
   }
 
   /**
-   * Get user's GG Coin transaction history
+   * Debit GG Coins from a user's wallet
+   * Uses database function for atomicity and balance validation
+   * @param userId - User ID
+   * @param amount - Amount to debit (positive number with up to 3 decimal places)
+   * @param type - Transaction type
+   * @param description - Transaction description
+   * @param metadata - Optional metadata
+   * @returns Transaction details or null on failure
+   */
+  async debitCoins(
+    userId: string,
+    amount: number,
+    type: string,
+    description: string,
+    metadata?: any
+  ): Promise<GGCoinTransaction | null> {
+    try {
+      // Validate amount
+      if (amount <= 0) {
+        console.error('[GGCoinService] Invalid debit amount:', amount);
+        return null;
+      }
+
+      // Round to 3 decimal places
+      const roundedAmount = Math.round(amount * 1000) / 1000;
+
+      // Use database function for atomicity
+      const { data, error } = await supabase.rpc('debit_gg_coins', {
+        p_user_id: userId,
+        p_amount: roundedAmount,
+        p_transaction_type: type,
+        p_description: description,
+        p_metadata: metadata || null,
+      });
+
+      if (error || !data?.success) {
+        console.error('[GGCoinService] Debit failed:', error || data?.error);
+        return null;
+      }
+
+      // Clear cache
+      this.balanceCache.delete(userId);
+
+      // Return transaction details
+      return {
+        id: data.transaction_id,
+        userId,
+        type: type as any,
+        amount: -roundedAmount, // Negative for debit
+        balanceBefore: data.balance_before,
+        balanceAfter: data.balance_after,
+        description,
+        metadata,
+        timestamp: new Date(),
+        success: true,
+        transaction_id: data.transaction_id,
+      };
+    } catch (error) {
+      console.error('[GGCoinService] Exception debiting coins:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Calculate reward for an action based on rules and multipliers
+   * @param actionType - Type of action (e.g., 'tree_planting')
+   * @param impact - Impact multiplier (e.g., number of trees planted)
+   * @param multipliers - Additional multipliers to apply
+   * @returns Calculated reward amount (rounded to 3 decimal places)
+   */
+  calculateReward(
+    actionType: string,
+    impact?: number,
+    multipliers?: RewardMultiplier[]
+  ): number {
+    const rule = REWARD_RULES[actionType];
+    if (!rule) {
+      console.warn('[GGCoinService] No reward rule found for action type:', actionType);
+      return 0;
+    }
+
+    let reward = rule.baseReward;
+
+    // Apply impact scaling
+    if (impact !== undefined) {
+      // Return 0 for zero or negative impact
+      if (impact <= 0) {
+        return 0;
+      }
+      reward = reward * impact;
+    }
+
+    // Apply multipliers
+    if (multipliers) {
+      for (const mult of multipliers) {
+        reward = reward * mult.factor;
+      }
+    }
+
+    // Round to 3 decimal places
+    return Math.round(reward * 1000) / 1000;
+  }
+
+  /**
+   * Award GG Coins for a verified action
+   * Combines reward calculation with coin crediting
+   * @param userId - User ID
+   * @param actionType - Type of action
+   * @param impact - Impact multiplier
+   * @param multipliers - Additional multipliers
+   * @returns Transaction details or null on failure
+   */
+  async awardCoins(
+    userId: string,
+    actionType: string,
+    impact?: number,
+    multipliers?: RewardMultiplier[]
+  ): Promise<GGCoinTransaction | null> {
+    const amount = this.calculateReward(actionType, impact, multipliers);
+
+    if (amount <= 0) {
+      console.warn('[GGCoinService] Calculated reward is 0 or negative:', amount);
+      return null;
+    }
+
+    const description = `Earned ${amount.toFixed(3)} GG Coins for ${actionType}`;
+
+    return await this.creditCoins(
+      userId,
+      amount,
+      'earn',
+      description,
+      { actionType, impact, multipliers }
+    );
+  }
+
+  /**
+   * Format GG Coins for display
+   * @param amount - Amount to format
+   * @returns Formatted string with 3 decimal places
+   */
+  formatGGCoins(amount: number): string {
+    return amount.toFixed(3);
+  }
+
+  /**
+   * Calculate purchase reward based on badge price
+   * @param badgePrice - Price of the badge
+   * @returns Reward amount (10% of purchase price)
+   */
+  calculatePurchaseReward(badgePrice: number): number {
+    const reward = badgePrice * 0.1; // 10% cashback
+    return Math.round(reward * 1000) / 1000; // Round to 3 decimal places
+  }
+
+  /**
+   * Get transaction history for a user with pagination and filtering
+   * @param userId - User ID
+   * @param limit - Number of transactions to fetch (default: 50)
+   * @param offset - Offset for pagination (default: 0)
+   * @param filters - Optional filters for type and date range
+   * @returns Transaction history with pagination info
    */
   async getTransactionHistory(
     userId: string,
     limit: number = 50,
-    offset: number = 0
-  ): Promise<GGCoinTransaction[]> {
+    offset: number = 0,
+    filters?: TransactionFilters
+  ): Promise<TransactionHistory> {
     try {
-      const { data, error } = await supabase
+      // Build query
+      let query = supabase
         .from('gg_coin_transactions')
-        .select('*')
-        .eq('user_id', userId)
+        .select('*', { count: 'exact' })
+        .eq('user_id', userId);
+
+      // Apply type filter
+      if (filters?.type) {
+        // Map service type to database transaction_type patterns
+        const typePattern = this.getTypePattern(filters.type);
+        query = query.eq('transaction_type', typePattern);
+      }
+
+      // Apply date range filters
+      if (filters?.startDate) {
+        query = query.gte('created_at', filters.startDate.toISOString());
+      }
+      if (filters?.endDate) {
+        query = query.lte('created_at', filters.endDate.toISOString());
+      }
+
+      // Apply ordering and pagination
+      const { data, error, count } = await query
         .order('created_at', { ascending: false })
         .range(offset, offset + limit - 1);
 
       if (error) {
         console.error('[GGCoinService] Error fetching transaction history:', error);
-        return [];
+        return { transactions: [], total: 0, hasMore: false };
       }
 
-      return data || [];
+      const transactions: GGCoinTransaction[] = (data || []).map(t => ({
+        id: t.id,
+        userId: t.user_id,
+        type: this.mapTransactionType(t.transaction_type),
+        amount: parseFloat(t.amount) || 0,
+        balanceBefore: parseFloat(t.balance_before) || 0,
+        balanceAfter: parseFloat(t.balance_after) || 0,
+        referenceType: t.reference_type,
+        referenceId: t.reference_id,
+        description: t.description || '',
+        metadata: t.metadata,
+        timestamp: new Date(t.created_at),
+      }));
+
+      return {
+        transactions,
+        total: count || 0,
+        hasMore: (count || 0) > offset + limit,
+      };
     } catch (error) {
       console.error('[GGCoinService] Exception fetching transaction history:', error);
-      return [];
+      return { transactions: [], total: 0, hasMore: false };
     }
   }
 
   /**
-   * Clear balance cache for a specific user or all users
+   * Get earning breakdown by action type
+   * @param userId - User ID
+   * @returns Object mapping action types to total earnings
    */
-  clearCache(userId?: string): void {
-    if (userId) {
-      this.balanceCache.delete(userId);
-      console.log(`[GGCoinService] Cache cleared for user ${userId}`);
-    } else {
-      this.balanceCache.clear();
-      console.log('[GGCoinService] All balance cache cleared');
+  async getEarningBreakdown(userId: string): Promise<Record<string, number>> {
+    try {
+      const { data, error } = await supabase
+        .from('gg_coin_transactions')
+        .select('metadata, amount')
+        .eq('user_id', userId)
+        .gt('amount', 0); // Only positive amounts (earnings)
+
+      if (error) {
+        console.error('[GGCoinService] Error fetching earning breakdown:', error);
+        return {};
+      }
+
+      const breakdown: Record<string, number> = {};
+      for (const transaction of data || []) {
+        const actionType = transaction.metadata?.actionType || 'other';
+        const amount = parseFloat(transaction.amount) || 0;
+        breakdown[actionType] = (breakdown[actionType] || 0) + amount;
+      }
+
+      return breakdown;
+    } catch (error) {
+      console.error('[GGCoinService] Exception fetching earning breakdown:', error);
+      return {};
     }
   }
 
   /**
-   * Subscribe to balance changes for a user
+   * Subscribe to balance changes for real-time updates
+   * @param userId - User ID
+   * @param callback - Callback function to receive balance updates
+   * @returns Unsubscribe function
    */
-  subscribeToBalance(userId: string, callback: (balance: number) => void) {
+  subscribeToBalance(userId: string, callback: (balance: number) => void): () => void {
     const channel = supabase
       .channel(`gg_coins_${userId}`)
       .on(
@@ -264,194 +551,97 @@ class GGCoinService {
           filter: `id=eq.${userId}`,
         },
         (payload) => {
-          const newBalance = payload.new.gg_coins || 0;
-          
-          // Update cache
-          this.balanceCache.set(userId, {
-            balance: newBalance,
-            timestamp: Date.now(),
-          });
-          
-          callback(newBalance);
+          try {
+            const newBalance = parseFloat(payload.new.gg_coins) || 0;
+
+            // Update cache
+            this.balanceCache.set(userId, {
+              balance: newBalance,
+              timestamp: Date.now(),
+            });
+
+            callback(newBalance);
+          } catch (error) {
+            console.error('[GGCoinService] Error processing balance update:', error);
+          }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          console.log(`[GGCoinService] Subscribed to balance updates for user: ${userId}`);
+        } else if (status === 'CHANNEL_ERROR') {
+          console.error(`[GGCoinService] Channel error for user: ${userId}`);
+        } else if (status === 'TIMED_OUT') {
+          console.error(`[GGCoinService] Subscription timed out for user: ${userId}`);
+        } else if (status === 'CLOSED') {
+          console.log(`[GGCoinService] Subscription closed for user: ${userId}`);
+        }
+      });
 
     return () => {
-      supabase.removeChannel(channel);
+      try {
+        supabase.removeChannel(channel);
+        console.log(`[GGCoinService] Unsubscribed from balance updates for user: ${userId}`);
+      } catch (error) {
+        console.error('[GGCoinService] Error unsubscribing from balance updates:', error);
+      }
     };
   }
 
   /**
-   * Get total GG Coins in circulation across all users
-   * Useful for platform statistics and monitoring
+   * Clear balance cache for a user or all users
+   * @param userId - Optional user ID to clear specific cache
    */
-  async getTotalCoinsInCirculation(): Promise<number> {
-    try {
-      const { data, error } = await supabase
-        .from('user_gamification')
-        .select('gg_coins');
-
-      if (error) {
-        console.error('[GGCoinService] Error fetching total coins:', error);
-        return 0;
-      }
-
-      const total = data?.reduce((sum, user) => sum + (user.gg_coins || 0), 0) || 0;
-      
-      // Round to 3 decimal places
-      return Math.round(total * 1000) / 1000;
-    } catch (error) {
-      console.error('[GGCoinService] Exception fetching total coins:', error);
-      return 0;
-    }
-  }
-
-  /**
-   * Get top users by GG Coin balance (leaderboard)
-   * 
-   * @param limit - Number of top users to return (default: 10)
-   * @returns Array of users with their balances, sorted by balance descending
-   */
-  async getTopUsersByBalance(limit: number = 10): Promise<Array<{ user_id: string; balance: number }>> {
-    try {
-      const { data, error } = await supabase
-        .from('user_gamification')
-        .select('id, gg_coins')
-        .order('gg_coins', { ascending: false })
-        .limit(limit);
-
-      if (error) {
-        console.error('[GGCoinService] Error fetching top users:', error);
-        return [];
-      }
-
-      return data?.map(user => ({
-        user_id: user.id,
-        balance: user.gg_coins || 0,
-      })) || [];
-    } catch (error) {
-      console.error('[GGCoinService] Exception fetching top users:', error);
-      return [];
-    }
-  }
-
-  /**
-   * Get transaction statistics for a user
-   * 
-   * @param userId - User ID to get statistics for
-   * @returns Statistics including total credits, debits, and transaction count
-   */
-  async getTransactionStatistics(userId: string): Promise<{
-    total_credits: number;
-    total_debits: number;
-    transaction_count: number;
-    average_credit: number;
-    average_debit: number;
-  }> {
-    try {
-      const { data, error } = await supabase
-        .from('gg_coin_transactions')
-        .select('amount')
-        .eq('user_id', userId);
-
-      if (error) {
-        console.error('[GGCoinService] Error fetching transaction statistics:', error);
-        return {
-          total_credits: 0,
-          total_debits: 0,
-          transaction_count: 0,
-          average_credit: 0,
-          average_debit: 0,
-        };
-      }
-
-      const transactions = data || [];
-      const credits = transactions.filter(t => t.amount > 0);
-      const debits = transactions.filter(t => t.amount < 0);
-
-      const total_credits = credits.reduce((sum, t) => sum + t.amount, 0);
-      const total_debits = Math.abs(debits.reduce((sum, t) => sum + t.amount, 0));
-      const average_credit = credits.length > 0 ? total_credits / credits.length : 0;
-      const average_debit = debits.length > 0 ? total_debits / debits.length : 0;
-
-      return {
-        total_credits: Math.round(total_credits * 1000) / 1000,
-        total_debits: Math.round(total_debits * 1000) / 1000,
-        transaction_count: transactions.length,
-        average_credit: Math.round(average_credit * 1000) / 1000,
-        average_debit: Math.round(average_debit * 1000) / 1000,
-      };
-    } catch (error) {
-      console.error('[GGCoinService] Exception fetching transaction statistics:', error);
-      return {
-        total_credits: 0,
-        total_debits: 0,
-        transaction_count: 0,
-        average_credit: 0,
-        average_debit: 0,
-      };
-    }
-  }
-
-  /**
-   * Export transaction history to CSV format
-   * 
-   * @param userId - User ID to export transactions for
-   * @returns CSV string with transaction history
-   */
-  async exportTransactionHistory(userId: string): Promise<string> {
-    try {
-      const transactions = await this.getTransactionHistory(userId, 1000, 0);
-
-      if (transactions.length === 0) {
-        return 'No transactions found';
-      }
-
-      // CSV header
-      const header = 'Date,Type,Amount,Balance Before,Balance After,Reference Type,Description\n';
-
-      // CSV rows
-      const rows = transactions.map(t => {
-        const date = new Date(t.created_at).toISOString();
-        const amount = t.amount.toFixed(3);
-        const balanceBefore = t.balance_before.toFixed(3);
-        const balanceAfter = t.balance_after.toFixed(3);
-        const refType = t.reference_type || '';
-        const desc = (t.description || '').replace(/,/g, ';'); // Replace commas to avoid CSV issues
-
-        return `${date},${t.transaction_type},${amount},${balanceBefore},${balanceAfter},${refType},"${desc}"`;
-      }).join('\n');
-
-      return header + rows;
-    } catch (error) {
-      console.error('[GGCoinService] Exception exporting transaction history:', error);
-      return 'Error exporting transactions';
-    }
-  }
-
-  /**
-   * Format GG Coins for display with proper decimal formatting
-   * 
-   * @param amount - Amount to format
-   * @param showTrailingZeros - Whether to show trailing zeros (e.g., "1.500" vs "1.5")
-   * @returns Formatted string
-   */
-  formatGGCoins(amount: number, showTrailingZeros: boolean = true): string {
-    if (showTrailingZeros) {
-      return amount.toFixed(3);
+  clearCache(userId?: string): void {
+    if (userId) {
+      this.balanceCache.delete(userId);
     } else {
-      // Remove trailing zeros but keep at least one decimal place
-      const formatted = amount.toFixed(3);
-      return formatted.replace(/\.?0+$/, '');
+      this.balanceCache.clear();
     }
   }
 
   /**
-   * Helper method to delay execution
+   * Map database transaction type to service transaction type
+   * @param dbType - Database transaction type
+   * @returns Service transaction type
    */
-  private delay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  private mapTransactionType(dbType: string): 'earn' | 'spend' | 'bonus' | 'referral' {
+    // Map various database types to our simplified types
+    if (dbType.includes('credit') || dbType.includes('reward')) {
+      return 'earn';
+    }
+    if (dbType.includes('debit') || dbType.includes('purchase')) {
+      return 'spend';
+    }
+    if (dbType.includes('referral')) {
+      return 'referral';
+    }
+    if (dbType.includes('bonus')) {
+      return 'bonus';
+    }
+    // Default to earn for positive amounts, spend for negative
+    return 'earn';
+  }
+
+  /**
+   * Map service transaction type to database transaction_type pattern
+   * @param serviceType - Service transaction type
+   * @returns Database transaction type
+   */
+  private getTypePattern(serviceType: 'earn' | 'spend' | 'bonus' | 'referral'): string {
+    // Map service types to database transaction_type values
+    switch (serviceType) {
+      case 'earn':
+        return 'earn';
+      case 'spend':
+        return 'spend';
+      case 'bonus':
+        return 'bonus';
+      case 'referral':
+        return 'referral';
+      default:
+        return 'earn';
+    }
   }
 }
 

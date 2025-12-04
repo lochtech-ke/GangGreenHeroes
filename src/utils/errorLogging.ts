@@ -35,6 +35,28 @@ const SENSITIVE_PATTERNS = [
   
   // JWT tokens (basic detection)
   { pattern: /eyJ[a-zA-Z0-9_-]*\.eyJ[a-zA-Z0-9_-]*\.[a-zA-Z0-9_-]*/g, replacement: '[JWT_TOKEN_REDACTED]' },
+  
+  // Transaction hashes (0x followed by 64 hex characters) - must come before addresses
+  { pattern: /0x[a-fA-F0-9]{64}/g, replacement: (match: string) => {
+    // Keep first 6 and last 6 characters for debugging
+    return `${match.substring(0, 6)}...${match.substring(match.length - 6)}`;
+  }},
+  
+  // Web3 addresses (Ethereum/Polygon - 0x followed by 40 hex characters)
+  { pattern: /0x[a-fA-F0-9]{40}/g, replacement: (match: string) => {
+    // Keep first 6 and last 4 characters for debugging
+    return `${match.substring(0, 6)}...${match.substring(match.length - 4)}`;
+  }},
+  
+  // Private keys (various formats - be aggressive with redaction)
+  { pattern: /private[_-]?key["\s:=]+[0-9a-fA-F]{64}/gi, replacement: 'private_key: [REDACTED]' },
+  { pattern: /priv["\s:=]+[0-9a-fA-F]{64}/gi, replacement: 'priv: [REDACTED]' },
+  
+  // Age data (dates of birth in various formats)
+  { pattern: /\b(19|20)\d{2}[-/](0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])\b/g, replacement: '[DOB_REDACTED]' },
+  { pattern: /date[_-]?of[_-]?birth["\s:=]+[^\s,}"]+/gi, replacement: 'date_of_birth: [REDACTED]' },
+  { pattern: /dob["\s:=]+[^\s,}"]+/gi, replacement: 'dob: [REDACTED]' },
+  { pattern: /"dateOfBirth":\s*"[^"]+"/gi, replacement: '"dateOfBirth": "[REDACTED]"' },
 ];
 
 /**
@@ -63,10 +85,18 @@ export function sanitizeString(text: string): string {
 
 /**
  * Sanitizes an object by recursively removing sensitive data
+ * Implements deep sanitization for nested objects and arrays
  * @param obj - The object to sanitize
+ * @param depth - Current recursion depth (prevents infinite loops)
+ * @param maxDepth - Maximum recursion depth (default: 10)
  * @returns Sanitized object with sensitive data redacted
  */
-export function sanitizeObject(obj: any): any {
+export function sanitizeObject(obj: any, depth: number = 0, maxDepth: number = 10): any {
+  // Prevent infinite recursion
+  if (depth > maxDepth) {
+    return '[MAX_DEPTH_EXCEEDED]';
+  }
+
   if (obj === null || obj === undefined) {
     return obj;
   }
@@ -79,14 +109,33 @@ export function sanitizeObject(obj: any): any {
     return obj;
   }
 
-  // Handle arrays
-  if (Array.isArray(obj)) {
-    return obj.map(item => sanitizeObject(item));
+  // Handle Date objects
+  if (obj instanceof Date) {
+    return obj;
   }
 
-  // Handle objects
+  // Handle Error objects
+  if (obj instanceof Error) {
+    return {
+      name: obj.name,
+      message: sanitizeString(obj.message),
+      stack: obj.stack ? sanitizeString(obj.stack) : undefined,
+    };
+  }
+
+  // Handle arrays - deep sanitization
+  if (Array.isArray(obj)) {
+    return obj.map(item => sanitizeObject(item, depth + 1, maxDepth));
+  }
+
+  // Handle objects - deep sanitization
   const sanitized: any = {};
-  const sensitiveKeys = ['password', 'token', 'secret', 'api_key', 'apiKey', 'accessToken', 'refreshToken'];
+  const sensitiveKeys = [
+    'password', 'token', 'secret', 'key', 'api_key', 'apikey', 'accesstoken', 'refreshtoken',
+    'privatekey', 'private_key', 'mnemonic', 'seed', 'seedphrase', 'seed_phrase',
+    'dateofbirth', 'date_of_birth', 'dob', 'ssn', 'socialsecuritynumber',
+    'creditcard', 'credit_card', 'cvv', 'pin', 'authorization', 'auth',
+  ];
 
   for (const [key, value] of Object.entries(obj)) {
     const lowerKey = key.toLowerCase();
@@ -94,11 +143,17 @@ export function sanitizeObject(obj: any): any {
     // Completely redact known sensitive keys
     if (sensitiveKeys.some(sk => lowerKey.includes(sk))) {
       sanitized[key] = '[REDACTED]';
-    } else if (typeof value === 'string') {
+    } 
+    // Recursively sanitize nested objects and arrays
+    else if (value !== null && typeof value === 'object') {
+      sanitized[key] = sanitizeObject(value, depth + 1, maxDepth);
+    } 
+    // Sanitize string values
+    else if (typeof value === 'string') {
       sanitized[key] = sanitizeString(value);
-    } else if (typeof value === 'object') {
-      sanitized[key] = sanitizeObject(value);
-    } else {
+    } 
+    // Keep other primitive values as-is
+    else {
       sanitized[key] = value;
     }
   }
@@ -150,6 +205,129 @@ export function logAuthError(context: string, error: any, additionalData?: any):
 }
 
 /**
+ * Logs Web3 errors specifically
+ * Includes additional Web3-specific sanitization for addresses and transaction hashes
+ * @param context - Context string
+ * @param error - The error to log
+ * @param additionalData - Additional data to log (transaction details, addresses, etc.)
+ */
+export function logWeb3Error(context: string, error: any, additionalData?: any): void {
+  // Sanitize Web3-specific data
+  const sanitizedData = additionalData ? sanitizeWeb3Data(additionalData) : undefined;
+  
+  const sanitizedError = {
+    ...error,
+    message: error?.message ? sanitizeString(error.message) : undefined,
+  };
+  
+  logError(context, sanitizedError, sanitizedData);
+}
+
+/**
+ * Logs curation errors specifically
+ * Includes age data sanitization
+ * @param context - Context string
+ * @param error - The error to log
+ * @param additionalData - Additional data to log (user profile, age data, etc.)
+ */
+export function logCurationError(context: string, error: any, additionalData?: any): void {
+  // Sanitize age-related data
+  const sanitizedData = additionalData ? sanitizeAgeData(additionalData) : undefined;
+  
+  const sanitizedError = {
+    ...error,
+    message: error?.message ? sanitizeString(error.message) : undefined,
+  };
+  
+  logError(context, sanitizedError, sanitizedData);
+}
+
+/**
+ * Sanitizes Web3-specific data (addresses, transaction hashes, private keys)
+ * @param data - The data to sanitize
+ * @returns Sanitized data with Web3 information redacted appropriately
+ */
+export function sanitizeWeb3Data(data: any): any {
+  if (!data) {
+    return data;
+  }
+
+  if (typeof data === 'string') {
+    return sanitizeString(data);
+  }
+
+  if (typeof data === 'object') {
+    const sanitized = sanitizeObject(data);
+    
+    // Additional Web3-specific sanitization
+    const web3Keys = ['address', 'from', 'to', 'hash', 'transactionHash', 'blockHash'];
+    
+    for (const key of web3Keys) {
+      if (sanitized[key] && typeof sanitized[key] === 'string') {
+        // Keep partial information for debugging
+        const value = sanitized[key];
+        if (value.startsWith('0x') && value.length === 42) {
+          // Ethereum address
+          sanitized[key] = `${value.substring(0, 6)}...${value.substring(value.length - 4)}`;
+        } else if (value.startsWith('0x') && value.length === 66) {
+          // Transaction hash
+          sanitized[key] = `${value.substring(0, 10)}...${value.substring(value.length - 6)}`;
+        }
+      }
+    }
+    
+    return sanitized;
+  }
+
+  return data;
+}
+
+/**
+ * Sanitizes age-related data (date of birth, age)
+ * @param data - The data to sanitize
+ * @returns Sanitized data with age information redacted
+ */
+export function sanitizeAgeData(data: any): any {
+  if (!data) {
+    return data;
+  }
+
+  if (typeof data === 'object') {
+    const sanitized = { ...data };
+    
+    // Redact specific age-related fields
+    const ageKeys = ['dateOfBirth', 'date_of_birth', 'dob', 'birthDate', 'birth_date'];
+    
+    for (const key of ageKeys) {
+      if (sanitized[key]) {
+        sanitized[key] = '[REDACTED]';
+      }
+    }
+    
+    // Keep age cohort but redact exact age if present
+    if (sanitized.age && typeof sanitized.age === 'number') {
+      // Convert to age range for privacy
+      const age = sanitized.age;
+      if (age < 18) {
+        sanitized.age = '13-17';
+      } else if (age < 25) {
+        sanitized.age = '18-24';
+      } else if (age < 35) {
+        sanitized.age = '25-34';
+      } else if (age < 50) {
+        sanitized.age = '35-49';
+      } else {
+        sanitized.age = '50+';
+      }
+    }
+    
+    return sanitized;
+  }
+
+  return data;
+}
+
+/**
  * Tests if a string contains sensitive information
  * Useful for validation in tests
  * @param text - The text to check
@@ -166,6 +344,9 @@ export function containsSensitiveData(text: string): boolean {
     /token["\s:=]+[\w.-]{20,}/i,
     /password["\s:=]+[^\s,}"]{6,}/i,
     /eyJ[a-zA-Z0-9_-]*\.eyJ[a-zA-Z0-9_-]*\.[a-zA-Z0-9_-]*/,
+    /0x[a-fA-F0-9]{40}/, // Ethereum addresses
+    /0x[a-fA-F0-9]{64}/, // Transaction hashes
+    /\b(19|20)\d{2}[-/](0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])\b/, // Dates of birth
   ];
 
   return sensitiveIndicators.some(pattern => pattern.test(text));

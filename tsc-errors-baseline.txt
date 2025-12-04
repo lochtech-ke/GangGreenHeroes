@@ -1,0 +1,310 @@
+﻿src/components/auth/OnboardingWizard.tsx(3,1): error TS6133: 'OnboardingGuidePanel' is declared but its value is never read.
+src/components/common/AgeTargetingSelector.tsx(9,1): error TS6133: 'reachEstimationService' is declared but its value is never read.
+src/components/common/CoinEarnedToast.example.tsx(8,8): error TS6133: 'React' is declared but its value is never read.
+src/components/common/CoinEarnedToast.test.tsx(7,36): error TS6133: 'beforeEach' is declared but its value is never read.
+src/components/common/ErrorNotification.tsx(13,8): error TS6133: 'React' is declared but its value is never read.
+src/components/common/ErrorNotification.tsx(117,36): error TS2345: Argument of type '"medium" | ErrorSeverity' is not assignable to parameter of type 'ErrorSeverity'.
+  Type '"medium"' is not assignable to type 'ErrorSeverity'.
+src/components/common/VivianSplashScreen.a11y.test.tsx(155,13): error TS6133: 'container' is declared but its value is never read.
+src/components/common/VivianSplashScreen.a11y.test.tsx(159,13): error TS6133: 'styles' is declared but its value is never read.
+src/components/common/VivianSplashScreen.integration.test.tsx(12,48): error TS6133: 'afterEach' is declared but its value is never read.
+src/components/common/VivianSplashScreen.integration.test.tsx(31,3): error TS6133: 'initialRoute' is declared but its value is never read.
+src/components/common/VivianSplashScreen.performance.test.tsx(59,51): error TS2339: Property 'clientHeight' does not exist on type 'ChildNode'.
+src/components/common/VivianSplashScreen.performance.test.tsx(60,50): error TS2339: Property 'clientWidth' does not exist on type 'ChildNode'.
+src/components/common/VivianSplashScreen.performance.test.tsx(383,19): error TS2339: Property 'transferSize' does not exist on type 'PerformanceEntry'.
+src/components/community/CommunityBrowser.tsx(50,26): error TS2339: Property 'age_cohort' does not exist on type 'User'.
+src/components/community/CommunityFeed.tsx(35,26): error TS2339: Property 'age_cohort' does not exist on type 'User'.
+src/components/community/CommunityProfile.tsx(12,3): error TS6133: 'getCommunityFeed' is declared but its value is never read.
+src/components/community/CommunityProfile.tsx(18,21): error TS6133: 'CommunityPost' is declared but its value is never read.
+src/components/community/CommunityProfile.tsx(18,36): error TS6133: 'AgeCohort' is declared but its value is never read.
+src/components/education/Certificate.tsx(7,15): error TS2305: Module '"../../types/platform.types"' has no exported member 'Certificate'.
+src/components/education/LearningDashboard.tsx(12,3): error TS2305: Module '"../../types/platform.types"' has no exported member 'DailyNugget'.
+src/components/education/LearningDashboard.tsx(56,26): error TS2339: Property 'getDailyNugget' does not exist on type 'EducationService'.
+src/components/education/LearningDashboard.tsx(73,51): error TS2551: Property 'module_id' does not exist on type 'UserLearningProgress'. Did you mean 'moduleId'?
+src/components/education/LearningDashboard.tsx(79,45): error TS2551: Property 'completed_lessons' does not exist on type 'UserLearningProgress'. Did you mean 'completedLessons'?
+src/components/education/LearningDashboard.tsx(86,51): error TS2551: Property 'module_id' does not exist on type 'UserLearningProgress'. Did you mean 'moduleId'?
+src/components/education/LearningDashboard.tsx(87,30): error TS2551: Property 'completed_at' does not exist on type 'UserLearningProgress'. Did you mean 'completedAt'?
+src/components/education/LearningDashboard.tsx(298,33): error TS2339: Property 'green_coin_reward' does not exist on type 'LearningModule'.
+src/components/education/MicroLesson.tsx(131,63): error TS2551: Property 'order_index' does not exist on type 'Lesson'. Did you mean 'orderIndex'?
+src/components/gamification/BadgeDisplay.tsx(10,17): error TS6133: 'UserBadge' is declared but its value is never read.
+src/components/gamification/GGCoinBalance.tsx(77,28): error TS2339: Property 'formatGGCoins' does not exist on type 'GGCoinService'.
+src/components/gamification/GGCoinBalance.tsx(90,28): error TS2339: Property 'formatGGCoins' does not exist on type 'GGCoinService'.
+src/components/gamification/Leaderboard.tsx(35,69): error TS2345: Argument of type 'string' is not assignable to parameter of type 'LeaderboardType | (() => LeaderboardType)'.
+src/components/gamification/Leaderboard.tsx(192,12): error TS7053: Element implicitly has an 'any' type because expression of type 'LeaderboardType' can't be used to index type '{ green_coins: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; trees_planted: ForwardRefExoticComponent<...>; community_impact: ForwardRefExoticComponent<...>; }'.
+  Property 'gg_coins' does not exist on type '{ green_coins: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; trees_planted: ForwardRefExoticComponent<...>; community_impact: ForwardRefExoticComponent<...>; }'.
+src/components/gamification/Leaderboard.tsx(405,24): error TS2367: This comparison appears to be unintentional because the types 'LeaderboardType' and '"green_coins"' have no overlap.
+src/components/missions/MissionBrowser.tsx(17,58): error TS6133: 'ageCohort' is declared but its value is never read.
+src/components/missions/MissionDetails.tsx(195,22): error TS2551: Property 'gg_coin_reward' does not exist on type 'MissionWithParticipation'. Did you mean 'green_coin_reward'?
+src/components/missions/MissionDetails.tsx(198,32): error TS2551: Property 'gg_coin_reward' does not exist on type 'MissionWithParticipation'. Did you mean 'green_coin_reward'?
+src/components/missions/VerificationSubmission.tsx(25,3): error TS6133: 'participationId' is declared but its value is never read.
+src/components/navigation/GGCoinDisplay.tsx(57,31): error TS2345: Argument of type 'TransactionHistory' is not assignable to parameter of type 'SetStateAction<GGCoinTransaction[]>'.
+src/components/navigation/GGCoinDisplay.tsx(104,30): error TS2339: Property 'formatGGCoins' does not exist on type 'GGCoinService'.
+src/components/navigation/GGCoinDisplay.tsx(115,26): error TS2339: Property 'formatGGCoins' does not exist on type 'GGCoinService'.
+src/components/navigation/GGCoinDisplay.tsx(128,96): error TS2339: Property 'formatGGCoins' does not exist on type 'GGCoinService'.
+src/components/navigation/GGCoinDisplay.tsx(148,83): error TS2339: Property 'formatGGCoins' does not exist on type 'GGCoinService'.
+src/components/navigation/GGCoinDisplay.tsx(151,38): error TS2339: Property 'formatGGCoins' does not exist on type 'GGCoinService'.
+src/components/profile/AmbassadorDashboard.tsx(20,10): error TS6133: 'stats' is declared but its value is never read.
+src/components/profile/UserProfile.tsx(28,25): error TS2345: Argument of type 'TransactionHistory' is not assignable to parameter of type 'SetStateAction<GGCoinTransaction[]>'.
+src/components/trees/SocialShareButton.tsx(188,16): error TS2774: This condition will always return true since this function is always defined. Did you mean to call it instead?
+src/components/trees/TreeMap.tsx(1,28): error TS6133: 'useRef' is declared but its value is never read.
+src/components/trees/TreeMap.tsx(5,18): error TS6133: 'Leaf' is declared but its value is never read.
+src/components/trees/TreeMap.tsx(5,24): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/components/trees/TreeMap.tsx(162,17): error TS6133: 'isSelected' is declared but its value is never read.
+src/components/trees/TreeRegistry.tsx(153,15): error TS2740: Type 'Tree' is missing the following properties from type 'PlantedTree': userId, plantedDate, healthStatus, growthData, and 2 more.
+src/pages/CertificatesPage.tsx(10,15): error TS2305: Module '"../types/platform.types"' has no exported member 'Certificate'.
+src/pages/CertificatesPage.tsx(36,57): error TS2551: Property 'completed_at' does not exist on type 'UserLearningProgress'. Did you mean 'completedAt'?
+src/pages/CertificatesPage.tsx(41,28): error TS2339: Property 'generateCertificate' does not exist on type 'EducationService'.
+src/pages/CertificatesPage.tsx(41,59): error TS2551: Property 'module_id' does not exist on type 'UserLearningProgress'. Did you mean 'moduleId'?
+src/pages/GamificationPage.tsx(153,13): error TS2322: Type '"green_coins"' is not assignable to type 'LeaderboardType | undefined'.
+src/pages/LearningModulePage.tsx(67,22): error TS2551: Property 'completed_lessons' does not exist on type 'UserLearningProgress'. Did you mean 'completedLessons'?
+src/pages/LearningModulePage.tsx(73,16): error TS2551: Property 'completed_lessons' does not exist on type 'UserLearningProgress'. Did you mean 'completedLessons'?
+src/pages/LearningModulePage.tsx(86,75): error TS2551: Property 'greenCoinsAwarded' does not exist on type '{ ggCoinsAwarded: number; certificateIssued: boolean; }'. Did you mean 'ggCoinsAwarded'?
+src/pages/LearningModulePage.tsx(123,41): error TS2551: Property 'completed_at' does not exist on type 'UserLearningProgress'. Did you mean 'completedAt'?
+src/pages/LearningModulePage.tsx(216,21): error TS2339: Property 'green_coin_reward' does not exist on type 'LearningModule'.
+src/pages/MissionsPage.tsx(14,27): error TS2339: Property 'user_metadata' does not exist on type 'User'.
+src/services/ageTargeting.property.test.ts(54,56): error TS2345: Argument of type '"25-39"' is not assignable to parameter of type 'AgeCohort'.
+src/services/ageTargeting.property.test.ts(306,54): error TS2345: Argument of type '"25-39"' is not assignable to parameter of type 'AgeCohort'.
+src/services/ageTargeting.property.test.ts(318,18): error TS2678: Type '"25-39"' is not comparable to type 'AgeCohort'.
+src/services/ageTargeting.property.test.ts(321,18): error TS2678: Type '"40-59"' is not comparable to type 'AgeCohort'.
+src/services/ageTargeting.property.test.ts(324,18): error TS2678: Type '"60+"' is not comparable to type 'AgeCohort'.
+src/services/ageTargeting.property.test.ts(329,24): error TS2454: Variable 'baseAge' is used before being assigned.
+src/services/ageTargeting.property.test.ts(330,24): error TS2454: Variable 'baseAge' is used before being assigned.
+src/services/aiCompanion.service.ts(6,20): error TS2307: Cannot find module 'openai' or its corresponding type declarations.
+src/services/aiCompanion.service.ts(229,16): error TS2304: Cannot find name 'AgeCohort'.
+src/services/aiCompanion.service.ts(272,49): error TS2304: Cannot find name 'AgeCohort'.
+src/services/aiCompanion.service.ts(285,3): error TS7053: Element implicitly has an 'any' type because expression of type 'AgeCohort' can't be used to index type '{ '13-17': string; '18-24': string; '25-34': string; '35-49': string; '50+': string; }'.
+src/services/aiCompanion.service.ts(299,5): error TS6133: 'ageCohort' is declared but its value is never read.
+src/services/aiCompanion.service.ts(299,16): error TS2304: Cannot find name 'AgeCohort'.
+src/services/aiCompanion.service.ts(330,16): error TS2304: Cannot find name 'AgeCohort'.
+src/services/aiCompanion.service.ts(380,34): error TS2304: Cannot find name 'AgeCohort'.
+src/services/aiCompanion.service.ts(397,5): error TS6133: 'explanation' is declared but its value is never read.
+src/services/ambassador.service.ts(327,13): error TS6133: 'wallet' is declared but its value is never read.
+src/services/badgePurchase.service.ts(37,44): error TS2339: Property 'calculatePurchaseReward' does not exist on type 'GGCoinService'.
+src/services/badgePurchase.service.ts(194,76): error TS2339: Property 'calculatePurchaseReward' does not exist on type 'GGCoinService'.
+src/services/badgePurchase.service.ts(196,50): error TS2554: Expected 4-5 arguments, but got 1.
+src/services/badgePurchase.service.ts(210,13): error TS18047: 'creditResult' is possibly 'null'.
+src/services/badgePurchase.service.ts(210,26): error TS2339: Property 'success' does not exist on type 'GGCoinTransaction'.
+src/services/badgePurchase.service.ts(296,74): error TS2339: Property 'calculatePurchaseReward' does not exist on type 'GGCoinService'.
+src/services/badgePurchase.service.ts(299,48): error TS2554: Expected 4-5 arguments, but got 1.
+src/services/badgePurchase.service.ts(314,12): error TS18047: 'creditResult' is possibly 'null'.
+src/services/badgePurchase.service.ts(314,25): error TS2339: Property 'success' does not exist on type 'GGCoinTransaction'.
+src/services/badgePurchase.service.ts(315,76): error TS18047: 'creditResult' is possibly 'null'.
+src/services/badgePurchase.service.ts(315,89): error TS2339: Property 'error' does not exist on type 'GGCoinTransaction'.
+src/services/badgePurchase.service.ts(318,18): error TS18047: 'creditResult' is possibly 'null'.
+src/services/badgePurchase.service.ts(318,31): error TS2339: Property 'error' does not exist on type 'GGCoinTransaction'.
+src/services/community.service.ts(11,3): error TS6133: 'CommunityMember' is declared but its value is never read.
+src/services/contentCuration.service.ts(232,50): error TS6133: 'request' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(12,3): error TS6133: 'ContentType' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(396,5): error TS6133: 'item' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(398,5): error TS6133: 'failed' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(399,5): error TS6133: 'reasons' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(412,41): error TS6133: 'item' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(429,5): error TS6133: 'item' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(431,5): error TS6133: 'failed' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(432,5): error TS6133: 'reasons' is declared but its value is never read.
+src/services/contentFilteringEngine.service.ts(445,35): error TS6133: 'item' is declared but its value is never read.
+src/services/curationRules.service.test.ts(13,3): error TS6133: 'RuleType' is declared but its value is never read.
+src/services/curationRules.service.test.ts(14,3): error TS6133: 'RuleCondition' is declared but its value is never read.
+src/services/curationRules.service.test.ts(15,3): error TS6133: 'RuleAction' is declared but its value is never read.
+src/services/curationRules.service.test.ts(339,11): error TS2739: Type '{ mission: number; challenge: number; }' is missing the following properties from type 'Record<ContentType, number>': petition, initiative, social_post, educational, community_post
+src/services/curationRules.service.ts(791,5): error TS6133: 'item' is declared but its value is never read.
+src/services/engagementTracker.service.test.ts(332,13): error TS6133: 'ids' is declared but its value is never read.
+src/services/ggCoin.integration.test.ts(184,71): error TS6133: 'balance' is declared but its value is never read.
+src/services/ggCoin.integration.test.ts(221,73): error TS6133: 'balance' is declared but its value is never read.
+src/services/ggCoin.integration.test.ts(452,12): error TS18048: 'transaction.amount' is possibly 'undefined'.
+src/services/ggCoin.integration.test.ts(1086,11): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/services/ggCoin.integration.test.ts(1511,13): error TS6133: 'balanceBefore' is declared but its value is never read.
+src/services/ggCoin.integration.test.ts(1558,19): error TS6133: 'error' is declared but its value is never read.
+src/services/ggCoin.service.test.ts(452,13): error TS6133: 'balance1' is declared but its value is never read.
+src/services/ggCoin.service.test.ts(455,11): error TS6133: 'updatedBalance' is declared but its value is never read.
+src/services/ggCoin.service.test.ts(1038,13): error TS6133: 'amount' is declared but its value is never read.
+src/services/ggCoin.service.test.ts(1615,11): error TS6133: 'callbackCalled' is declared but its value is never read.
+src/services/ggCoin.service.test.ts(1616,25): error TS6133: 'balance' is declared but its value is never read.
+src/services/ggCoin.service.test.ts(2341,32): error TS6133: 'balance' is declared but its value is never read.
+src/services/heroPlatformIntegration.service.ts(141,48): error TS2554: Expected 4-5 arguments, but got 1.
+src/services/heroPlatformIntegration.service.ts(159,12): error TS18047: 'creditResult' is possibly 'null'.
+src/services/heroPlatformIntegration.service.ts(159,25): error TS2339: Property 'success' does not exist on type 'GGCoinTransaction'.
+src/services/heroPlatformIntegration.service.ts(164,18): error TS18047: 'creditResult' is possibly 'null'.
+src/services/heroPlatformIntegration.service.ts(164,31): error TS2339: Property 'error' does not exist on type 'GGCoinTransaction'.
+src/services/heroRewardEngine.service.ts(286,48): error TS2554: Expected 4-5 arguments, but got 1.
+src/services/heroRewardEngine.service.ts(302,12): error TS18047: 'creditResult' is possibly 'null'.
+src/services/heroRewardEngine.service.ts(302,25): error TS2339: Property 'success' does not exist on type 'GGCoinTransaction'.
+src/services/heroRewardEngine.service.ts(303,25): error TS18047: 'creditResult' is possibly 'null'.
+src/services/heroRewardEngine.service.ts(303,38): error TS2339: Property 'error' does not exist on type 'GGCoinTransaction'.
+src/services/heroRewardEngine.service.ts(317,35): error TS18047: 'creditResult' is possibly 'null'.
+src/services/heroRewardEngine.service.ts(317,48): error TS2339: Property 'transaction_id' does not exist on type 'GGCoinTransaction'.
+src/services/index.ts(23,10): error TS2305: Module '"./petition.service"' has no exported member 'petitionService'.
+src/services/index.ts(50,10): error TS2305: Module '"./community.service"' has no exported member 'communityService'.
+src/services/index.ts(52,10): error TS2305: Module '"./mission.service"' has no exported member 'missionService'.
+src/services/mission.service.enhanced.example.ts(14,3): error TS6196: 'Mission' is declared but never used.
+src/services/mission.service.enhanced.example.ts(79,15): error TS2339: Property 'data' does not exist on type 'unknown'.
+src/services/mission.service.enhanced.example.ts(79,21): error TS2339: Property 'count' does not exist on type 'unknown'.
+src/services/mission.service.enhanced.example.ts(80,15): error TS2739: Type 'PostgrestFilterBuilder<any, any, any, any[], "missions", unknown, "GET">' is missing the following properties from type 'Promise<{ data: unknown; error: PostgrestError | null; }>': catch, finally, [Symbol.toStringTag]
+src/services/mission.service.enhanced.example.ts(120,15): error TS2339: Property 'data' does not exist on type 'unknown'.
+src/services/mission.service.enhanced.example.ts(121,15): error TS2739: Type 'PostgrestBuilder<any, any, false>' is missing the following properties from type 'Promise<{ data: unknown; error: PostgrestError | null; }>': catch, finally, [Symbol.toStringTag]
+src/services/mission.service.enhanced.example.ts(145,19): error TS2339: Property 'data' does not exist on type 'unknown'.
+src/services/mission.service.enhanced.example.ts(146,19): error TS2739: Type 'PostgrestBuilder<any, any, false>' is missing the following properties from type 'Promise<{ data: unknown; error: PostgrestError | null; }>': catch, finally, [Symbol.toStringTag]
+src/services/mission.service.enhanced.example.ts(208,15): error TS2339: Property 'data' does not exist on type 'unknown'.
+src/services/mission.service.enhanced.example.ts(209,15): error TS2739: Type 'PostgrestBuilder<any, any, false>' is missing the following properties from type 'Promise<{ data: unknown; error: PostgrestError | null; }>': catch, finally, [Symbol.toStringTag]
+src/services/mission.service.enhanced.example.ts(228,15): error TS2739: Type 'PostgrestFilterBuilder<any, any, any, any, "increment_mission_participants", null, "RPC">' is missing the following properties from type 'Promise<{ data: unknown; error: PostgrestError | null; }>': catch, finally, [Symbol.toStringTag]
+src/services/mission.service.enhanced.example.ts(270,15): error TS2739: Type 'PostgrestBuilder<any, any, false>' is missing the following properties from type 'Promise<{ data: unknown; error: PostgrestError | null; }>': catch, finally, [Symbol.toStringTag]
+src/services/mission.service.enhanced.example.ts(280,12): error TS18046: 'participation' is of type 'unknown'.
+src/services/mission.service.enhanced.example.ts(288,15): error TS2739: Type 'PostgrestFilterBuilder<any, any, any, null, "verification_evidence", unknown, "POST">' is missing the following properties from type 'Promise<{ data: unknown; error: PostgrestError | null; }>': catch, finally, [Symbol.toStringTag]
+src/services/mission.service.enhanced.example.ts(303,15): error TS2739: Type 'PostgrestFilterBuilder<any, any, any, null, "mission_participations", unknown, "PATCH">' is missing the following properties from type 'Promise<{ data: unknown; error: PostgrestError | null; }>': catch, finally, [Symbol.toStringTag]
+src/services/mission.service.ts(15,3): error TS6196: 'VerificationReview' is declared but never used.
+src/services/mission.service.ts(340,11): error TS6133: 'data' is declared but its value is never read.
+src/services/mission.service.ts(451,32): error TS2551: Property 'gg_coin_reward' does not exist on type 'MissionWithParticipation'. Did you mean 'green_coin_reward'?
+src/services/mission.service.ts(461,33): error TS2551: Property 'gg_coin_reward' does not exist on type 'MissionWithParticipation'. Did you mean 'green_coin_reward'?
+src/services/treeWallet.service.ts(1,1): error TS6133: 'supabase' is declared but its value is never read.
+src/services/treeWallet.service.ts(359,5): error TS6133: 'userName' is declared but its value is never read.
+src/services/userProfile.service.ts(8,10): error TS2305: Module '"./ageCohortAnalyzer.service"' has no exported member 'determineCohort'.
+src/services/vaas.service.ts(154,37): error TS6133: 'file' is declared but its value is never read.
+src/test/database.test.ts(178,42): error TS2554: Expected 0 arguments, but got 1.
+src/test/database.test.ts(191,45): error TS2554: Expected 0 arguments, but got 1.
+src/test/database.test.ts(201,40): error TS2554: Expected 0 arguments, but got 1.
+src/test/error-types-demo.ts(7,3): error TS6133: 'AppError' is declared but its value is never read.
+src/test/error-types-demo.ts(15,3): error TS6133: 'ErrorSeverity' is declared but its value is never read.
+src/test/error-types-demo.ts(23,3): error TS6133: 'ErrorContext' is declared but its value is never read.
+src/test/factories.ts(2,1): error TS6133: 'User' is declared but its value is never read.
+src/test/factories.ts(160,37): error TS2353: Object literal may only specify known properties, and 'max' does not exist in type 'StringConstraints'.
+src/test/property-helpers.ts(2,10): error TS6133: 'describe' is declared but its value is never read.
+src/test/property-helpers.ts(2,24): error TS6133: 'expect' is declared but its value is never read.
+src/test/property-helpers.ts(49,35): error TS2345: Argument of type '(value: T) => boolean | Promise<boolean>' is not assignable to parameter of type '(value: T) => Promise<boolean | void>'.
+  Type 'boolean | Promise<boolean>' is not assignable to type 'Promise<boolean | void>'.
+    Type 'boolean' is not assignable to type 'Promise<boolean | void>'.
+src/test/property-helpers.ts(243,7): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(property: IAsyncProperty<T>, params?: Parameters<T> | undefined): Promise<void>', gave the following error.
+    Argument of type 'IAsyncPropertyWithHooks<[value: T]>' is not assignable to parameter of type 'IAsyncProperty<T>'.
+      The types returned by 'generate(...)' are incompatible between these types.
+        Type 'Value<[value: T]>' is not assignable to type 'Value<T>'.
+          Type '[value: T]' is not assignable to type 'T'.
+            'T' could be instantiated with an arbitrary type which could be unrelated to '[value: T]'.
+  Overload 2 of 3, '(property: IProperty<T>, params?: Parameters<T> | undefined): void', gave the following error.
+    Argument of type 'IAsyncPropertyWithHooks<[value: T]>' is not assignable to parameter of type 'IProperty<T>'.
+      The types returned by 'isAsync()' are incompatible between these types.
+        Type 'true' is not assignable to type 'false'.
+  Overload 3 of 3, '(property: IRawProperty<T, boolean>, params?: Parameters<T> | undefined): void | Promise<void>', gave the following error.
+    Argument of type 'IAsyncPropertyWithHooks<[value: T]>' is not assignable to parameter of type 'IRawProperty<T, boolean>'.
+      The types returned by 'generate(...)' are incompatible between these types.
+        Type 'Value<[value: T]>' is not assignable to type 'Value<T>'.
+          Type '[value: T]' is not assignable to type 'T'.
+            'T' could be instantiated with an arbitrary type which could be unrelated to '[value: T]'.
+src/test/property-helpers.ts(243,35): error TS2345: Argument of type '(value: T) => boolean | Promise<boolean>' is not assignable to parameter of type '(value: T) => Promise<boolean | void>'.
+  Type 'boolean | Promise<boolean>' is not assignable to type 'Promise<boolean | void>'.
+    Type 'boolean' is not assignable to type 'Promise<boolean | void>'.
+src/test/property-testing.test.ts(73,69): error TS2322: Type '"b"' is not assignable to type '"a"'.
+src/test/property-testing.test.ts(88,80): error TS2339: Property 'user_type' does not exist on type '{ id: string; email: string; created_at: string; updated_at: string; email_confirmed_at: string | null; phone: string | null; confirmed_at: string | null; last_sign_in_at: string | null; app_metadata: {}; user_metadata: {}; role: string | null; aud: "authenticated"; }'.
+src/test/property-testing.test.ts(182,77): error TS2322: Type '"user_type"' is not assignable to type '"id" | "email" | "phone" | "role" | "user_metadata" | "created_at" | "updated_at" | "email_confirmed_at" | "confirmed_at" | "last_sign_in_at" | "app_metadata" | "aud"'.
+src/test/property-testing.test.ts(185,80): error TS2339: Property 'user_type' does not exist on type '{ id: string; email: string; created_at: string; updated_at: string; email_confirmed_at: string | null; phone: string | null; confirmed_at: string | null; last_sign_in_at: string | null; app_metadata: {}; user_metadata: {}; role: string | null; aud: "authenticated"; }'.
+src/test/property-testing.test.ts(219,14): error TS18046: 'error' is of type 'unknown'.
+src/test/utils.ts(154,3): error TS2741: Property 'toJSON' is missing in type '{ coords: { latitude: number; longitude: number; accuracy: number; altitude: null; altitudeAccuracy: null; heading: null; speed: null; toJSON: () => { latitude: number; longitude: number; accuracy: number; altitude: null; altitudeAccuracy: null; heading: null; speed: null; }; }; timestamp: number; }' but required in type 'GeolocationPosition'.
+src/types/index.ts(128,3): error TS2724: '"./petition.types"' has no exported member named 'PetitionRow'. Did you mean 'Petition'?
+src/types/index.ts(130,3): error TS2724: '"./petition.types"' has no exported member named 'PetitionSignatureRow'. Did you mean 'PetitionSignature'?
+src/types/index.ts(131,3): error TS2724: '"./petition.types"' has no exported member named 'PetitionWithSignature'. Did you mean 'PetitionSignature'?
+src/types/index.ts(133,3): error TS2724: '"./petition.types"' has no exported member named 'CreatePetitionParams'. Did you mean 'CreatePetitionData'?
+src/types/index.ts(134,3): error TS2724: '"./petition.types"' has no exported member named 'SignPetitionParams'. Did you mean 'SignPetitionData'?
+src/types/index.ts(136,3): error TS2305: Module '"./petition.types"' has no exported member 'PetitionServiceResponse'.
+src/utils/apiClient.ts(63,42): error TS2554: Expected 0 arguments, but got 1.
+src/utils/apiClient.ts(91,72): error TS2554: Expected 0 arguments, but got 1.
+src/utils/apiClient.ts(96,9): error TS2345: Argument of type '{ operationKey: string; }' is not assignable to parameter of type 'string'.
+src/utils/apiClient.ts(123,13): error TS2345: Argument of type '{ operationKey: string; }' is not assignable to parameter of type 'string'.
+src/utils/apiClient.ts(129,31): error TS2339: Property 'recordSuccess' does not exist on type 'CircuitBreaker'.
+src/utils/apiClient.ts(136,31): error TS2339: Property 'recordFailure' does not exist on type 'CircuitBreaker'.
+src/utils/apiClient.ts(145,38): error TS2339: Property 'executeWithRetry' does not exist on type 'RetryManager'.
+src/utils/apiClient.ts(147,10): error TS7006: Parameter 'error' implicitly has an 'any' type.
+src/utils/apiClient.ts(167,11): error TS2345: Argument of type '"high"' is not assignable to parameter of type '"token" | "session" | "login" | "permission" | undefined'.
+src/utils/apiClient.ts(191,15): error TS2345: Argument of type '"high"' is not assignable to parameter of type '"token" | "session" | "login" | "permission" | undefined'.
+src/utils/apiClient.ts(224,9): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/utils/apiClient.ts(237,9): error TS2554: Expected 2-4 arguments, but got 5.
+src/utils/apiClient.ts(248,9): error TS2554: Expected 2-4 arguments, but got 5.
+src/utils/apiClient.ts(258,9): error TS2345: Argument of type '{ code: string; details: string; hint: string; }' is not assignable to parameter of type 'string'.
+src/utils/apiClient.ts(269,9): error TS2345: Argument of type '{ code: string; details: string; hint: string; }' is not assignable to parameter of type 'string'.
+src/utils/apiClient.ts(279,7): error TS2345: Argument of type '{ code: string; details: string; hint: string; }' is not assignable to parameter of type 'string'.
+src/utils/apiClient.ts(321,31): error TS2554: Expected 0 arguments, but got 1.
+src/utils/apiClient.ts(328,39): error TS2554: Expected 0 arguments, but got 1.
+src/utils/circuitBreaker.ts(34,11): error TS6133: 'openedAt' is declared but its value is never read.
+src/utils/debugLogger.test.ts(6,23): error TS6133: 'DebugLoggerClass' is declared but its value is never read.
+src/utils/debugLogger.ts(120,5): error TS6133: 'data' is declared but its value is never read.
+src/utils/devModeGuards.ts(407,3): error TS6133: 'target' is declared but its value is never read.
+src/utils/devModeGuards.ts(428,3): error TS6133: 'target' is declared but its value is never read.
+src/utils/errorContext.test.ts(6,44): error TS6133: 'vi' is declared but its value is never read.
+src/utils/errorHandler.test.ts(74,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(88,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(105,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(113,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(124,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(141,25): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(153,24): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(176,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(208,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(229,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(242,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.test.ts(285,21): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorHandler.ts(24,3): error TS6133: 'Web3ErrorCodes' is declared but its value is never read.
+src/utils/errorHandler.ts(25,3): error TS6133: 'BadgeErrorCodes' is declared but its value is never read.
+src/utils/errorHandler.ts(26,3): error TS6133: 'CurationErrorCodes' is declared but its value is never read.
+src/utils/errorHandler.ts(128,23): error TS2345: Argument of type 'Error' is not assignable to parameter of type 'AppError'.
+  Type 'Error' is missing the following properties from type 'AppError': code, severity, recoverable, timestamp, toJSON
+src/utils/errorHandler.ts(134,17): error TS2345: Argument of type 'Error' is not assignable to parameter of type 'AppError'.
+  Type 'Error' is missing the following properties from type 'AppError': code, severity, recoverable, timestamp, toJSON
+src/utils/errorHandler.ts(140,24): error TS2345: Argument of type 'Error' is not assignable to parameter of type 'AppError'.
+  Type 'Error' is missing the following properties from type 'AppError': code, severity, recoverable, timestamp, toJSON
+src/utils/errorHandler.ts(170,12): error TS2511: Cannot create an instance of an abstract class.
+src/utils/errorRateLimiter.test.ts(6,44): error TS6133: 'vi' is declared but its value is never read.
+src/utils/errorRecovery.ts(18,24): error TS6133: 'retryManager' is declared but its value is never read.
+src/utils/errorRecovery.ts(65,38): error TS6133: 'error' is declared but its value is never read.
+src/utils/errorRecovery.ts(105,19): error TS6133: 'error' is declared but its value is never read.
+src/utils/errorRecovery.ts(109,15): error TS6133: 'attempt' is declared but its value is never read.
+src/utils/errorRecovery.ts(109,32): error TS6133: 'error' is declared but its value is never read.
+src/utils/errorRecovery.ts(151,34): error TS2372: Parameter 'retryManager' cannot reference itself.
+src/utils/retryManager.ts(7,10): error TS6133: 'AppError' is declared but its value is never read.
+src/utils/retryManager.ts(17,19): error TS6133: 'error' is declared but its value is never read.
+src/utils/serviceErrorHandler.ts(21,3): error TS6133: 'ErrorSeverity' is declared but its value is never read.
+src/utils/serviceErrorHandler.ts(64,13): error TS2540: Cannot assign to 'context' because it is a read-only property.
+src/utils/serviceErrorHandler.ts(76,22): error TS2511: Cannot create an instance of an abstract class.
+src/utils/serviceErrorHandler.ts(108,7): error TS2554: Expected 2-4 arguments, but got 5.
+src/utils/serviceErrorHandler.ts(117,7): error TS2554: Expected 2-4 arguments, but got 5.
+src/utils/serviceErrorHandler.ts(126,7): error TS2554: Expected 2-4 arguments, but got 5.
+src/utils/serviceErrorHandler.ts(135,7): error TS2554: Expected 2-4 arguments, but got 5.
+src/utils/serviceErrorHandler.ts(144,7): error TS2554: Expected 2-4 arguments, but got 5.
+src/utils/serviceErrorHandler.ts(153,7): error TS2554: Expected 2-4 arguments, but got 5.
+src/utils/serviceErrorHandler.ts(169,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(178,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(187,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(196,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(205,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(220,7): error TS2345: Argument of type '{ query: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(229,7): error TS2345: Argument of type 'Record<string, any> | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'Record<string, any>' is not assignable to type 'string'.
+src/utils/serviceErrorHandler.ts(238,7): error TS2345: Argument of type '{ query: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(247,7): error TS2345: Argument of type '{ constraint: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(256,7): error TS2345: Argument of type '{ table: string; id: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(271,7): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/utils/serviceErrorHandler.ts(280,7): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/utils/serviceErrorHandler.ts(289,7): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/utils/serviceErrorHandler.ts(298,7): error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+src/utils/serviceErrorHandler.ts(315,7): error TS2345: Argument of type '{ badgeType: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(324,7): error TS2345: Argument of type '{ tier: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(333,7): error TS2345: Argument of type '{ badgeId: string; userId: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(342,7): error TS2345: Argument of type '{ badgeId: string; required: number; current: number; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(358,7): error TS2345: Argument of type '{ contentId: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(367,7): error TS2345: Argument of type '{ cohort: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(376,7): error TS2345: Argument of type '{ ruleId: string; reason: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(385,7): error TS2345: Argument of type 'Record<string, any> | undefined' is not assignable to parameter of type 'string | undefined'.
+  Type 'Record<string, any>' is not assignable to type 'string'.
+src/utils/serviceErrorHandler.ts(394,7): error TS2345: Argument of type '{ userId: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(408,7): error TS2345: Argument of type '{ missionId: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(418,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(427,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(436,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(449,7): error TS2345: Argument of type '{ communityId: string; }' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(459,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(468,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(482,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(491,7): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+src/utils/serviceErrorHandler.ts(499,7): error TS2345: Argument of type '{ transactionId: string; }' is not assignable to parameter of type 'string'.
+src/utils/stateLogger.test.ts(6,23): error TS6133: 'StateLoggerClass' is declared but its value is never read.
+src/utils/stateLogger.ts(80,11): error TS6133: '_stateChange' is declared but its value is never read.
+src/utils/stateLogger.ts(381,3): error TS6133: 'contextName' is declared but its value is never read.
+

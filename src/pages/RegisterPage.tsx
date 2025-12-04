@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RegisterForm } from '../components/auth';
-import { ChatWidget } from '../components/chatbot';
+import { OnboardingWizard } from '../components/auth/OnboardingWizard';
 import { authService } from '../services/auth.service';
 
 type RegisterView = 'options' | 'email';
@@ -158,16 +158,21 @@ export function RegisterPage() {
         )}
 
         
-        {/* Chatbot Widget for Onboarding */}
-        <ChatWidget
+        {/* Onboarding Wizard */}
+        <OnboardingWizard
           isOpen={onboardingState.isActive}
-          onToggle={() => {}} // Disabled during onboarding
-          autoStartOnboarding={onboardingState.isActive}
-          userId={onboardingState.userId || undefined}
-          userEmail={onboardingState.userEmail || undefined}
-          onOnboardingComplete={handleOnboardingComplete}
-          position="bottom-right"
-          hasCompletedProfile={false} // New users haven't completed profile yet
+          userId={onboardingState.userId || ''}
+          userEmail={onboardingState.userEmail || ''}
+          onComplete={handleOnboardingComplete}
+          onClose={() => {
+            // Allow users to skip onboarding and go directly to dashboard
+            setOnboardingState({
+              isActive: false,
+              userId: null,
+              userEmail: null,
+            });
+            navigate('/dashboard');
+          }}
         />
 
         {!onboardingState.isActive && (

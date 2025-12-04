@@ -49,7 +49,7 @@ After signing up, you'll be guided to complete your profile:
 After logging in, you'll see your personal dashboard with:
 
 ### Quick Stats
-- **GG Coins Balance**: Your current tokens
+- **GG Coins Balance**: Your unified token balance (decimal precision up to 3 places)
 - **Badges Earned**: Your achievement count
 - **Actions Completed**: Your total impact
 - **Current Rank**: Your leaderboard position
@@ -202,17 +202,24 @@ When you reach 10 actions:
 
 ### How do I earn GG Coins?
 Complete any action on the platform:
-- Challenges
-- Tree planting
-- Initiative participation
-- Social engagement
-- Referrals
+- Tree planting (50 GG Coins base)
+- Mission completion (100 GG Coins base)
+- Learning modules (20 GG Coins base)
+- Community posts (5 GG Coins base)
+- Petition signatures (10 GG Coins base)
+- Referrals (50 GG Coins base)
+- Daily login (5 GG Coins base)
+
+Rewards support multipliers for verified actions, streaks, and badge tiers!
 
 ### What can I do with GG Coins?
 - Purchase NFT badges
 - Unlock premium features (coming soon)
 - Trade with others (coming soon)
 - Donate to initiatives (coming soon)
+
+### How are GG Coins stored?
+GG Coins use decimal precision (up to 3 decimal places) allowing for micro-rewards and flexible pricing. Your balance is cached for fast access and updates in real-time when you earn or spend coins.
 
 ### How are my actions verified?
 - **Instant**: Quiz completions, social shares

@@ -1,33 +1,59 @@
-# Testing Guide
+# Testing Infrastructure
 
-This directory contains test setup and utilities for the #GangGreen platform.
+This directory contains the comprehensive testing infrastructure for the V1.0 Major Release of the GangGreen platform, implementing Task 3 from the implementation plan.
+
+## Testing Framework Overview
+
+The platform uses a multi-layered testing approach:
+
+- **Unit Tests**: Vitest with React Testing Library
+- **Property-Based Tests**: fast-check library (100+ iterations per property)
+- **Integration Tests**: Vitest with Supabase test client
+- **E2E Tests**: Playwright for complete user journeys
 
 ## Test Structure
 
 ```
 src/
 ├── test/
-│   ├── setup.ts              # Global test setup
+│   ├── setup.ts              # Global test configuration and mocks
+│   ├── utils.ts              # Test utilities and helper functions
+│   ├── factories.ts          # Test data factories using fast-check
+│   ├── property-helpers.ts   # Property-based testing utilities
+│   ├── database.config.ts    # Test database configuration
+│   ├── test-runner.ts        # Global test runner setup
+│   ├── infrastructure.test.ts # Testing infrastructure tests
+│   ├── property-testing.test.ts # Property-based testing examples
+│   ├── database.test.ts      # Database configuration tests
+│   ├── supabase-test.ts      # Legacy test database configuration
 │   └── README.md             # This file
 ├── services/
-│   └── auth.service.test.ts  # Auth service unit tests
+│   └── *.service.test.ts     # Service unit tests
+│   └── *.property.test.ts    # Property-based tests
 └── components/
-    └── auth/
-        ├── LoginForm.test.tsx     # Login form tests
-        └── RegisterForm.test.tsx  # Register form tests
+    └── **/*.test.tsx         # Component tests
+tests/
+└── e2e/
+    ├── test-setup.ts         # E2E test fixtures and utilities
+    ├── setup.spec.ts         # E2E infrastructure tests
+    └── *.spec.ts             # End-to-end tests
 ```
 
 ## Running Tests
 
 ```bash
-# Run all tests once
-npm test
+# Unit and integration tests
+npm test                    # Run all tests once
+npm run test:watch         # Run tests in watch mode
+npm run test:coverage      # Run tests with coverage report
 
-# Run tests in watch mode
-npm run test:watch
+# Property-based tests
+FC_NUM_RUNS=100 npm test   # Run with specific number of property test iterations
 
-# Run tests with coverage
-npm run test:coverage
+# E2E tests
+npm run test:e2e           # Run E2E tests
+npm run test:e2e:ui        # Run E2E tests with UI
+npm run test:e2e:headed    # Run E2E tests in headed mode
 ```
 
 ## Test Framework

@@ -21,7 +21,7 @@ export const ModerationDashboard: React.FC = () => {
     setLoading(true);
     try {
       // Fetch flagged posts
-      let query = supabase
+      const query = supabase
         .from('social_posts')
         .select('*')
         .eq('moderation_status', 'flagged');

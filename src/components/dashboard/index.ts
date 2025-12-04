@@ -1,11 +1,9 @@
 /**
- * Track 3 Dashboard Components
- * Community engagement focused dashboard
+ * Dashboard Components
+ * Export all dashboard-related components
  */
 
-export { CommunityDashboard } from './CommunityDashboard';
-export { WelcomeSection } from './WelcomeSection';
-export { MetricsGrid } from './MetricsGrid';
-export { BadgeProgressCard } from './BadgeProgressCard';
-export { RecentActivity } from './RecentActivity';
-export { QuickActionsCard } from './QuickActionsCard';
+export { ImpactOverview } from './ImpactOverview';
+export { ImpactChart } from './ImpactChart';
+export { RegionalMap } from './RegionalMap';
+export { ImpactReport } from './ImpactReport';

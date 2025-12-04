@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Update Development Wiki",
+  "description": "Monitors changes to the development-wiki.html file and triggers an agent to review and update the documentation content to ensure it stays current with the latest platform changes",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "docs/development-wiki.html"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "The development-wiki.html file has been modified. Please review the changes and ensure:\n1. All documentation sections are up-to-date with the latest platform features\n2. Code examples and API references are accurate\n3. Navigation links are working correctly\n4. The HTML structure and styling are consistent\n5. Any new features or changes in the codebase are reflected in the wiki\n6. Cross-references to other documentation files are valid\n\nIf you find any inconsistencies or missing information, please update the wiki accordingly."
+  }
+}

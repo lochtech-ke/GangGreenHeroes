@@ -299,8 +299,8 @@ class HeroRewardEngineService {
         },
       });
 
-      if (!creditResult.success) {
-        throw new Error(creditResult.error || 'Failed to credit GG Coins');
+      if (!creditResult || !creditResult.success) {
+        throw new Error(creditResult?.error || 'Failed to credit GG Coins');
       }
 
       // Record daily reward
@@ -314,7 +314,7 @@ class HeroRewardEngineService {
           total_amount: calculation.totalAmount,
           consecutive_days: calculation.consecutiveDays,
           activity_multiplier: calculation.activityMultiplier,
-          gg_coin_transaction_id: creditResult.transaction_id,
+          gg_coin_transaction_id: creditResult?.transaction_id,
         })
         .select()
         .single();
@@ -602,7 +602,7 @@ class HeroRewardEngineService {
     try {
       const targetDateObj = new Date(targetDate);
       let consecutiveDays = 1;
-      let checkDate = new Date(targetDateObj);
+      const checkDate = new Date(targetDateObj);
       checkDate.setDate(checkDate.getDate() - 1);
 
       // Look back to find consecutive days

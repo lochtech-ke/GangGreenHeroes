@@ -1,0 +1,26 @@
+# Ignore all backup files
+*.dump
+*.sql
+*.backup
+*.bak
+*.gz
+*.zip
+*.tar
+*.tar.gz
+
+# Ignore metadata files (contain sensitive info)
+*.metadata.json
+
+# Ignore validation output files
+pre_backup_validation_*.sql
+post_backup_validation_*.sql
+
+# Keep README
+!README.md
+!.gitignore
+
+# Ignore subdirectories but keep structure
+staging/*
+production/*
+!staging/.gitkeep
+!production/.gitkeep

@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuthContext } from './contexts/AuthContext';
 import { JourneyProvider } from './contexts/JourneyContext';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import CriticalErrorFallback from './components/common/CriticalErrorFallback';
+import SectionErrorFallback from './components/common/SectionErrorFallback';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
@@ -21,6 +24,7 @@ import { JourneyDashboardPage } from './pages/JourneyDashboardPage';
 import { GovernancePage } from './pages/GovernancePage';
 import { ProposalDetailPage } from './pages/ProposalDetailPage';
 import { PetitionDetailPage } from './pages/PetitionDetailPage';
+import { PetitionsPage } from './pages/PetitionsPage';
 import BadgesPage from './pages/BadgesPage';
 import { MarketplacePage } from './pages/MarketplacePage';
 import {
@@ -32,17 +36,63 @@ import {
 } from './pages/legal';
 import { LegalPage } from './pages/legal/LegalPage';
 import { ProtectedRoute } from './components/auth';
-import { ChatWidget } from './components/chatbot';
+import { ChatWidget } from './components/chatbot/ChatWidget';
 import { Layout } from './components/layout';
 import { SupabaseTest } from './components/auth/SupabaseTest';
 import StickmanPreloader from './components/common/StickmanPreloader';
+import VivianSplashScreen from './components/common/VivianSplashScreen';
 import { DeprecatedRouteHandler } from './components/routing';
 import { HummingbirdWelcome } from './components/badges';
 import { useHummingbirdWelcome } from './hooks/useHummingbirdWelcome';
+import OnboardingGuidePage from './pages/OnboardingGuidePage';
+import { EducationalExplainerPage } from './pages/EducationalExplainerPage';
+import { CommunitiesPage } from './pages/CommunitiesPage';
+import { CommunityDetailPage } from './pages/CommunityDetailPage';
+import { LearningDashboardPage } from './pages/LearningDashboardPage';
+import { LearningModulePage } from './pages/LearningModulePage';
+import { CertificatesPage } from './pages/CertificatesPage';
+import MissionsPage from './pages/MissionsPage';
+import MissionDetailsPage from './pages/MissionDetailsPage';
+import MissionVerificationPage from './pages/MissionVerificationPage';
+import { Track3DashboardPage } from './pages/Track3DashboardPage';
+import { AmbassadorApplicationPage } from './pages/AmbassadorApplicationPage';
+import { AmbassadorDashboardPage } from './pages/AmbassadorDashboardPage';
+import { AmbassadorProfilePage } from './pages/AmbassadorProfilePage';
+import { AmbassadorHallOfFamePage } from './pages/AmbassadorHallOfFamePage';
+import { GreenCoinsPage } from './pages/GreenCoinsPage';
 
-// Feature flag for chatbot (can be moved to environment variable)
+// Feature flags (can be moved to environment variables)
 const CHATBOT_ENABLED = true;
+const VIVIAN_SPLASH_ENABLED = true; // Feature flag for v1.0 Vivian splash screen
 
+/**
+ * RouteErrorBoundary Component
+ * 
+ * Wraps individual routes with section-level error boundaries
+ * to isolate errors and prevent them from affecting other routes.
+ * 
+ * Requirement C6.4: Add route-level boundaries
+ */
+function RouteErrorBoundary({ children, routeName }: { children: React.ReactNode; routeName: string }) {
+  return (
+    <ErrorBoundary
+      level="section"
+      fallback={SectionErrorFallback}
+      isolationId={`route-${routeName}`}
+    >
+      {children}
+    </ErrorBoundary>
+  );
+}
+
+/**
+ * ChatbotWrapper Component with Error Boundary
+ * 
+ * Wraps the chatbot with a component-level error boundary to prevent
+ * chatbot errors from affecting the rest of the application.
+ * 
+ * Requirement C6.4: Add component-level boundaries
+ */
 function ChatbotWrapper() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const { user } = useAuthContext();
@@ -59,7 +109,14 @@ function ChatbotWrapper() {
   }
 
   return (
-    <>
+    <ErrorBoundary
+      level="component"
+      isolationId="chatbot"
+      onError={(error) => {
+        console.error('Chatbot error:', error);
+        // Optionally track chatbot errors separately
+      }}
+    >
       {/* Floating Chat Button */}
       {!isChatOpen && (
         <button
@@ -89,10 +146,18 @@ function ChatbotWrapper() {
         position="bottom-right"
         hasCompletedProfile={!!user?.profile?.full_name}
       />
-    </>
+    </ErrorBoundary>
   );
 }
 
+/**
+ * AppContent Component with Route-Level Error Boundaries
+ * 
+ * Each route is wrapped with a section-level error boundary to isolate
+ * errors to specific pages and allow the rest of the app to continue functioning.
+ * 
+ * Requirement C6.4: Add route-level boundaries
+ */
 function AppContent() {
   const { user } = useAuthContext();
   const { showWelcome, handleComplete } = useHummingbirdWelcome(user?.id);
@@ -173,74 +238,124 @@ function AppContent() {
         />
         
         <Route
+          path="/onboarding-guide"
+          element={
+            <RouteErrorBoundary routeName="onboarding-guide">
+              <ProtectedRoute>
+                <Layout>
+                  <OnboardingGuidePage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/learn"
+          element={
+            <RouteErrorBoundary routeName="learn">
+              <ProtectedRoute>
+                <Layout>
+                  <EducationalExplainerPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <DashboardPage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="dashboard">
+              <ProtectedRoute>
+                <Layout>
+                  <DashboardPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/impact-dashboard"
+          element={
+            <RouteErrorBoundary routeName="impact-dashboard">
+              <ProtectedRoute>
+                <Layout>
+                  <Track3DashboardPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/journey"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <JourneyDashboardPage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="journey">
+              <ProtectedRoute>
+                <Layout>
+                  <JourneyDashboardPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/badges"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <BadgesPage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="badges">
+              <ProtectedRoute>
+                <Layout>
+                  <BadgesPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/initiatives"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <InitiativesPage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="initiatives">
+              <ProtectedRoute>
+                <Layout>
+                  <InitiativesPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/initiatives/create"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <CreateInitiativePage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="initiatives-create">
+              <ProtectedRoute>
+                <Layout>
+                  <CreateInitiativePage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/initiatives/:id"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <InitiativeDetailsPage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="initiatives-detail">
+              <ProtectedRoute>
+                <Layout>
+                  <InitiativeDetailsPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         {/* Badge Marketplace - Active for Track 3 */}
         <Route
           path="/marketplace"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <MarketplacePage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="marketplace">
+              <ProtectedRoute>
+                <Layout>
+                  <MarketplacePage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         {/* Deprecated Routes - Track 3 Redirects */}
@@ -249,101 +364,281 @@ function AppContent() {
         <Route
           path="/gamification"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <GamificationPage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="gamification">
+              <ProtectedRoute>
+                <Layout>
+                  <GamificationPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/coins"
+          element={
+            <RouteErrorBoundary routeName="coins">
+              <ProtectedRoute>
+                <Layout>
+                  <GreenCoinsPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/forum"
           element={
-            <ProtectedRoute>
+            <RouteErrorBoundary routeName="forum">
+              <ProtectedRoute>
+                <Layout>
+                  <ForumPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/communities"
+          element={
+            <RouteErrorBoundary routeName="communities">
               <Layout>
-                <ForumPage />
+                <CommunitiesPage />
               </Layout>
-            </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/communities/:communityId"
+          element={
+            <RouteErrorBoundary routeName="community-detail">
+              <Layout>
+                <CommunityDetailPage />
+              </Layout>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/learning"
+          element={
+            <RouteErrorBoundary routeName="learning">
+              <ProtectedRoute>
+                <Layout>
+                  <LearningDashboardPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/learning/:moduleId"
+          element={
+            <RouteErrorBoundary routeName="learning-module">
+              <ProtectedRoute>
+                <Layout>
+                  <LearningModulePage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/certificates"
+          element={
+            <RouteErrorBoundary routeName="certificates">
+              <ProtectedRoute>
+                <Layout>
+                  <CertificatesPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/missions"
+          element={
+            <RouteErrorBoundary routeName="missions">
+              <Layout>
+                <MissionsPage />
+              </Layout>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/missions/:id"
+          element={
+            <RouteErrorBoundary routeName="mission-detail">
+              <Layout>
+                <MissionDetailsPage />
+              </Layout>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/missions/:id/verify"
+          element={
+            <RouteErrorBoundary routeName="mission-verification">
+              <ProtectedRoute>
+                <Layout>
+                  <MissionVerificationPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/events"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <EventsPage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="events">
+              <ProtectedRoute>
+                <Layout>
+                  <EventsPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/profile"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <ProfilePage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="profile">
+              <ProtectedRoute>
+                <Layout>
+                  <ProfilePage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/settings"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <SettingsPage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="settings">
+              <ProtectedRoute>
+                <Layout>
+                  <SettingsPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/governance"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <GovernancePage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="governance">
+              <ProtectedRoute>
+                <Layout>
+                  <GovernancePage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/governance/proposals"
           element={
-            <ProtectedRoute>
-              <Layout>
-                <GovernancePage />
-              </Layout>
-            </ProtectedRoute>
+            <RouteErrorBoundary routeName="governance-proposals">
+              <ProtectedRoute>
+                <Layout>
+                  <GovernancePage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/governance/proposals/:id"
           element={
-            <ProtectedRoute>
+            <RouteErrorBoundary routeName="governance-proposal-detail">
+              <ProtectedRoute>
+                <Layout>
+                  <ProposalDetailPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/petitions"
+          element={
+            <RouteErrorBoundary routeName="petitions">
               <Layout>
-                <ProposalDetailPage />
+                <PetitionsPage />
               </Layout>
-            </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/petitions/:id"
+          element={
+            <RouteErrorBoundary routeName="petition-detail">
+              <Layout>
+                <PetitionDetailPage />
+              </Layout>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/governance/petitions"
           element={
-            <ProtectedRoute>
+            <RouteErrorBoundary routeName="governance-petitions">
               <Layout>
-                <GovernancePage />
+                <PetitionsPage />
               </Layout>
-            </ProtectedRoute>
+            </RouteErrorBoundary>
           }
         />
         <Route
           path="/governance/petitions/:id"
           element={
-            <ProtectedRoute>
+            <RouteErrorBoundary routeName="governance-petition-detail">
               <Layout>
                 <PetitionDetailPage />
               </Layout>
-            </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/ambassador/apply"
+          element={
+            <RouteErrorBoundary routeName="ambassador-apply">
+              <ProtectedRoute>
+                <Layout>
+                  <AmbassadorApplicationPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/ambassador/dashboard"
+          element={
+            <RouteErrorBoundary routeName="ambassador-dashboard">
+              <ProtectedRoute>
+                <Layout>
+                  <AmbassadorDashboardPage />
+                </Layout>
+              </ProtectedRoute>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/ambassador/:userId"
+          element={
+            <RouteErrorBoundary routeName="ambassador-profile">
+              <Layout>
+                <AmbassadorProfilePage />
+              </Layout>
+            </RouteErrorBoundary>
+          }
+        />
+        <Route
+          path="/ambassador/hall-of-fame"
+          element={
+            <RouteErrorBoundary routeName="ambassador-hall-of-fame">
+              <Layout>
+                <AmbassadorHallOfFamePage />
+              </Layout>
+            </RouteErrorBoundary>
           }
         />
       </Routes>
@@ -352,34 +647,65 @@ function AppContent() {
   );
 }
 
+/**
+ * App Component with Critical Error Boundary
+ * 
+ * Wraps the entire application with a critical-level error boundary
+ * to catch and handle catastrophic errors that prevent the app from functioning.
+ * 
+ * Requirement C6.4: Add app-level boundary
+ */
 function App() {
   return (
-    <BrowserRouter>
-      <AppWithRouter />
-    </BrowserRouter>
+    <ErrorBoundary
+      level="critical"
+      fallback={CriticalErrorFallback}
+      isolationId="app-root"
+    >
+      <BrowserRouter>
+        <AppWithRouter />
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
 function AppWithRouter() {
   const location = useLocation();
-  const [showPreloader, setShowPreloader] = useState(true);
+  const [showVivianSplash, setShowVivianSplash] = useState(true);
+  const [showStickmanPreloader, setShowStickmanPreloader] = useState(true);
 
-  // Routes where preloader should NOT be shown
+  // Routes where splash screens should NOT be shown
   // Authentication pages need immediate interaction without waiting for animations
-  const excludedRoutes = ['/login', '/register', '/reset-password'];
-  const shouldShowPreloader = !excludedRoutes.includes(location.pathname);
+  const excludedRoutes = ['/login', '/register', '/reset-password', '/auth/callback'];
+  const shouldShowSplash = !excludedRoutes.includes(location.pathname);
+
+  // Determine which splash screen to show based on feature flag
+  const useVivianSplash = VIVIAN_SPLASH_ENABLED && shouldShowSplash;
+  const useStickmanPreloader = !VIVIAN_SPLASH_ENABLED && shouldShowSplash;
 
   return (
     <>
-      {shouldShowPreloader && showPreloader && (
+      {/* v1.0 Vivian Splash Screen - New polished experience */}
+      {useVivianSplash && showVivianSplash && (
+        <VivianSplashScreen
+          minDisplayDuration={2000}
+          maxDisplayDuration={5000}
+          fadeOutDuration={500}
+          onComplete={() => setShowVivianSplash(false)}
+        />
+      )}
+
+      {/* Legacy Stickman Preloader - Fallback when Vivian splash is disabled */}
+      {useStickmanPreloader && showStickmanPreloader && (
         <StickmanPreloader
           minDisplayDuration={1500}
           fadeOutDuration={500}
           backgroundColor="#0D4D2D"
           textColorCycleSpeed={800}
-          onComplete={() => setShowPreloader(false)}
+          onComplete={() => setShowStickmanPreloader(false)}
         />
       )}
+
       <AuthProvider>
         <JourneyProviderWrapper>
           <AppContent />

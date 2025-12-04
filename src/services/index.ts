@@ -12,6 +12,7 @@ export { antugrowService } from './antugrow.service';
 export { antugrowSyncService } from './antugrow-sync.service';
 export { carbonCreditService } from './carbonCredit.service';
 export { ggCoinService } from './ggCoin.service';
+// greenCoinService removed - use ggCoinService instead (consolidated in migration 032)
 export { badgePurchaseService } from './badgePurchase.service';
 export { badgeAnalyticsService } from './badgeAnalytics.service';
 export { paystackService } from './paystack.service';
@@ -19,7 +20,7 @@ export { socialFeedService, socialFeedAnalyticsService } from './socialFeed.serv
 export { journeyService } from './journey.service';
 export { microChallengeService } from './microChallenge.service';
 export { referralService } from './referral.service';
-export { petitionService } from './petition.service';
+export * from './petition.service';
 export { githubService } from './github.service';
 export { contributionAnalyzerService } from './contributionAnalyzer.service';
 export { badgeSvgService } from './badgeSvg.service';
@@ -43,3 +44,10 @@ export { badgeGeneratorService, BadgeGeneratorService } from './badgeGenerator.s
 export { badgeMigrationService, BadgeMigrationService } from './badgeMigration.service';
 export { badgePerformanceMonitor } from './badgePerformanceMonitor.service';
 export { badgeMigrationMonitor } from './badgeMigrationMonitor.service';
+export { aiCompanionService } from './aiCompanion.service';
+export { recommendationEngineService } from './recommendationEngine.service';
+export { onboardingGuideService } from './onboardingGuide.service';
+export * from './community.service';
+export { educationService } from './education.service';
+export * from './mission.service';
+export { vaasService } from './vaas.service';

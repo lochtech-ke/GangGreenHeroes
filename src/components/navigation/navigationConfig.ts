@@ -9,6 +9,12 @@ export const standaloneNavigationItems: NavItemConfig[] = [
     icon: 'home',
   },
   {
+    to: '/impact-dashboard',
+    label: 'Impact Dashboard',
+    icon: 'bar-chart-3',
+    description: 'View real-time conservation impact metrics',
+  },
+  {
     to: '/challenges',
     label: 'Challenges',
     icon: 'target',
@@ -32,6 +38,12 @@ export const standaloneNavigationItems: NavItemConfig[] = [
     icon: 'trophy',
     description: 'See top community contributors',
   },
+  {
+    to: '/coins',
+    label: 'GG Coins',
+    icon: 'coins',
+    description: 'Manage your GG Coins and track referrals',
+  },
 ];
 
 // Navigation groups for mega menu dropdowns
@@ -42,6 +54,12 @@ export const navigationGroups: NavGroupConfig[] = [
     label: 'Community',
     icon: 'users',
     items: [
+      {
+        to: '/communities',
+        label: 'Community Hub',
+        icon: 'users',
+        description: 'Browse and join local climate action groups',
+      },
       {
         to: '/social-feed',
         label: 'Social Feed',
@@ -72,6 +90,12 @@ export const navigationGroups: NavGroupConfig[] = [
         label: 'Browse Initiatives',
         icon: 'tree-pine',
         description: 'Browse and join conservation projects',
+      },
+      {
+        to: '/missions',
+        label: 'Climate Missions',
+        icon: 'target',
+        description: 'Join climate action missions and earn rewards',
       },
       {
         to: '/journey',
@@ -116,6 +140,31 @@ export const navigationGroups: NavGroupConfig[] = [
         label: 'Delegate Voting',
         icon: 'users',
         description: 'Delegate your voting power',
+      },
+    ],
+  },
+  {
+    id: 'learning',
+    label: 'Learning',
+    icon: 'book-open',
+    items: [
+      {
+        to: '/learning',
+        label: 'Learning Dashboard',
+        icon: 'book-open',
+        description: 'Browse educational modules and track progress',
+      },
+      {
+        to: '/certificates',
+        label: 'My Certificates',
+        icon: 'award',
+        description: 'View your earned certificates',
+      },
+      {
+        to: '/learn',
+        label: 'Ask Green Mentor',
+        icon: 'message-circle',
+        description: 'Get climate questions answered',
       },
     ],
   },

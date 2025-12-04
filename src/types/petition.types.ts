@@ -1,81 +1,82 @@
 /**
- * Petition Types
- * Type definitions for the environmental petition system
+ * Petition and Policy Engagement Types
+ * Task 20: Policy Engagement Tools
  */
 
-export type PetitionStatus = 'active' | 'successful' | 'expired' | 'closed';
+export type PetitionTargetAudience = 'county' | 'national' | 'international';
+export type PetitionStatus = 'active' | 'closed' | 'successful' | 'archived';
 
 export interface Petition {
   id: string;
   title: string;
   description: string;
-  category: string;
-  targetSignatures: number;
-  currentSignatures: number;
-  createdBy: string;
+  target_audience: PetitionTargetAudience;
+  target_organization: string;
+  signature_goal: number;
+  current_signatures: number;
+  deadline: string;
   status: PetitionStatus;
-  createdAt: Date;
-  expiresAt?: Date;
-  updatedAt: Date;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface PetitionSignature {
   id: string;
-  petitionId: string;
-  userId: string;
-  signedAt: Date;
-}
-
-export interface PetitionWithSignature extends Petition {
-  hasUserSigned: boolean;
-  progressPercentage: number;
-}
-
-// Database row types (snake_case from Supabase)
-export interface PetitionRow {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  target_signatures: number;
-  current_signatures: number;
-  created_by: string;
-  status: PetitionStatus;
-  created_at: string;
-  expires_at: string | null;
-  updated_at: string;
-}
-
-export interface PetitionSignatureRow {
-  id: string;
   petition_id: string;
   user_id: string;
   signed_at: string;
+  public_display: boolean;
+  comment?: string;
 }
 
-// Service parameters
-export interface CreatePetitionParams {
+export interface PetitionUpdate {
+  id: string;
+  petition_id: string;
   title: string;
-  description: string;
-  category: string;
-  targetSignatures: number;
-  createdBy: string;
-  expiresAt?: Date;
+  content: string;
+  created_by: string;
+  created_at: string;
 }
 
-export interface SignPetitionParams {
-  petitionId: string;
-  userId: string;
+export interface PetitionWithCreator extends Petition {
+  creator?: {
+    id: string;
+    display_name: string;
+    avatar?: string;
+  };
+}
+
+export interface PetitionWithDetails extends PetitionWithCreator {
+  signatures?: PetitionSignature[];
+  updates?: PetitionUpdate[];
+  user_signed?: boolean;
 }
 
 export interface PetitionFilters {
   status?: PetitionStatus;
-  category?: string;
-  createdBy?: string;
+  target_audience?: PetitionTargetAudience;
+  search?: string;
+  created_by?: string;
 }
 
-// Service response types
-export interface PetitionServiceResponse<T> {
-  data: T | null;
-  error: Error | null;
+export interface CreatePetitionData {
+  title: string;
+  description: string;
+  target_audience: PetitionTargetAudience;
+  target_organization: string;
+  signature_goal: number;
+  deadline: string;
+}
+
+export interface SignPetitionData {
+  petition_id: string;
+  public_display?: boolean;
+  comment?: string;
+}
+
+export interface CreatePetitionUpdateData {
+  petition_id: string;
+  title: string;
+  content: string;
 }

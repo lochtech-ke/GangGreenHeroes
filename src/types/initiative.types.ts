@@ -3,6 +3,8 @@
  * Type definitions for conservation initiatives
  */
 
+import type { AgeCohort } from './platform.types';
+
 export type ForestType = 'kakamega' | 'karura' | 'mau';
 export type InitiativeStatus = 'active' | 'completed' | 'paused';
 
@@ -27,6 +29,10 @@ export interface Initiative {
   organization_id: string | null;
   created_at: string;
   updated_at: string;
+  // Age targeting fields
+  min_age?: number | null;
+  max_age?: number | null;
+  target_cohorts?: AgeCohort[] | null;
   // Computed fields
   participant_count?: number;
   progress_percentage?: number;
@@ -73,4 +79,15 @@ export interface CreateInitiativeData {
   location: GeoPoint;
   area_hectares?: number;
   organization_id: string;
+  // Age targeting fields
+  min_age?: number;
+  max_age?: number;
+  target_cohorts?: AgeCohort[];
+}
+
+export interface AgeTargetingOption {
+  label: string;
+  value: 'all' | 'custom' | AgeCohort;
+  description: string;
+  cohorts?: AgeCohort[];
 }

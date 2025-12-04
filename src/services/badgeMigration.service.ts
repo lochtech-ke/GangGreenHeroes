@@ -634,7 +634,7 @@ class BadgeMigrationService {
   }> {
     let migrated = 0;
     let failed = 0;
-    let skipped = 0;
+    const skipped = 0;
     const errors: MigrationError[] = [];
 
     for (const badge of badges) {

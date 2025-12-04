@@ -1,366 +1,285 @@
 import { supabase } from './supabase';
-import { withRetry, DEFAULT_RETRY_CONFIG } from '../utils/retry';
-import type {
-  UserReferral,
-  UserReferralRow,
-  ReferralStats,
-  ReferralMilestone,
-  CreateReferralParams,
-  ActivateReferralParams,
-  ReferralServiceResponse,
-} from '../types/referral.types';
+import { ggCoinService } from './ggCoin.service';
 
 /**
  * Referral Service
- * Manages user referrals and rewards
+ * Handles referral code generation, tracking, and bonus distribution
+ * 
+ * Requirements: A7.5 - Implement referral code generation, track successful referrals, award referral bonuses
+ * Updated: Now uses GG Coins (decimal-based) instead of Green Coins
  */
-class ReferralService {
-  // Define referral milestones
-  private readonly milestones: ReferralMilestone[] = [
-    { threshold: 1, reward: { points: 50 }, achieved: false },
-    { threshold: 5, reward: { points: 300, badge: 'referrer-bronze' }, achieved: false },
-    { threshold: 10, reward: { points: 750, badge: 'referrer-silver' }, achieved: false },
-    { threshold: 25, reward: { points: 2000, badge: 'referrer-gold' }, achieved: false },
-    { threshold: 50, reward: { points: 5000, badge: 'referrer-platinum' }, achieved: false },
-    { threshold: 100, reward: { points: 12000, badge: 'referrer-diamond' }, achieved: false },
-  ];
 
+export interface ReferralData {
+  referrerId: string;
+  referralCode: string;
+  referredUserId: string;
+  referredAt: Date;
+  bonusAwarded: boolean;
+}
+
+export interface ReferralStats {
+  totalReferrals: number;
+  successfulReferrals: number;
+  totalBonusEarned: number;
+  recentReferrals: ReferralData[];
+}
+
+class ReferralService {
   /**
    * Generate a unique referral code for a user
    */
-  async generateReferralCode(userId: string): Promise<ReferralServiceResponse<string>> {
-    try {
-      console.log('[ReferralService] Generating referral code for user:', userId);
+  generateReferralCode(userId: string): string {
+    // Create a short, unique code based on user ID and timestamp
+    const timestamp = Date.now().toString(36);
+    const userPart = userId.substring(0, 8).replace(/-/g, '');
+    const randomPart = Math.random().toString(36).substring(2, 6);
+    
+    return `GG-${userPart}-${timestamp}-${randomPart}`.toUpperCase();
+  }
 
-      // Call the database function to generate a unique code
-      const { data, error } = await supabase.rpc('generate_referral_code', {
-        user_uuid: userId,
-      });
+  /**
+   * Get or create referral code for a user
+   */
+  async getReferralCode(userId: string): Promise<string | null> {
+    try {
+      // Check if user already has a referral code
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('referral_code')
+        .eq('user_id', userId)
+        .maybeSingle();
 
       if (error) {
-        console.error('[ReferralService] Error generating referral code:', error);
-        return { data: null, error: new Error('Failed to generate referral code') };
+        console.error('[ReferralService] Error fetching referral code:', error);
+        return null;
       }
 
-      return { data: data as string, error: null };
+      if (data?.referral_code) {
+        return data.referral_code;
+      }
+
+      // Generate new referral code
+      const newCode = this.generateReferralCode(userId);
+
+      // Update user profile with new code
+      const { error: updateError } = await supabase
+        .from('user_profiles')
+        .update({ referral_code: newCode })
+        .eq('user_id', userId);
+
+      if (updateError) {
+        console.error('[ReferralService] Error updating referral code:', updateError);
+        return null;
+      }
+
+      return newCode;
     } catch (error) {
-      console.error('[ReferralService] Exception generating referral code:', error);
-      return {
-        data: null,
-        error: error instanceof Error ? error : new Error('Failed to generate referral code'),
-      };
+      console.error('[ReferralService] Exception getting referral code:', error);
+      return null;
     }
   }
 
   /**
-   * Create a referral record
+   * Validate a referral code and get the referrer's user ID
    */
-  async createReferral(
-    params: CreateReferralParams
-  ): Promise<ReferralServiceResponse<UserReferral>> {
+  async validateReferralCode(referralCode: string): Promise<string | null> {
     try {
-      console.log('[ReferralService] Creating referral:', params);
-
-      const result = await withRetry(
-        async () => {
-          const response = await supabase
-            .from('user_referrals')
-            .insert({
-              referrer_id: params.referrerId,
-              referred_id: params.referredId,
-              referral_code: params.referralCode,
-              status: 'pending',
-              points_awarded: 0,
-            })
-            .select()
-            .single();
-
-          if (response.error) throw response.error;
-          return response;
-        },
-        DEFAULT_RETRY_CONFIG,
-        'createReferral'
-      );
-
-      const { data, error } = result;
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('user_id')
+        .eq('referral_code', referralCode)
+        .maybeSingle();
 
       if (error) {
-        console.error('[ReferralService] Error creating referral:', error);
-        return { data: null, error: new Error('Failed to create referral') };
+        console.error('[ReferralService] Error validating referral code:', error);
+        return null;
       }
 
-      const referral = this.transformReferralData(data);
-      return { data: referral, error: null };
+      return data?.user_id || null;
     } catch (error) {
-      console.error('[ReferralService] Exception creating referral:', error);
-      return {
-        data: null,
-        error: error instanceof Error ? error : new Error('Failed to create referral'),
-      };
+      console.error('[ReferralService] Exception validating referral code:', error);
+      return null;
     }
   }
 
   /**
-   * Activate a referral (when referred user completes first action)
+   * Track a successful referral
    */
-  async activateReferral(
-    params: ActivateReferralParams
-  ): Promise<ReferralServiceResponse<UserReferral>> {
+  async trackReferral(referralCode: string, referredUserId: string): Promise<boolean> {
     try {
-      console.log('[ReferralService] Activating referral:', params);
-
-      const result = await withRetry(
-        async () => {
-          const response = await supabase
-            .from('user_referrals')
-            .update({
-              status: 'active',
-              points_awarded: params.pointsToAward,
-              activated_at: new Date().toISOString(),
-            })
-            .eq('referred_id', params.referredId)
-            .eq('status', 'pending')
-            .select()
-            .single();
-
-          if (response.error) throw response.error;
-          return response;
-        },
-        DEFAULT_RETRY_CONFIG,
-        'activateReferral'
-      );
-
-      const { data, error } = result;
-
-      if (error) {
-        console.error('[ReferralService] Error activating referral:', error);
-        return { data: null, error: new Error('Failed to activate referral') };
+      // Validate referral code and get referrer ID
+      const referrerId = await this.validateReferralCode(referralCode);
+      if (!referrerId) {
+        console.error('[ReferralService] Invalid referral code:', referralCode);
+        return false;
       }
 
-      const referral = this.transformReferralData(data);
-      console.log('[ReferralService] Referral activated successfully');
+      // Prevent self-referral
+      if (referrerId === referredUserId) {
+        console.error('[ReferralService] Self-referral not allowed');
+        return false;
+      }
 
-      return { data: referral, error: null };
+      // Update referred user's profile with referrer ID
+      const { error: updateError } = await supabase
+        .from('user_profiles')
+        .update({ referred_by: referrerId })
+        .eq('user_id', referredUserId);
+
+      if (updateError) {
+        console.error('[ReferralService] Error updating referred_by:', updateError);
+        return false;
+      }
+
+      // Award referral bonus to referrer using GG Coins
+      const transaction = await ggCoinService.creditCoins(
+        referrerId,
+        50, // Base referral reward from REWARD_RULES
+        'referral',
+        `Referral bonus for inviting user ${referredUserId}`,
+        { referredUserId }
+      );
+      
+      if (!transaction) {
+        console.error('[ReferralService] Failed to award referral bonus');
+        return false;
+      }
+
+      console.log(`[ReferralService] Referral tracked: ${referrerId} referred ${referredUserId}`);
+      return true;
     } catch (error) {
-      console.error('[ReferralService] Exception activating referral:', error);
-      return {
-        data: null,
-        error: error instanceof Error ? error : new Error('Failed to activate referral'),
-      };
+      console.error('[ReferralService] Exception tracking referral:', error);
+      return false;
     }
   }
 
   /**
    * Get referral statistics for a user
    */
-  async getReferralStats(userId: string): Promise<ReferralServiceResponse<ReferralStats>> {
+  async getReferralStats(userId: string): Promise<ReferralStats> {
     try {
-      console.log('[ReferralService] Fetching referral stats for user:', userId);
-
-      // Get or generate referral code
-      const { data: codeData } = await this.generateReferralCode(userId);
-      const referralCode = codeData || '';
-
-      // Fetch all referrals made by this user
-      const result = await withRetry(
-        async () => {
-          const response = await supabase
-            .from('user_referrals')
-            .select('*')
-            .eq('referrer_id', userId);
-
-          if (response.error) throw response.error;
-          return response;
-        },
-        DEFAULT_RETRY_CONFIG,
-        'getReferralStats'
-      );
-
-      const { data, error } = result;
+      // Get all users referred by this user
+      const { data: referredUsers, error } = await supabase
+        .from('user_profiles')
+        .select('user_id, created_at')
+        .eq('referred_by', userId)
+        .order('created_at', { ascending: false });
 
       if (error) {
         console.error('[ReferralService] Error fetching referral stats:', error);
-        return { data: null, error: new Error('Failed to fetch referral stats') };
+        return {
+          totalReferrals: 0,
+          successfulReferrals: 0,
+          totalBonusEarned: 0,
+          recentReferrals: [],
+        };
       }
 
-      // Calculate statistics
-      const totalReferrals = data.length;
-      const activeReferrals = data.filter((r: UserReferralRow) => r.status === 'active').length;
-      const pendingReferrals = data.filter((r: UserReferralRow) => r.status === 'pending').length;
-      const pointsEarned = data.reduce(
-        (sum: number, r: UserReferralRow) => sum + r.points_awarded,
-        0
-      );
+      const totalReferrals = referredUsers?.length || 0;
 
-      // Calculate milestone achievements
-      const milestones = this.milestones.map((milestone) => ({
-        ...milestone,
-        achieved: activeReferrals >= milestone.threshold,
+      // Get referral transactions from GG Coin transactions to calculate bonus earned
+      const { data: transactions, error: txError } = await supabase
+        .from('gg_coin_transactions')
+        .select('amount')
+        .eq('user_id', userId)
+        .eq('transaction_type', 'referral');
+
+      if (txError) {
+        console.error('[ReferralService] Error fetching referral transactions:', txError);
+      }
+
+      const totalBonusEarned = transactions?.reduce((sum, tx) => sum + parseFloat(tx.amount), 0) || 0;
+      const successfulReferrals = transactions?.length || 0;
+
+      // Get referral code for recent referrals
+      const { data: userProfile } = await supabase
+        .from('user_profiles')
+        .select('referral_code')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      const referralCode = userProfile?.referral_code || '';
+
+      const recentReferrals: ReferralData[] = (referredUsers || []).slice(0, 10).map(user => ({
+        referrerId: userId,
+        referralCode,
+        referredUserId: user.user_id,
+        referredAt: new Date(user.created_at),
+        bonusAwarded: true, // If they're in the list, bonus was awarded
       }));
 
-      const stats: ReferralStats = {
-        referralCode,
-        referralLink: this.generateReferralLink(referralCode),
+      return {
         totalReferrals,
-        activeReferrals,
-        pendingReferrals,
-        pointsEarned,
-        milestones,
+        successfulReferrals,
+        totalBonusEarned,
+        recentReferrals,
       };
-
-      return { data: stats, error: null };
     } catch (error) {
-      console.error('[ReferralService] Exception fetching referral stats:', error);
+      console.error('[ReferralService] Exception getting referral stats:', error);
       return {
-        data: null,
-        error: error instanceof Error ? error : new Error('Failed to fetch referral stats'),
+        totalReferrals: 0,
+        successfulReferrals: 0,
+        totalBonusEarned: 0,
+        recentReferrals: [],
       };
     }
   }
 
   /**
-   * Get all referrals made by a user
+   * Get leaderboard of top referrers
    */
-  async getUserReferrals(userId: string): Promise<ReferralServiceResponse<UserReferral[]>> {
+  async getTopReferrers(limit: number = 10): Promise<Array<{ userId: string; referralCount: number }>> {
     try {
-      console.log('[ReferralService] Fetching referrals for user:', userId);
-
-      const result = await withRetry(
-        async () => {
-          const response = await supabase
-            .from('user_referrals')
-            .select('*')
-            .eq('referrer_id', userId)
-            .order('created_at', { ascending: false });
-
-          if (response.error) throw response.error;
-          return response;
-        },
-        DEFAULT_RETRY_CONFIG,
-        'getUserReferrals'
-      );
-
-      const { data, error } = result;
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('referred_by')
+        .not('referred_by', 'is', null);
 
       if (error) {
-        console.error('[ReferralService] Error fetching referrals:', error);
-        return { data: null, error: new Error('Failed to fetch referrals') };
+        console.error('[ReferralService] Error fetching top referrers:', error);
+        return [];
       }
 
-      const referrals = data.map((row: UserReferralRow) => this.transformReferralData(row));
-      return { data: referrals, error: null };
-    } catch (error) {
-      console.error('[ReferralService] Exception fetching referrals:', error);
-      return {
-        data: null,
-        error: error instanceof Error ? error : new Error('Failed to fetch referrals'),
-      };
-    }
-  }
-
-  /**
-   * Get referral by referred user ID
-   */
-  async getReferralByReferredId(
-    referredId: string
-  ): Promise<ReferralServiceResponse<UserReferral>> {
-    try {
-      const result = await withRetry(
-        async () => {
-          const response = await supabase
-            .from('user_referrals')
-            .select('*')
-            .eq('referred_id', referredId)
-            .single();
-
-          if (response.error) throw response.error;
-          return response;
-        },
-        DEFAULT_RETRY_CONFIG,
-        'getReferralByReferredId'
-      );
-
-      const { data, error } = result;
-
-      if (error) {
-        if ((error as any).code === 'PGRST116') {
-          // No referral found
-          return { data: null, error: null };
+      // Count referrals per user
+      const referralCounts: Record<string, number> = {};
+      for (const profile of data || []) {
+        if (profile.referred_by) {
+          referralCounts[profile.referred_by] = (referralCounts[profile.referred_by] || 0) + 1;
         }
-        console.error('[ReferralService] Error fetching referral:', error);
-        return { data: null, error: new Error('Failed to fetch referral') };
       }
 
-      const referral = this.transformReferralData(data);
-      return { data: referral, error: null };
+      // Sort and return top referrers
+      return Object.entries(referralCounts)
+        .map(([userId, count]) => ({ userId, referralCount: count }))
+        .sort((a, b) => b.referralCount - a.referralCount)
+        .slice(0, limit);
     } catch (error) {
-      console.error('[ReferralService] Exception fetching referral:', error);
-      return {
-        data: null,
-        error: error instanceof Error ? error : new Error('Failed to fetch referral'),
-      };
+      console.error('[ReferralService] Exception getting top referrers:', error);
+      return [];
     }
   }
 
   /**
-   * Validate a referral code
+   * Check if a user was referred by someone
    */
-  async validateReferralCode(code: string): Promise<ReferralServiceResponse<boolean>> {
+  async getReferrer(userId: string): Promise<string | null> {
     try {
-      const result = await withRetry(
-        async () => {
-          const response = await supabase
-            .from('user_referrals')
-            .select('referral_code')
-            .eq('referral_code', code)
-            .limit(1);
-
-          if (response.error) throw response.error;
-          return response;
-        },
-        DEFAULT_RETRY_CONFIG,
-        'validateReferralCode'
-      );
-
-      const { data, error } = result;
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('referred_by')
+        .eq('user_id', userId)
+        .maybeSingle();
 
       if (error) {
-        console.error('[ReferralService] Error validating referral code:', error);
-        return { data: false, error: new Error('Failed to validate referral code') };
+        console.error('[ReferralService] Error fetching referrer:', error);
+        return null;
       }
 
-      return { data: data.length > 0, error: null };
+      return data?.referred_by || null;
     } catch (error) {
-      console.error('[ReferralService] Exception validating referral code:', error);
-      return {
-        data: false,
-        error: error instanceof Error ? error : new Error('Failed to validate referral code'),
-      };
+      console.error('[ReferralService] Exception getting referrer:', error);
+      return null;
     }
-  }
-
-  /**
-   * Generate referral link from code
-   */
-  private generateReferralLink(code: string): string {
-    const baseUrl = window.location.origin;
-    return `${baseUrl}/register?ref=${code}`;
-  }
-
-  /**
-   * Transform database row to UserReferral type
-   */
-  private transformReferralData(row: UserReferralRow): UserReferral {
-    return {
-      id: row.id,
-      referrerId: row.referrer_id,
-      referredId: row.referred_id,
-      referralCode: row.referral_code,
-      status: row.status,
-      pointsAwarded: row.points_awarded,
-      createdAt: new Date(row.created_at),
-      activatedAt: row.activated_at ? new Date(row.activated_at) : undefined,
-    };
   }
 }
 
