@@ -560,7 +560,199 @@
   - Test scroll-triggered animations
   - _Requirements: All requirements_
 
-- [ ] 21. Final polish and deployment preparation
+- [-] 21. Implement African cultural design elements
+
+
+
+  - [x] 21.1 Extend color palette with African earth tones
+
+
+    - Add terracotta, ochre, burnt sienna colors to Tailwind config
+    - Add kente-gold, ubuntu-purple, sahara-sand colors
+    - Create CSS variables for African color palette
+    - Test color combinations for accessibility (contrast ratios)
+    - _Requirements: 17.1_
+  
+  - [x] 21.2 Create African geometric pattern library
+
+
+    - Create SVG pattern files in `src/assets/patterns/african/`
+    - Implement Adinkra symbols (Sankofa, Gye Nyame, Dwennimmen, Aya)
+    - Implement Kente patterns (geometric stripes, diamonds, zigzags)
+    - Implement Mudcloth patterns (horizontal lines, crosshatch)
+    - Add patterns as CSS backgrounds with low opacity
+    - Apply patterns to section backgrounds and card borders
+    - _Requirements: 17.2, 17.7_
+  
+  - [x] 21.3 Add multilingual greetings to hero section
+
+
+
+    - Add Swahili greeting "Karibu" to hero headline
+    - Add Kikuyu greeting as alternate option
+    - Style multilingual text with gradient effects
+    - Ensure proper font rendering for African languages
+    - Add subtle animation to greeting text
+    - _Requirements: 17.4_
+  
+
+  - [x] 21.4 Integrate Wangari Maathai legacy and Hummingbird story
+
+
+    - Create HummingbirdStory component with glass design
+    - Add hummingbird icon/illustration
+    - Write compelling copy about the Hummingbird story
+    - Add Wangari Maathai quote with attribution
+    - Place story card in journey section (between steps 3-4)
+    - Add subtle reference in hero section
+    - Feature Hummingbird Welcome Badge prominently
+    - Add Wangari Maathai quote to footer
+    - _Requirements: 17.5_
+  
+  - [x] 21.5 Source and integrate African imagery
+
+
+
+
+    - Source authentic Kenyan forest photography
+    - Obtain community tree-planting images
+    - Get diverse representation of African people
+    - Ensure proper image attribution and permissions
+    - Optimize images for web (WebP format)
+    - Add images to hero section carousel
+    - Update section backgrounds with African landscapes
+    - _Requirements: 17.3, 17.8_
+  
+
+  - [x] 21.6 Implement Ubuntu philosophy in messaging
+
+
+
+
+    - Update copy to use "we" language throughout
+    - Add Ubuntu tagline: "Together We Grow - Ubuntu in Action"
+    - Create circular/interconnected design elements
+    - Emphasize collective achievements in metrics
+    - Update testimonials to focus on community impact
+    - Add Ubuntu philosophy explanation section
+    - _Requirements: 17.8_
+  
+  - [x] 21.7 Apply African animation style
+
+
+    - Implement warm easing functions (longer duration)
+    - Add subtle bounce to CTAs (drumbeat rhythm)
+    - Create flowing particle animations (leaves in wind)
+    - Add color transitions mimicking African sunsets
+    - Test animations feel welcoming and organic
+    - _Requirements: 17.9_
+  
+  - [x] 21.8 Add cultural context to pilot forests
+
+
+    - Enhance forest descriptions with cultural significance
+    - Add ecological context for each forest
+    - Include local community involvement stories
+    - Add traditional names or cultural references
+    - _Requirements: 17.10_
+
+- [ ] 22. Optimize geometric badge display
+  - [x] 22.1 Fix badge SVG viewBox and dimensions
+
+
+
+    - Update all badge templates to use viewBox="0 0 400 400"
+    - Set width="100%" and height="100%" on SVG elements
+    - Add preserveAspectRatio="xMidYMid meet"
+    - Ensure 1:1 aspect ratio is maintained
+    - Test badges render at correct size (200x200px default)
+    - _Requirements: 18.1, 18.2, 18.3_
+  
+  - [x] 22.2 Implement anti-aliasing and rendering quality
+
+
+
+
+    - Add shape-rendering: geometricPrecision to badge CSS
+    - Add text-rendering: optimizeLegibility
+    - Add image-rendering: crisp-edges
+    - Apply transform: translateZ(0) to prevent blur
+    - Add backface-visibility: hidden
+    - Test edge sharpness across browsers
+    - _Requirements: 18.5_
+  
+
+
+
+  - [x] 22.3 Enhance badge fallback handling
+
+    - Create BadgeFallback component with tier-specific styling
+    - Implement graceful error handling in badge generation
+    - Add loading spinner with glass effect
+    - Test fallback displays correctly for all tiers
+    - Ensure fallback maintains aspect ratio
+    - _Requirements: 18.4_
+  
+  - [x] 22.4 Verify tier-specific gradients and effects
+
+
+
+
+
+    - Test bronze metallic gradient renders correctly
+    - Test silver polished shine effect
+    - Test gold radiant glow
+    - Test platinum mirror finish
+    - Test diamond prismatic sparkle and animation
+    - Verify colors are accurate across browsers
+    - _Requirements: 18.6, 18.8_
+  
+
+
+
+  - [x] 22.5 Optimize badge SVG file sizes
+
+
+
+
+
+    - Remove unnecessary SVG metadata and comments
+    - Minify SVG paths and styles
+    - Reduce decimal precision to 2 places
+    - Merge redundant paths
+    - Target < 50KB per badge
+    - Test optimized badges still render correctly
+    - _Requirements: 18.7_
+  
+  - [ ] 22.6 Implement responsive badge sizing
+
+
+
+    - Set mobile size to 128px (w-32 h-32)
+    - Set tablet size to 160px (w-40 h-40)
+    - Set desktop size to 192px (w-48 h-48)
+    - Test badges scale correctly at all breakpoints
+    - Ensure no pixelation or distortion
+    - _Requirements: 18.12_
+  
+  - [ ] 22.7 Test badge rendering across devices and browsers
+    - Test on Chrome (desktop and mobile)
+    - Test on Firefox (desktop and mobile)
+    - Test on Safari (desktop and iOS)
+    - Test on Edge
+    - Verify forest background patterns are clear
+    - Verify achievement icons render at correct scale
+    - Test diamond tier animation runs at 60fps
+    - _Requirements: 18.9, 18.10, 18.11_
+  
+  - [ ] 22.8 Implement badge lazy loading
+    - Use Intersection Observer for badge generation
+    - Only generate SVG when badge enters viewport
+    - Add smooth fade-in transition when loaded
+    - Test performance improvement
+    - _Requirements: 18.7_
+
+- [ ] 23. Final polish and deployment preparation
   - Review all content for accuracy and tone
   - Verify #GangGreen branding is consistent throughout
   - Check all images are optimized and loading
@@ -577,4 +769,14 @@
   - Document any environment variables needed
   - Document glassmorphism design system for future use
   - Create style guide for glass components
+  - **Verify African color palette is applied throughout**
+  - **Test African geometric patterns display correctly**
+  - **Verify multilingual greetings render properly**
+  - **Test Hummingbird story component displays beautifully**
+  - **Verify African imagery is properly attributed**
+  - **Test Ubuntu messaging resonates with target audience**
+  - **Verify African animation style feels warm and welcoming**
+  - **Test all geometric badges display correctly at all sizes**
+  - **Verify badge fallbacks work across all scenarios**
+  - **Test badge performance (< 50KB, < 500ms load time)**
   - _Requirements: All requirements_

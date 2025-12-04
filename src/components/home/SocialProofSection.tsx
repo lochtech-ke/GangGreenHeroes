@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Quote, TreePine, Award, MapPin, Sparkles, Clock } from 'lucide-react';
+import { CommunityPhotoGallery } from './CommunityPhotoGallery';
 
 interface Testimonial {
   id: string;
@@ -127,7 +128,7 @@ export const SocialProofSection: React.FC<SocialProofProps> = ({
 }) => {
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
 
-  // Default testimonials
+  // Default testimonials with Ubuntu/community focus
   const defaultTestimonials: Testimonial[] = [
     {
       id: '1',
@@ -135,7 +136,7 @@ export const SocialProofSection: React.FC<SocialProofProps> = ({
       userAvatar: 'https://i.pravatar.cc/150?img=5',
       userRole: 'Student',
       quote:
-        'Joining #GangGreen changed my perspective on conservation. I\'ve planted 50 trees and earned 3 badges. It feels amazing to make a real difference!',
+        'Being part of #GangGreen showed me the power of community. Together with my classmates, we\'ve planted 50 trees and inspired our entire school. When we work together, we achieve so much more!',
       treesPlanted: 50,
       badgesEarned: 3,
       location: 'Nairobi, Kenya',
@@ -146,7 +147,7 @@ export const SocialProofSection: React.FC<SocialProofProps> = ({
       userAvatar: 'https://i.pravatar.cc/150?img=12',
       userRole: 'Community Member',
       quote:
-        'The platform makes it easy to track my impact. I love seeing my trees grow through AI monitoring. My family is now involved too!',
+        'Ubuntu teaches us "I am because we are." Through #GangGreen, our entire village came together to restore our local forest. We\'ve planted over 127 trees as a community, and our children now have a greener future.',
       treesPlanted: 127,
       badgesEarned: 8,
       location: 'Kakamega, Kenya',
@@ -157,7 +158,7 @@ export const SocialProofSection: React.FC<SocialProofProps> = ({
       userAvatar: 'https://i.pravatar.cc/150?img=20',
       userRole: 'Organization',
       quote:
-        'We\'ve mobilized over 500 community members through #GangGreen. The gamification features keep everyone engaged and motivated.',
+        'We\'ve mobilized over 500 community members through #GangGreen. The platform brings people together, and together we\'re restoring our forests. Every tree planted strengthens our community bonds.',
       treesPlanted: 2543,
       badgesEarned: 25,
       location: 'Mau Forest, Kenya',
@@ -225,7 +226,7 @@ export const SocialProofSection: React.FC<SocialProofProps> = ({
     recentAchievements && recentAchievements.length > 0
       ? recentAchievements
       : defaultAchievements;
-  const displayPhotos = userPhotos && userPhotos.length > 0 ? userPhotos : defaultPhotos;
+  // displayPhotos removed - now using CommunityPhotoGallery component
 
   // Auto-rotate testimonials every 8 seconds
   useEffect(() => {
@@ -246,17 +247,18 @@ export const SocialProofSection: React.FC<SocialProofProps> = ({
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section Header with Ubuntu messaging */}
         <div className="text-center mb-16 animate-fade-in-up">
           <div className="inline-flex items-center justify-center gap-2 mb-4">
             <Sparkles className="w-8 h-8 text-green-600 animate-pulse" />
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-              Community Impact Stories
+              Our Community Impact Stories
             </h2>
             <Sparkles className="w-8 h-8 text-green-600 animate-pulse" />
           </div>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Real people making real change. Join thousands of conservation heroes across Kenya.
+            Together, we're making real change. Join thousands of conservation heroes across Kenya 
+            who understand that <span className="font-semibold text-green-600">we grow stronger together</span>.
           </p>
         </div>
 
@@ -306,39 +308,17 @@ export const SocialProofSection: React.FC<SocialProofProps> = ({
           </div>
         </div>
 
-        {/* User Photo Gallery */}
+        {/* User Photo Gallery - Authentic African Community Images */}
         <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
           <div className="text-center mb-8">
             <h3 className="text-3xl font-bold text-gray-900 mb-2">
               Our Community in Action
             </h3>
             <p className="text-gray-600">
-              See the faces behind the movement
+              Real people, real impact - See the faces behind the movement
             </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {displayPhotos.slice(0, 12).map((photo, index) => (
-              <div
-                key={index}
-                className="group relative aspect-square rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                <img
-                  src={photo}
-                  alt={`Community member ${index + 1}`}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                {/* Glass overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-900/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <div className="glass rounded-lg p-2 text-center">
-                      <Sparkles className="w-4 h-4 text-white mx-auto" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <CommunityPhotoGallery />
         </div>
 
         {/* Social Media Widget */}

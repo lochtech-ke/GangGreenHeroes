@@ -4,10 +4,7 @@
 
 A comprehensive digital platform designed to catalyze a carbon-negative Africa by connecting stakeholders in environmental conservation, carbon credit markets, and sustainable development.
 
-**Team:** GangGreen  
-**Track:** Track 3 (Community Engagement and Sustainability)  
-**Hackathon:** Wangari Maathai Hackathon 2025  
-**Submission ID:** GangGreen_Track3_WMH2025
+
 
 > **What's New in v1.0 "Vivian"**: Our first major release features a beautiful animated splash screen with a colorful low-poly hummingbird, version display, and contributor acknowledgments. The hummingbird symbolizes agility, beauty, and the delicate balance of nature—core themes of our environmental mission.
 
@@ -35,7 +32,7 @@ A comprehensive digital platform designed to catalyze a carbon-negative Africa b
 
 ## 🌳 Mission
 
-Facilitate tree planting initiatives, carbon credit trading, community engagement, and transparent monitoring of environmental impact across African regions, with a focus on Technology for Forest Conservation.
+#GangGreen is a production platform that facilitates tree planting initiatives, carbon credit trading, community engagement, and transparent monitoring of environmental impact across African regions. We leverage technology to enable forest conservation, connecting stakeholders in environmental sustainability and empowering communities to drive measurable climate action.
 
 ## 🌲 Pilot Forests
 
@@ -247,29 +244,13 @@ We welcome contributions! See our [Technical Guide](docs/TECHNICAL_GUIDE_NOVEMBE
 
 MIT License - Copyright (c) 2025 Loch Tech Solutions
 
-## � LAcknowledgments
+## 🙏 Acknowledgments
 
 - Powered by Antugrow API for AI-driven tree monitoring
 - Supported by Supabase for backend infrastructure
 - Inspired by Wangari Maathai's environmental legacy
 
-## 🏆 Wangari Maathai Hackathon 2025
 
-**Track 3: Community Engagement and Sustainability**
-
-### Submission Details
-- **Team:** GangGreen
-- **Submission ID:** GangGreen_Track3_WMH2025
-- **Platform Status:** Production-ready with comprehensive documentation
-- **Live Demo:** [https://gg.lochtech.africa](https://gg.lochtech.africa)
-
-### Track 3 Alignment
-✅ **Community Engagement** - Micro-actions, social features, gamification  
-✅ **Sustainability Impact** - Tree planting, AI monitoring, blockchain verification  
-✅ **Innovation** - Hummingbird approach, Web3 integration  
-✅ **Scalability** - Cloud infrastructure, pan-African vision
-
-*For complete submission details, see [Track 3 Submission](docs/TRACK_3_SUBMISSION.md)*
 
 ## 📞 Support
 

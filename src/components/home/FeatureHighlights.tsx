@@ -154,9 +154,9 @@ export const FeatureHighlights: React.FC<FeatureHighlightsProps> = ({ features }
     {
       id: 'tree-planting',
       icon: Sprout,
-      title: 'Tree Planting',
+      title: 'We Plant Trees Together',
       description:
-        'Participate in geo-tagged tree planting initiatives with AI-powered verification. Track your trees from seedling to maturity.',
+        'Join our community in geo-tagged tree planting initiatives with AI-powered verification. Together, we track our trees from seedling to maturity and watch our forests grow.',
       learnMoreUrl: '/trees',
       accentColor: 'bg-green-500',
       gradient: 'from-green-500 to-emerald-600',
@@ -164,9 +164,9 @@ export const FeatureHighlights: React.FC<FeatureHighlightsProps> = ({ features }
     {
       id: 'carbon-credits',
       icon: Leaf,
-      title: 'Carbon Credits',
+      title: 'We Trade Carbon Credits',
       description:
-        'Trade verified carbon credits in our transparent marketplace. Support sustainable development and offset your carbon footprint.',
+        'Together, we support verified carbon credits in our transparent marketplace. Our collective action drives sustainable development and offsets our carbon footprint.',
       learnMoreUrl: '/marketplace',
       accentColor: 'bg-emerald-500',
       gradient: 'from-emerald-500 to-teal-600',
@@ -174,9 +174,9 @@ export const FeatureHighlights: React.FC<FeatureHighlightsProps> = ({ features }
     {
       id: 'nft-badges',
       icon: Award,
-      title: 'Badge Progression',
+      title: 'We Earn Badges Together',
       description:
-        'Start with your Hummingbird welcome badge and progress through Bronze, Silver, Gold, Platinum, and Diamond tiers as you achieve conservation milestones.',
+        'Start with our Hummingbird welcome badge and progress through Bronze, Silver, Gold, Platinum, and Diamond tiers. We celebrate each other\'s conservation milestones.',
       learnMoreUrl: '/badges',
       accentColor: 'bg-amber-500',
       gradient: 'from-amber-500 to-orange-600',
@@ -184,9 +184,9 @@ export const FeatureHighlights: React.FC<FeatureHighlightsProps> = ({ features }
     {
       id: 'gamification',
       icon: Zap,
-      title: 'Gamification',
+      title: 'We Compete & Collaborate',
       description:
-        'Compete on leaderboards, unlock achievements, level up, and earn rewards. Make conservation fun and engaging for everyone.',
+        'Join our leaderboards, unlock achievements together, and earn collective rewards. We make conservation fun and engaging for our entire community.',
       learnMoreUrl: '/gamification',
       accentColor: 'bg-purple-500',
       gradient: 'from-purple-500 to-pink-600',
@@ -194,9 +194,9 @@ export const FeatureHighlights: React.FC<FeatureHighlightsProps> = ({ features }
     {
       id: 'ai-guidance',
       icon: Bot,
-      title: 'AI Guidance',
+      title: 'We Get AI Support',
       description:
-        'Get personalized recommendations from our AI chatbot. Receive support for onboarding, cause selection, and conservation activities.',
+        'Our AI chatbot guides us through onboarding, helps us select causes, and supports our conservation activities. Together, we learn and grow.',
       learnMoreUrl: '/dashboard',
       accentColor: 'bg-blue-500',
       gradient: 'from-blue-500 to-indigo-600',
@@ -204,9 +204,9 @@ export const FeatureHighlights: React.FC<FeatureHighlightsProps> = ({ features }
     {
       id: 'web3-integration',
       icon: Wallet,
-      title: 'Web3 Integration',
+      title: 'We Use Web3 Technology',
       description:
-        'Connect your crypto wallet to donate ETH, MATIC, or USDC. Enjoy blockchain-verified conservation with transparent tracking.',
+        'Connect our crypto wallets to donate ETH, MATIC, or USDC. Together, we enjoy blockchain-verified conservation with transparent tracking.',
       learnMoreUrl: '/initiatives',
       accentColor: 'bg-cyan-500',
       gradient: 'from-cyan-500 to-blue-600',
@@ -224,16 +224,16 @@ export const FeatureHighlights: React.FC<FeatureHighlightsProps> = ({ features }
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section Header with Ubuntu messaging */}
         <AnimatedSection>
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Platform Features
+              How We Make Impact Together
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-600 mx-auto mb-6 rounded-full" />
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Everything you need to make a real impact on climate change. From tree planting to
-              blockchain verification, we've got you covered.
+              Everything we need to create real change together. From tree planting to
+              blockchain verification, our platform empowers collective action for climate impact.
             </p>
           </div>
         </AnimatedSection>

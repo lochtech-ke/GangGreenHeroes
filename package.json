@@ -1,6 +1,6 @@
 {
-  "name": "ganggreen-track3-wmh2025",
-  "displayName": "#GangGreen Platform - GangGreen_Track3_WMH2025",
+  "name": "ganggreen-platform",
+  "displayName": "#GangGreen Platform",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -27,7 +27,8 @@
     "submission:package": "node scripts/package-submission.js",
     "submission:checklist": "node scripts/submission-checklist.js",
     "optimize:splash": "node scripts/optimize-splash-assets.cjs",
-    "optimize:splash:auto": "node scripts/optimize-splash-assets.cjs --optimize"
+    "optimize:splash:auto": "node scripts/optimize-splash-assets.cjs --optimize",
+    "optimize:images": "node scripts/optimize-images.js"
   },
   "dependencies": {
     "@pixi/react": "^7.1.2",

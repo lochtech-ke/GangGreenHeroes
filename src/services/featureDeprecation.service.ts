@@ -8,7 +8,7 @@ import {
 
 /**
  * Feature Deprecation Service
- * Manages deprecated features for Track 3 submission
+ * Manages deprecated features and feature flags
  */
 class FeatureDeprecationService {
   // Cache for feature flags
@@ -16,9 +16,9 @@ class FeatureDeprecationService {
   private cacheExpiry: number = 0;
   private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-  // Deprecated features for Track 3
+  // Deprecated features
   // Note: MARKETPLACE refers to carbon credits marketplace, not badge marketplace
-  // Badge marketplace (/marketplace) is active for Track 3
+  // Badge marketplace (/marketplace) is active
   private readonly deprecatedFeatures = new Set<DeprecatedFeature>([
     DeprecatedFeature.TREE_PLANTING,
     DeprecatedFeature.CARBON_CREDITS,
@@ -30,17 +30,17 @@ class FeatureDeprecationService {
     {
       from: '/trees',
       to: '/initiatives',
-      message: 'Tree planting features have been moved to Initiatives for Track 3',
+      message: 'Tree planting features have been moved to Initiatives',
     },
     {
       from: '/carbon-credits',
       to: '/initiatives',
-      message: 'Carbon credit marketplace features are not available in Track 3. Explore our initiatives!',
+      message: 'Carbon credit marketplace features are not currently available. Explore our initiatives!',
     },
   ];
 
   // Deprecated navigation items
-  // Note: 'marketplace' removed - badge marketplace is active for Track 3
+  // Note: 'marketplace' removed - badge marketplace is active
   // Only carbon credits marketplace is deprecated
   private readonly deprecatedNavItems = new Set<string>([
     'trees',
@@ -62,7 +62,7 @@ class FeatureDeprecationService {
    * Check if a feature is enabled
    */
   async isFeatureEnabled(feature: DeprecatedFeature): Promise<boolean> {
-    // For Track 3, all deprecated features are disabled
+    // All deprecated features are disabled
     if (this.deprecatedFeatures.has(feature)) {
       return false;
     }
@@ -143,7 +143,7 @@ class FeatureDeprecationService {
         });
 
       case 'badges':
-        // Keep all badges (they're Track 3 focused)
+        // Keep all badges
         return data;
 
       default:

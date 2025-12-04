@@ -12,6 +12,7 @@ import {
   ChevronRight,
   LucideIcon,
 } from 'lucide-react';
+import { HummingbirdStory } from './HummingbirdStory';
 
 interface JourneyStep {
   id: string;
@@ -276,16 +277,23 @@ export const UserJourneyVisualization: React.FC<UserJourneyProps> = ({
           >
             <div className="flex gap-8 pb-12 pt-4">
               {journeySteps.map((step, index) => (
-                <JourneyStepCard
-                  key={step.id}
-                  step={step}
-                  isActive={activeStep === index}
-                  isLast={index === journeySteps.length - 1}
-                  onClick={() => {
-                    setActiveStep(index);
-                    onStepClick?.(step.id);
-                  }}
-                />
+                <React.Fragment key={step.id}>
+                  <JourneyStepCard
+                    step={step}
+                    isActive={activeStep === index}
+                    isLast={index === journeySteps.length - 1}
+                    onClick={() => {
+                      setActiveStep(index);
+                      onStepClick?.(step.id);
+                    }}
+                  />
+                  {/* Insert Hummingbird Story between steps 3 and 4 */}
+                  {index === 2 && (
+                    <div className="flex items-center min-w-[500px] flex-shrink-0 px-4">
+                      <HummingbirdStory variant="journey" />
+                    </div>
+                  )}
+                </React.Fragment>
               ))}
             </div>
           </div>

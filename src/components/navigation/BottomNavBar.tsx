@@ -13,7 +13,7 @@ interface BottomNavBarProps {
   unreadNotifications?: number;
 }
 
-// Track 3 Focus: Community Engagement and Sustainability
+// Focus: Community Engagement and Sustainability
 const bottomNavItems: BottomNavItem[] = [
   {
     to: '/dashboard',

@@ -1,0 +1,27 @@
+<!-- Kente Stripes - Traditional Ghanaian weaving pattern -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <pattern id="kente-stripes-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <g opacity="0.1">
+        <!-- Vertical stripes -->
+        <rect x="0" y="0" width="8" height="100" fill="currentColor"/>
+        <rect x="12" y="0" width="4" height="100" fill="currentColor"/>
+        <rect x="20" y="0" width="12" height="100" fill="currentColor"/>
+        <rect x="36" y="0" width="4" height="100" fill="currentColor"/>
+        <rect x="44" y="0" width="8" height="100" fill="currentColor"/>
+        <rect x="56" y="0" width="4" height="100" fill="currentColor"/>
+        <rect x="64" y="0" width="12" height="100" fill="currentColor"/>
+        <rect x="80" y="0" width="4" height="100" fill="currentColor"/>
+        <rect x="88" y="0" width="8" height="100" fill="currentColor"/>
+        
+        <!-- Horizontal accent lines -->
+        <rect x="0" y="10" width="100" height="2" fill="currentColor" opacity="0.5"/>
+        <rect x="0" y="30" width="100" height="2" fill="currentColor" opacity="0.5"/>
+        <rect x="0" y="50" width="100" height="2" fill="currentColor" opacity="0.5"/>
+        <rect x="0" y="70" width="100" height="2" fill="currentColor" opacity="0.5"/>
+        <rect x="0" y="90" width="100" height="2" fill="currentColor" opacity="0.5"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100" height="100" fill="url(#kente-stripes-pattern)"/>
+</svg>

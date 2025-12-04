@@ -1,6 +1,12 @@
 /* Leaflet CSS - must be imported first */
 @import 'leaflet/dist/leaflet.css';
 
+/* African Patterns */
+@import './styles/africanPatterns.css';
+
+/* African Animations - Warm, welcoming, storytelling-inspired */
+@import './styles/africanAnimations.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -43,6 +49,85 @@
   --gradient-green-end: #059669;
   --gradient-emerald-start: #10B981;
   --gradient-emerald-end: #047857;
+
+  /* ===== African Color Palette ===== */
+  /* Terracotta - Warm earth tones inspired by African pottery */
+  --color-terracotta-50: #fef5f1;
+  --color-terracotta-100: #fde8df;
+  --color-terracotta-200: #fbd0bf;
+  --color-terracotta-300: #f7ad94;
+  --color-terracotta-400: #f28567;
+  --color-terracotta-500: #e8603c;
+  --color-terracotta-600: #d44a2a;
+  --color-terracotta-700: #b13a22;
+  --color-terracotta-800: #923322;
+  --color-terracotta-900: #792e21;
+
+  /* Ochre - Golden earth tones from African landscapes */
+  --color-ochre-50: #fefbf3;
+  --color-ochre-100: #fdf5e1;
+  --color-ochre-200: #fae9c2;
+  --color-ochre-300: #f6d898;
+  --color-ochre-400: #f1c06c;
+  --color-ochre-500: #eba548;
+  --color-ochre-600: #d98a33;
+  --color-ochre-700: #b56d2a;
+  --color-ochre-800: #925728;
+  --color-ochre-900: #784924;
+
+  /* Burnt Sienna - Deep sunset tones */
+  --color-burnt-sienna-50: #fef6f3;
+  --color-burnt-sienna-100: #fdeae3;
+  --color-burnt-sienna-200: #fbd4c7;
+  --color-burnt-sienna-300: #f7b49f;
+  --color-burnt-sienna-400: #f18b6f;
+  --color-burnt-sienna-500: #e76646;
+  --color-burnt-sienna-600: #d44a2f;
+  --color-burnt-sienna-700: #b13a25;
+  --color-burnt-sienna-800: #923323;
+  --color-burnt-sienna-900: #792e23;
+
+  /* Kente Gold - Inspired by traditional Kente cloth */
+  --color-kente-gold-50: #fefce8;
+  --color-kente-gold-100: #fef9c3;
+  --color-kente-gold-200: #fef08a;
+  --color-kente-gold-300: #fde047;
+  --color-kente-gold-400: #facc15;
+  --color-kente-gold-500: #eab308;
+  --color-kente-gold-600: #ca8a04;
+  --color-kente-gold-700: #a16207;
+  --color-kente-gold-800: #854d0e;
+  --color-kente-gold-900: #713f12;
+
+  /* Ubuntu Purple - Community and interconnection */
+  --color-ubuntu-purple-50: #faf5ff;
+  --color-ubuntu-purple-100: #f3e8ff;
+  --color-ubuntu-purple-200: #e9d5ff;
+  --color-ubuntu-purple-300: #d8b4fe;
+  --color-ubuntu-purple-400: #c084fc;
+  --color-ubuntu-purple-500: #a855f7;
+  --color-ubuntu-purple-600: #9333ea;
+  --color-ubuntu-purple-700: #7e22ce;
+  --color-ubuntu-purple-800: #6b21a8;
+  --color-ubuntu-purple-900: #581c87;
+
+  /* Sahara Sand - Desert warmth */
+  --color-sahara-sand-50: #fdfcf9;
+  --color-sahara-sand-100: #faf7f0;
+  --color-sahara-sand-200: #f5ede0;
+  --color-sahara-sand-300: #ecddc7;
+  --color-sahara-sand-400: #e0c8a8;
+  --color-sahara-sand-500: #d4b08c;
+  --color-sahara-sand-600: #c49872;
+  --color-sahara-sand-700: #a97d5d;
+  --color-sahara-sand-800: #8c674e;
+  --color-sahara-sand-900: #735542;
+
+  /* African Gradient Combinations */
+  --gradient-african-sunset: linear-gradient(135deg, #e8603c 0%, #eba548 50%, #eab308 100%);
+  --gradient-african-earth: linear-gradient(135deg, #d4b08c 0%, #b13a22 100%);
+  --gradient-kente: linear-gradient(90deg, #eab308 0%, #9333ea 50%, #10B981 100%);
+  --gradient-ubuntu: linear-gradient(135deg, #9333ea 0%, #10B981 100%);
 
   /* ===== Spacing Tokens ===== */
   --space-xs: 4px;
@@ -169,6 +254,44 @@
 
   .bg-gradient-emerald {
     background: linear-gradient(to right, var(--gradient-emerald-start), var(--gradient-emerald-end));
+  }
+
+  /* African Gradient Utilities */
+  .bg-gradient-african-sunset {
+    background: var(--gradient-african-sunset);
+  }
+
+  .bg-gradient-african-earth {
+    background: var(--gradient-african-earth);
+  }
+
+  .bg-gradient-kente {
+    background: var(--gradient-kente);
+  }
+
+  .bg-gradient-ubuntu {
+    background: var(--gradient-ubuntu);
+  }
+
+  .text-gradient-african-sunset {
+    background: var(--gradient-african-sunset);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-kente {
+    background: var(--gradient-kente);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-ubuntu {
+    background: var(--gradient-ubuntu);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
   
   /* Hover Effect Utilities */
@@ -323,4 +446,83 @@ body {
 
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ===== Badge Rendering Quality ===== */
+/* Anti-aliasing and rendering optimizations for geometric badges */
+/* Implements Task 22.2: Anti-aliasing and rendering quality */
+
+.badge-svg,
+.badge-container svg,
+[data-badge-svg] {
+  /* Geometric precision for sharp edges */
+  shape-rendering: geometricPrecision;
+  
+  /* Optimized text rendering for legibility */
+  text-rendering: optimizeLegibility;
+  
+  /* Crisp edges for images within badges */
+  image-rendering: crisp-edges;
+  
+  /* GPU acceleration to prevent blur */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  
+  /* Prevent flickering during animations */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  
+  /* Additional optimizations */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Badge container with aspect ratio preservation */
+.badge-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.badge-container svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive badge sizing with maintained quality */
+.badge-responsive {
+  width: 128px;
+  height: 128px;
+}
+
+@media (min-width: 640px) {
+  .badge-responsive {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (min-width: 768px) {
+  .badge-responsive {
+    width: 192px;
+    height: 192px;
+  }
+}
+
+/* Badge rendering quality for different tiers */
+.badge-tier-bronze svg,
+.badge-tier-silver svg,
+.badge-tier-gold svg,
+.badge-tier-platinum svg,
+.badge-tier-diamond svg,
+.badge-tier-hero svg,
+.badge-tier-hummingbird svg {
+  shape-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }

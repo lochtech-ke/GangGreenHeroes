@@ -1,0 +1,279 @@
+/**
+ * African Geometric Patterns
+ * Traditional patterns from African cultures for backgrounds and decorative elements
+ */
+
+/* ===== Adinkra Symbol Patterns ===== */
+
+.pattern-sankofa {
+  background-image: url('/src/assets/patterns/african/sankofa.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+.pattern-gye-nyame {
+  background-image: url('/src/assets/patterns/african/gye-nyame.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+.pattern-dwennimmen {
+  background-image: url('/src/assets/patterns/african/dwennimmen.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+.pattern-aya {
+  background-image: url('/src/assets/patterns/african/aya.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+/* ===== Kente Patterns ===== */
+
+.pattern-kente-stripes {
+  background-image: url('/src/assets/patterns/african/kente-stripes.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+.pattern-kente-diamonds {
+  background-image: url('/src/assets/patterns/african/kente-diamonds.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+.pattern-kente-zigzag {
+  background-image: url('/src/assets/patterns/african/kente-zigzag.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+/* ===== Mudcloth Patterns ===== */
+
+.pattern-mudcloth-lines {
+  background-image: url('/src/assets/patterns/african/mudcloth-lines.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+.pattern-mudcloth-crosshatch {
+  background-image: url('/src/assets/patterns/african/mudcloth-crosshatch.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+/* ===== Pattern Overlays ===== */
+
+/* Subtle overlay for section backgrounds */
+.pattern-overlay-subtle {
+  position: relative;
+}
+
+.pattern-overlay-subtle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Medium opacity overlay */
+.pattern-overlay-medium {
+  position: relative;
+}
+
+.pattern-overlay-medium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Prominent overlay for decorative sections */
+.pattern-overlay-prominent {
+  position: relative;
+}
+
+.pattern-overlay-prominent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== Pattern Border Utilities ===== */
+
+.border-pattern-sankofa {
+  border: 2px solid transparent;
+  background-image: 
+    linear-gradient(white, white),
+    url('/src/assets/patterns/african/sankofa.svg');
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.border-pattern-kente {
+  border: 3px solid transparent;
+  background-image: 
+    linear-gradient(white, white),
+    url('/src/assets/patterns/african/kente-stripes.svg');
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* ===== Color-Specific Pattern Utilities ===== */
+
+/* Terracotta colored patterns */
+.pattern-terracotta {
+  color: var(--color-terracotta-600);
+}
+
+.pattern-terracotta.pattern-sankofa,
+.pattern-terracotta.pattern-gye-nyame,
+.pattern-terracotta.pattern-dwennimmen,
+.pattern-terracotta.pattern-aya {
+  background-color: var(--color-terracotta-50);
+}
+
+/* Ochre colored patterns */
+.pattern-ochre {
+  color: var(--color-ochre-600);
+}
+
+.pattern-ochre.pattern-kente-stripes,
+.pattern-ochre.pattern-kente-diamonds,
+.pattern-ochre.pattern-kente-zigzag {
+  background-color: var(--color-ochre-50);
+}
+
+/* Sahara sand colored patterns */
+.pattern-sahara {
+  color: var(--color-sahara-sand-700);
+}
+
+.pattern-sahara.pattern-mudcloth-lines,
+.pattern-sahara.pattern-mudcloth-crosshatch {
+  background-color: var(--color-sahara-sand-50);
+}
+
+/* Ubuntu purple colored patterns */
+.pattern-ubuntu {
+  color: var(--color-ubuntu-purple-600);
+}
+
+/* ===== Responsive Pattern Sizes ===== */
+
+@media (max-width: 768px) {
+  .pattern-sankofa,
+  .pattern-gye-nyame,
+  .pattern-dwennimmen,
+  .pattern-aya,
+  .pattern-kente-stripes,
+  .pattern-kente-diamonds,
+  .pattern-kente-zigzag,
+  .pattern-mudcloth-lines,
+  .pattern-mudcloth-crosshatch {
+    background-size: 60px 60px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .pattern-sankofa,
+  .pattern-gye-nyame,
+  .pattern-dwennimmen,
+  .pattern-aya,
+  .pattern-kente-stripes,
+  .pattern-kente-diamonds,
+  .pattern-kente-zigzag,
+  .pattern-mudcloth-lines,
+  .pattern-mudcloth-crosshatch {
+    background-size: 150px 150px;
+  }
+}
+
+/* ===== Animation for Patterns ===== */
+
+@keyframes pattern-float {
+  0%, 100% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 20px 20px;
+  }
+}
+
+.pattern-animated {
+  animation: pattern-float 20s ease-in-out infinite;
+}
+
+/* ===== Glass Effect with Patterns ===== */
+
+.glass-pattern {
+  position: relative;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-pattern::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glass-pattern.pattern-sankofa::after {
+  background-image: url('/src/assets/patterns/african/sankofa.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+.glass-pattern.pattern-kente-diamonds::after {
+  background-image: url('/src/assets/patterns/african/kente-diamonds.svg');
+  background-repeat: repeat;
+  background-size: 100px 100px;
+}
+
+/* ===== Usage Examples ===== */
+
+/*
+Example 1: Section background with subtle pattern
+<section class="pattern-sankofa pattern-terracotta pattern-overlay-subtle">
+  <div class="relative z-10">Content here</div>
+</section>
+
+Example 2: Card with pattern border
+<div class="glass border-pattern-kente rounded-lg p-6">
+  Card content
+</div>
+
+Example 3: Animated pattern background
+<div class="pattern-kente-zigzag pattern-ochre pattern-animated">
+  Animated background
+</div>
+
+Example 4: Glass card with pattern overlay
+<div class="glass-pattern pattern-sankofa rounded-xl p-8">
+  <div class="relative z-10">Content appears above pattern</div>
+</div>
+*/

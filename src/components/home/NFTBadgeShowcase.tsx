@@ -4,6 +4,7 @@ import { Award, Coins, Sparkles, ExternalLink, Lock } from 'lucide-react';
 import { GlassButton } from '../common/GlassButton';
 import { AnimatedSection } from '../common/AnimatedSection';
 import { BadgeSvgService } from '../../services/badgeSvg.service';
+import { BadgeFallback, BadgeLoadingSpinner } from '../badges/BadgeFallback';
 import type { BadgeTier, ForestType, AchievementType } from '../../types/badge.types';
 
 interface FeaturedBadge {
@@ -177,14 +178,13 @@ const FeaturedBadgeCard: React.FC<{
             transition={{ duration: 0.3 }}
           >
             {isLoading ? (
-              // Loading state
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-green-600"></div>
-              </div>
+              // Loading state with glass effect
+              <BadgeLoadingSpinner size="md" />
             ) : badgeSvg && !hasError ? (
-              // Successfully generated SVG
+              // Successfully generated SVG with rendering quality optimizations
               <div
-                className="w-full h-full drop-shadow-2xl"
+                className="w-full h-full drop-shadow-2xl badge-svg"
+                data-badge-svg
                 dangerouslySetInnerHTML={{ __html: badgeSvg }}
               />
             ) : badge.imageUrl ? (
@@ -193,17 +193,19 @@ const FeaturedBadgeCard: React.FC<{
                 src={badge.imageUrl}
                 alt={badge.name}
                 className="w-full h-full object-contain drop-shadow-2xl"
-                onError={(e) => {
+                onError={() => {
                   console.error('[NFTBadgeShowcase] Image load failed:', badge.imageUrl);
-                  // Hide broken image
-                  e.currentTarget.style.display = 'none';
+                  // Show BadgeFallback instead of hiding
+                  setHasError(true);
                 }}
               />
             ) : (
-              // Final fallback: placeholder icon
-              <div className={`w-full h-full rounded-full flex items-center justify-center text-6xl ${config.bg} backdrop-blur-sm`}>
-                <Award size={80} className={`bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`} />
-              </div>
+              // Final fallback: BadgeFallback component with tier-specific styling
+              <BadgeFallback
+                tier={badge.tier}
+                badgeName={badge.name}
+                size="md"
+              />
             )}
           </motion.div>
         </div>

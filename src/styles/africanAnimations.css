@@ -1,0 +1,164 @@
+/**
+ * African-Inspired Animation Styles
+ * 
+ * These animations reflect African storytelling traditions with:
+ * - Warm, welcoming timing functions (longer durations)
+ * - Rhythmic bounces inspired by drumbeats
+ * - Flowing movements like leaves in the wind
+ * - Color transitions mimicking African sunsets
+ * - Organic, natural easing
+ */
+
+/* Warm Entrance Animations */
+.animate-warm-entrance {
+  animation: warmFadeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-storytelling-entrance {
+  animation: storytellingReveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Rhythmic Interactions */
+.hover-drumbeat {
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.hover-drumbeat:hover {
+  animation: drumbeatBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Organic Movement */
+.animate-leaf-dance {
+  animation: leafFloat 8s ease-in-out infinite;
+}
+
+.animate-gentle-sway {
+  animation: gentleSway 4s ease-in-out infinite;
+}
+
+/* Sunset-Inspired Glows */
+.glow-sunset {
+  animation: sunsetGlow 3s ease-in-out infinite;
+}
+
+.glow-ubuntu {
+  animation: ubuntuPulse 2.5s ease-in-out infinite;
+}
+
+/* Warm Transitions */
+.transition-warm {
+  transition-duration: 800ms;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.transition-storytelling {
+  transition-duration: 1200ms;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.transition-organic {
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.transition-sunset {
+  transition-duration: 800ms;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Staggered Animations for Groups */
+.stagger-warm > * {
+  opacity: 0;
+  animation: warmFadeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.stagger-warm > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-warm > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-warm > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-warm > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-warm > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-warm > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* Storytelling Sequence */
+.stagger-storytelling > * {
+  opacity: 0;
+  animation: storytellingReveal 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.stagger-storytelling > *:nth-child(1) { animation-delay: 0.2s; }
+.stagger-storytelling > *:nth-child(2) { animation-delay: 0.4s; }
+.stagger-storytelling > *:nth-child(3) { animation-delay: 0.6s; }
+.stagger-storytelling > *:nth-child(4) { animation-delay: 0.8s; }
+.stagger-storytelling > *:nth-child(5) { animation-delay: 1.0s; }
+
+/* Hover Effects with African Warmth */
+.hover-warm-lift {
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-warm-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(232, 96, 60, 0.2), 0 10px 20px rgba(235, 165, 72, 0.15);
+}
+
+.hover-sunset-glow {
+  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.hover-sunset-glow:hover {
+  box-shadow: 0 0 30px rgba(255, 107, 53, 0.4), 0 0 60px rgba(234, 179, 8, 0.3);
+  filter: brightness(1.1);
+}
+
+/* Ubuntu Philosophy - Interconnected Animations */
+.ubuntu-connect {
+  position: relative;
+  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ubuntu-connect::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, #a855f7, #10B981, #eab308);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ubuntu-connect:hover::before {
+  opacity: 1;
+}
+
+/* Color Transitions - African Sunset Palette */
+.transition-sunset-colors {
+  transition: background-color 2s cubic-bezier(0.25, 0.1, 0.25, 1),
+              color 2s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Accessibility: Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-warm-entrance,
+  .animate-storytelling-entrance,
+  .animate-leaf-dance,
+  .animate-gentle-sway,
+  .glow-sunset,
+  .glow-ubuntu,
+  .stagger-warm > *,
+  .stagger-storytelling > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  
+  .hover-drumbeat,
+  .hover-warm-lift,
+  .hover-sunset-glow,
+  .ubuntu-connect {
+    transition: none;
+  }
+}

@@ -20,7 +20,7 @@ interface QuickActionsCardProps {
 }
 
 /**
- * Quick actions card for Track 3 dashboard
+ * Quick actions card for dashboard
  * Provides shortcuts to key community engagement features
  */
 export const QuickActionsCard: React.FC<QuickActionsCardProps> = ({

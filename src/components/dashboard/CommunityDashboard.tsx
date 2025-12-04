@@ -15,7 +15,7 @@ interface CommunityDashboardProps {
 }
 
 /**
- * Main Track 3 Community Dashboard
+ * Main Community Dashboard
  * Displays community engagement metrics, badge progress, and quick actions
  */
 export const CommunityDashboard: React.FC<CommunityDashboardProps> = ({

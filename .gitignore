@@ -140,3 +140,7 @@ vite.config.ts.timestamp-*
 
 # Context directory
 .context
+
+# Hackathon materials (preserved locally, excluded from version control)
+Hackathon Pitch Deck/
+submission/

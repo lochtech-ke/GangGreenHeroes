@@ -12,7 +12,6 @@ import {
   Cookie,
   Receipt,
   CheckCircle,
-  Heart,
   ExternalLink,
   type LucideIcon,
 } from 'lucide-react';
@@ -146,10 +145,6 @@ export function UnifiedFooter({ className = '' }: UnifiedFooterProps) {
               Catalyzing a carbon-negative Africa through technology-driven forest conservation,
               carbon credit markets, and community engagement.
             </p>
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <Heart size={16} className="text-red-400" />
-              <span>Built for Track 3: Community Engagement and Sustainability</span>
-            </div>
           </div>
 
           {/* Platform Links */}
@@ -253,6 +248,23 @@ export function UnifiedFooter({ className = '' }: UnifiedFooterProps) {
           </div>
         </div>
 
+        {/* Wangari Maathai Quote */}
+        <div className="border-t border-white/10 pt-8 mb-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="glass-green rounded-xl p-6">
+              <p className="text-lg md:text-xl text-white italic mb-3 leading-relaxed">
+                "I will do the best I can."
+              </p>
+              <p className="text-sm text-gray-300">
+                — Prof. Wangari Maathai, Nobel Peace Prize Laureate (2004)
+              </p>
+              <p className="text-xs text-gray-400 mt-2">
+                Founder of the Green Belt Movement • Planted over 51 million trees across Kenya
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Partners & Recognition */}
         <div className="border-t border-white/10 pt-8 mb-8">
           <div className="text-center">
@@ -302,9 +314,6 @@ export function UnifiedFooter({ className = '' }: UnifiedFooterProps) {
           <p className="text-gray-500 text-sm flex items-center justify-center gap-2 mb-2">
             <TreePine size={16} className="text-green-500" />
             Honoring the legacy of Prof. Wangari Maathai - Nobel Peace Prize Laureate
-          </p>
-          <p className="text-gray-600 text-xs mb-2">
-            Wangari Maathai Hackathon 2025 - Track 3 Submission
           </p>
           <p className="text-gray-500 text-xs">Licensed under MIT License</p>
         </div>

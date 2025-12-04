@@ -18,7 +18,7 @@ export function QuickActions({ userId, userRole, maxVisible = 4 }: QuickActionsP
   const [customActionIds, setCustomActionIds] = useState<string[] | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Default quick actions - Track 3 Focus: Community Engagement
+  // Default quick actions - Community Engagement
   const defaultActions: QuickAction[] = [
     {
       id: 'share-story',

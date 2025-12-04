@@ -1,6 +1,6 @@
 /**
  * Routing Components
- * Track 3 route handling and redirects
+ * Route handling and redirects for deprecated features
  */
 
 export { DeprecatedRouteHandler } from './DeprecatedRouteHandler';

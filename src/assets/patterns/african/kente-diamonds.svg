@@ -1,0 +1,24 @@
+<!-- Kente Diamonds - Diamond pattern from Kente cloth -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <pattern id="kente-diamonds-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <g opacity="0.12" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Center diamond -->
+        <path d="M 50 20 L 70 50 L 50 80 L 30 50 Z"/>
+        <!-- Inner diamond -->
+        <path d="M 50 30 L 60 50 L 50 70 L 40 50 Z"/>
+        <!-- Corner diamonds -->
+        <path d="M 10 0 L 20 10 L 10 20 L 0 10 Z"/>
+        <path d="M 90 0 L 100 10 L 90 20 L 80 10 Z"/>
+        <path d="M 10 80 L 20 90 L 10 100 L 0 90 Z"/>
+        <path d="M 90 80 L 100 90 L 90 100 L 80 90 Z"/>
+        <!-- Connecting lines -->
+        <line x1="20" y1="10" x2="30" y2="50"/>
+        <line x1="80" y1="10" x2="70" y2="50"/>
+        <line x1="20" y1="90" x2="30" y2="50"/>
+        <line x1="80" y1="90" x2="70" y2="50"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100" height="100" fill="url(#kente-diamonds-pattern)"/>
+</svg>

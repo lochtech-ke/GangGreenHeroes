@@ -185,14 +185,15 @@ export const ImpactMetrics: React.FC<ImpactMetricsProps> = ({
   return (
     <section className="py-16 bg-gradient-to-b from-green-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Section Header with Ubuntu messaging */}
         <AnimatedSection animation="fadeInUp" className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Our Impact in Real-Time
+            Our Collective Impact in Real-Time
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Watch as our community grows and makes a tangible difference in Africa's forests.
-            Every number represents real action and real impact.
+            Together, we're making a tangible difference in Africa's forests.
+            Every number represents our shared commitment and collective action. 
+            <span className="font-semibold text-green-600"> We grow together.</span>
           </p>
         </AnimatedSection>
 
@@ -202,7 +203,7 @@ export const ImpactMetrics: React.FC<ImpactMetricsProps> = ({
             <MetricCard
               icon={TreePine}
               value={metrics.treesPlanted}
-              label="Trees Planted"
+              label="Trees We've Planted Together"
               accentColor="bg-green-500"
               trend={12}
             />
@@ -211,7 +212,7 @@ export const ImpactMetrics: React.FC<ImpactMetricsProps> = ({
             <MetricCard
               icon={Leaf}
               value={metrics.carbonSequestered}
-              label="Carbon Sequestered"
+              label="Carbon We've Sequestered"
               unit="tons"
               accentColor="bg-emerald-500"
               trend={8}
@@ -221,7 +222,7 @@ export const ImpactMetrics: React.FC<ImpactMetricsProps> = ({
             <MetricCard
               icon={Users}
               value={metrics.activeUsers}
-              label="Active Heroes"
+              label="Community Heroes"
               accentColor="bg-blue-500"
               trend={15}
             />
@@ -230,7 +231,7 @@ export const ImpactMetrics: React.FC<ImpactMetricsProps> = ({
             <MetricCard
               icon={Award}
               value={metrics.badgesEarned}
-              label="NFT Badges Earned"
+              label="Badges We've Earned"
               accentColor="bg-amber-500"
               trend={20}
             />

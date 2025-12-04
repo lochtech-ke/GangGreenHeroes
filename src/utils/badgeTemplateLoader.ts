@@ -219,16 +219,10 @@ function getFallbackTemplate(): string {
 
 /**
  * Optimize SVG output
+ * @deprecated Use optimizeSVGFileSize from badgeSvgOptimizer for comprehensive optimization
  */
 export function optimizeSVG(svg: string): string {
-  // Remove unnecessary whitespace
-  let optimized = svg.replace(/>\s+</g, '><');
-  
-  // Remove comments
-  optimized = optimized.replace(/<!--[\s\S]*?-->/g, '');
-  
-  // Remove empty groups
-  optimized = optimized.replace(/<g[^>]*>\s*<\/g>/g, '');
-  
-  return optimized.trim();
+  // Import the comprehensive optimizer
+  const { optimizeSVGFileSize } = require('./badgeSvgOptimizer');
+  return optimizeSVGFileSize(svg);
 }

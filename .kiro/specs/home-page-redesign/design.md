@@ -1174,6 +1174,432 @@ The home page uses the UnifiedFooter component (see `.kiro/specs/unified-footer/
 - Maintains consistent branding across all pages
 - Shares glassmorphism design tokens with home page components
 
+## African Cultural Design Integration
+
+### African Color Palette
+
+**Extended Color System**:
+```css
+/* Primary Green Palette (existing) */
+--green-50: #F0FDF4;
+--green-500: #10B981;
+--green-600: #059669;
+--green-900: #064E3B;
+
+/* African Earth Tones */
+--terracotta: #E07856;
+--ochre: #CC7722;
+--burnt-sienna: #E97451;
+--sahara-sand: #EDC9AF;
+--baobab-brown: #8B4513;
+--sunset-orange: #FF6B35;
+
+/* Cultural Accent Colors */
+--kente-gold: #FFD700;
+--adinkra-black: #1A1A1A;
+--ubuntu-purple: #6B46C1;
+--savanna-yellow: #F4A460;
+```
+
+**Usage Guidelines**:
+- Use earth tones for section backgrounds and accents
+- Combine green with terracotta/ochre for warm, welcoming feel
+- Use kente-gold for premium features and highlights
+- Apply sunset-orange for CTAs and important actions
+- Use ubuntu-purple for community-focused sections
+
+### African Geometric Patterns
+
+**Pattern Library**:
+```typescript
+interface AfricanPattern {
+  name: string;
+  svgPath: string;
+  culturalOrigin: string;
+  usage: string;
+}
+
+const africanPatterns = {
+  adinkra: {
+    name: 'Adinkra Symbols',
+    culturalOrigin: 'Ghana (Akan people)',
+    patterns: [
+      'Sankofa (return and get it)', // Learning from the past
+      'Gye Nyame (except God)', // Supremacy of God
+      'Dwennimmen (ram\'s horns)', // Strength and humility
+      'Aya (fern)', // Endurance and resourcefulness
+    ],
+    usage: 'Decorative borders, section dividers, background patterns',
+  },
+  kente: {
+    name: 'Kente Patterns',
+    culturalOrigin: 'Ghana (Ashanti people)',
+    patterns: [
+      'Geometric stripes',
+      'Interlocking diamonds',
+      'Zigzag patterns',
+    ],
+    usage: 'Hero section backgrounds, card borders, accent elements',
+  },
+  mudcloth: {
+    name: 'Mudcloth (Bògòlanfini)',
+    culturalOrigin: 'Mali (Bambara people)',
+    patterns: [
+      'Horizontal lines',
+      'Crosshatch patterns',
+      'Symbolic shapes',
+    ],
+    usage: 'Subtle backgrounds, texture overlays',
+  },
+};
+```
+
+**Implementation**:
+- Create SVG pattern definitions in `src/assets/patterns/african/`
+- Use as CSS background patterns with low opacity (10-20%)
+- Apply to section backgrounds, card borders, and decorative elements
+- Ensure patterns don't interfere with readability
+
+### African Typography and Language
+
+**Multilingual Greetings**:
+```typescript
+const africanGreetings = {
+  swahili: {
+    greeting: 'Karibu',
+    meaning: 'Welcome',
+    usage: 'Hero section primary greeting',
+  },
+  kikuyu: {
+    greeting: 'Wega',
+    meaning: 'Welcome',
+    usage: 'Alternate hero greeting',
+  },
+  english: {
+    greeting: 'Welcome to #GangGreen',
+    usage: 'Primary headline',
+  },
+};
+```
+
+**Hero Section Multilingual Display**:
+```tsx
+<div className="hero-greeting">
+  <h1 className="text-6xl font-bold mb-4">
+    <span className="text-gradient">Karibu</span>
+    <span className="text-white"> to </span>
+    <span className="text-gradient-gold">#GangGreen</span>
+  </h1>
+  <p className="text-xl text-white/90">
+    Catalyzing a Carbon-Negative Africa
+  </p>
+</div>
+```
+
+### Wangari Maathai Legacy Integration
+
+**Hummingbird Story Section**:
+```tsx
+interface HummingbirdStoryProps {
+  variant: 'hero' | 'journey' | 'inline';
+}
+
+const HummingbirdStory: React.FC<HummingbirdStoryProps> = ({ variant }) => {
+  return (
+    <div className="glass rounded-2xl p-8 border-2 border-kente-gold/30">
+      <div className="flex items-start gap-6">
+        <div className="w-24 h-24 rounded-full glass-green flex items-center justify-center">
+          {/* Hummingbird illustration */}
+          <img src="/assets/hummingbird-icon.svg" alt="Hummingbird" />
+        </div>
+        <div>
+          <h3 className="text-2xl font-bold text-gray-900 mb-3">
+            The Hummingbird Story
+          </h3>
+          <p className="text-gray-700 leading-relaxed mb-4">
+            "I will do the best I can." - Wangari Maathai's tale of the hummingbird 
+            teaches us that every small action counts in the fight against environmental 
+            destruction. Like the hummingbird carrying drops of water to fight the forest 
+            fire, your contribution matters.
+          </p>
+          <p className="text-sm text-gray-600 italic">
+            - Prof. Wangari Maathai, Nobel Peace Prize Laureate (2004)
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+```
+
+**Integration Points**:
+- Hero section: Subtle reference with hummingbird icon
+- Journey section: Full story card between steps 3-4
+- Badge showcase: Hummingbird Welcome Badge prominently featured
+- Footer: Quote from Wangari Maathai
+
+### African Imagery Guidelines
+
+**Photography Style**:
+- Authentic African landscapes (Kenyan forests, savannas, communities)
+- Diverse representation of African people (all ages, genders, regions)
+- Community-focused imagery showing collective action
+- Vibrant colors showcasing Africa's natural beauty
+- Documentary-style photos showing real conservation work
+
+**Image Sources**:
+- Partner with local photographers in Kenya
+- Use images from Green Belt Movement archives
+- Commission original photography from pilot forests
+- Ensure proper attribution and permissions
+
+**Hero Section Images**:
+```typescript
+const heroImages = [
+  {
+    url: '/assets/hero/kakamega-forest-canopy.jpg',
+    alt: 'Kakamega Forest canopy with sunlight filtering through',
+    credit: 'Green Belt Movement',
+  },
+  {
+    url: '/assets/hero/community-tree-planting.jpg',
+    alt: 'Community members planting trees together',
+    credit: 'Local photographer',
+  },
+  {
+    url: '/assets/hero/kenyan-youth-conservation.jpg',
+    alt: 'Young Kenyans engaged in conservation activities',
+    credit: 'Partner organization',
+  },
+];
+```
+
+### Ubuntu Philosophy Integration
+
+**Community-Focused Messaging**:
+```typescript
+const ubuntuMessages = {
+  tagline: 'Together We Grow - Ubuntu in Action',
+  description: 'Ubuntu: "I am because we are" - Our platform embodies the African philosophy of interconnectedness and collective responsibility.',
+  sections: {
+    community: 'Join a movement rooted in Ubuntu - where individual actions create collective impact',
+    impact: 'Our shared success: Every tree planted strengthens our community',
+    journey: 'Your journey is our journey - we rise together',
+  },
+};
+```
+
+**Visual Representation**:
+- Use circular/interconnected design elements
+- Show community groups in imagery
+- Emphasize collective achievements over individual
+- Use "we" language throughout copy
+
+### African Animation Style
+
+**Storytelling Animations**:
+```typescript
+const africanAnimationStyle = {
+  rhythm: 'Organic, flowing movements inspired by traditional dance',
+  timing: 'Deliberate pacing that allows appreciation of each element',
+  transitions: 'Smooth, warm transitions like sunset colors blending',
+  interactions: 'Welcoming, inviting gestures',
+};
+```
+
+**Implementation**:
+- Use warm easing functions (ease-in-out with longer duration)
+- Add subtle bounce to CTAs (like traditional drumbeat rhythm)
+- Implement flowing particle animations (like leaves in wind)
+- Use color transitions that mimic African sunsets
+
+## Geometric Badge Display Optimization
+
+### SVG Badge Rendering Best Practices
+
+**ViewBox Configuration**:
+```typescript
+interface BadgeSvgConfig {
+  viewBox: string; // "0 0 400 400" for consistent 1:1 aspect ratio
+  width: string; // "100%" for responsive sizing
+  height: string; // "100%" for responsive sizing
+  preserveAspectRatio: string; // "xMidYMid meet" for centered scaling
+}
+
+const optimalBadgeConfig: BadgeSvgConfig = {
+  viewBox: '0 0 400 400',
+  width: '100%',
+  height: '100%',
+  preserveAspectRatio: 'xMidYMid meet',
+};
+```
+
+**Container Sizing**:
+```tsx
+// Consistent badge container
+<div className="w-48 h-48 flex items-center justify-center">
+  <div 
+    className="w-full h-full"
+    dangerouslySetInnerHTML={{ __html: badgeSvg }}
+  />
+</div>
+```
+
+### Anti-Aliasing and Rendering Quality
+
+**SVG Optimization**:
+```css
+/* Apply to all badge SVG containers */
+.badge-container svg {
+  shape-rendering: geometricPrecision; /* Sharp edges for geometric shapes */
+  text-rendering: optimizeLegibility; /* Clear text */
+  image-rendering: -webkit-optimize-contrast; /* Better contrast */
+  image-rendering: crisp-edges; /* Sharp edges */
+}
+
+/* For smooth gradients */
+.badge-gradient {
+  shape-rendering: auto; /* Smooth gradient rendering */
+}
+```
+
+**CSS Enhancements**:
+```css
+.geometric-badge {
+  /* Ensure crisp rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Prevent blur on transform */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  
+  /* Optimize for animations */
+  will-change: transform;
+}
+```
+
+### Fallback Handling
+
+**Graceful Degradation**:
+```tsx
+const BadgeFallback: React.FC<{ tier: BadgeTier }> = ({ tier }) => {
+  const config = tierConfig[tier];
+  
+  return (
+    <div className={`
+      w-full h-full rounded-full 
+      flex items-center justify-center 
+      ${config.bg} backdrop-blur-sm
+      border-4 ${config.border}
+    `}>
+      <Award 
+        size={80} 
+        className={`bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`} 
+      />
+    </div>
+  );
+};
+```
+
+**Error Handling**:
+```tsx
+const [badgeSvg, setBadgeSvg] = useState<string | null>(null);
+const [hasError, setHasError] = useState(false);
+
+// In render
+{hasError ? (
+  <BadgeFallback tier={badge.tier} />
+) : badgeSvg ? (
+  <div dangerouslySetInnerHTML={{ __html: badgeSvg }} />
+) : (
+  <LoadingSpinner />
+)}
+```
+
+### Performance Optimization
+
+**SVG File Size Reduction**:
+```typescript
+interface SvgOptimizationConfig {
+  removeComments: true;
+  removeMetadata: true;
+  removeEditorsNSData: true;
+  cleanupIDs: true;
+  minifyStyles: true;
+  convertPathData: true;
+  mergePaths: true;
+  removeUselessStrokeAndFill: true;
+  precision: 2; // Reduce decimal precision
+}
+```
+
+**Lazy Loading Strategy**:
+```tsx
+// Only generate badge SVG when component is in viewport
+const { ref, inView } = useInView({
+  triggerOnce: true,
+  threshold: 0.1,
+});
+
+useEffect(() => {
+  if (inView) {
+    generateBadgeSvg();
+  }
+}, [inView]);
+```
+
+### Mobile Optimization
+
+**Responsive Badge Sizing**:
+```tsx
+const badgeSizes = {
+  mobile: 'w-32 h-32',    // 128px
+  tablet: 'w-40 h-40',    // 160px
+  desktop: 'w-48 h-48',   // 192px
+};
+
+<div className={`
+  ${badgeSizes.mobile}
+  md:${badgeSizes.tablet}
+  lg:${badgeSizes.desktop}
+`}>
+  {/* Badge SVG */}
+</div>
+```
+
+**Touch Optimization**:
+```css
+/* Prevent tap highlight on mobile */
+.badge-card {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+```
+
+### Testing Checklist for Badge Display
+
+- [ ] Badges render at correct size (200x200px default)
+- [ ] ViewBox is set to "0 0 400 400" for all badges
+- [ ] Aspect ratio is maintained (1:1 square)
+- [ ] Tier gradients display correctly (bronze, silver, gold, platinum, diamond)
+- [ ] Forest background patterns are visible and clear
+- [ ] Achievement icons render at appropriate scale
+- [ ] Badge edges are crisp and anti-aliased
+- [ ] Colors are accurate across Chrome, Firefox, Safari, Edge
+- [ ] Fallback displays when SVG generation fails
+- [ ] Loading state shows glass spinner
+- [ ] Diamond tier animation runs at 60fps
+- [ ] Badges scale correctly on mobile (128px)
+- [ ] Badges scale correctly on tablet (160px)
+- [ ] Badges scale correctly on desktop (192px)
+- [ ] No pixelation or distortion at any size
+- [ ] SVG file sizes are optimized (< 50KB each)
+- [ ] Badges load quickly (< 500ms)
+- [ ] Hover effects work smoothly
+- [ ] Badge metadata is embedded correctly
+- [ ] Social sharing exports work (1200x1200px PNG)
+
 ## Deployment Checklist
 
 - [ ] All components implemented and tested
@@ -1209,3 +1635,15 @@ The home page uses the UnifiedFooter component (see `.kiro/specs/unified-footer/
 - [ ] Glass effects render correctly on all browsers
 - [ ] Icon sizes consistent throughout
 - [ ] Content reviewed and approved
+- [ ] **African color palette integrated (earth tones, kente gold)**
+- [ ] **African geometric patterns applied to backgrounds**
+- [ ] **Multilingual greetings (Swahili/Kikuyu) in hero section**
+- [ ] **Wangari Maathai legacy and Hummingbird story featured**
+- [ ] **African imagery sourced and properly attributed**
+- [ ] **Ubuntu philosophy reflected in messaging**
+- [ ] **African animation style implemented (warm, flowing)**
+- [ ] **Geometric badges display correctly at all sizes**
+- [ ] **Badge SVG viewBox and dimensions optimized**
+- [ ] **Badge anti-aliasing and rendering quality verified**
+- [ ] **Badge fallbacks tested and working**
+- [ ] **Badge performance optimized (< 50KB, < 500ms load)**

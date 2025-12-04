@@ -230,3 +230,39 @@ The Home Page Redesign feature transforms the Gang Green platform's landing page
 5. THE UnifiedFooter SHALL display partnership information (Green Belt Movement, GSMA, Antugrow)
 6. THE UnifiedFooter SHALL include legal links (Terms, Privacy, Cookie Policy, Tax Receipt Policy, Acceptable Use Policy)
 7. THE UnifiedFooter SHALL maintain glassmorphism design consistency with the rest of the home page
+
+### Requirement 17: African Cultural Design Integration
+
+**User Story:** As an African visitor, I want to see design elements that reflect African culture and heritage, so that I feel the platform is authentically rooted in African values and aesthetics.
+
+#### Acceptance Criteria
+
+1. THE Gang Green Platform SHALL incorporate African-inspired color palettes including earth tones (terracotta, ochre, burnt sienna) alongside the primary green palette
+2. THE Gang Green Platform SHALL use African geometric patterns as decorative elements in backgrounds and borders
+3. THE Gang Green Platform SHALL display imagery featuring African landscapes, people, and communities throughout the home page
+4. THE Gang Green Platform SHALL include Swahili or other African language greetings in the hero section alongside English text
+5. THE Gang Green Platform SHALL reference Wangari Maathai's legacy and the Hummingbird story prominently in the hero or journey sections
+6. THE Gang Green Platform SHALL use typography that balances modern readability with cultural warmth
+7. THE Gang Green Platform SHALL incorporate traditional African symbols (Adinkra, Kente patterns) as subtle design accents
+8. THE Gang Green Platform SHALL display community-focused imagery showing collective action and Ubuntu philosophy
+9. THE Gang Green Platform SHALL use warm, welcoming animations that reflect African storytelling traditions
+10. THE Gang Green Platform SHALL include references to the three pilot Kenyan forests with cultural and ecological context
+
+### Requirement 18: Geometric Badge Display Optimization
+
+**User Story:** As a visitor viewing NFT badges, I want the low-poly geometric badges to display correctly and beautifully, so that I can appreciate their design and understand their value.
+
+#### Acceptance Criteria
+
+1. THE Gang Green Platform SHALL render all geometric SVG badges at optimal resolution without pixelation or distortion
+2. THE Gang Green Platform SHALL ensure badge SVG viewBox and dimensions are correctly configured for consistent sizing
+3. THE Gang Green Platform SHALL display geometric badges with proper aspect ratios (1:1 square format)
+4. WHEN a geometric badge fails to load, THE Gang Green Platform SHALL display a styled fallback with the tier-appropriate gradient
+5. THE Gang Green Platform SHALL apply smooth anti-aliasing to all geometric badge edges and shapes
+6. THE Gang Green Platform SHALL ensure badge colors render accurately across different browsers and devices
+7. THE Gang Green Platform SHALL optimize badge SVG file sizes for fast loading without quality loss
+8. THE Gang Green Platform SHALL display badge tier-specific metallic gradients (bronze, silver, gold, platinum, diamond) with proper shine effects
+9. THE Gang Green Platform SHALL render forest-themed background patterns clearly within each badge
+10. THE Gang Green Platform SHALL display achievement icons within badges at appropriate scale and clarity
+11. THE Gang Green Platform SHALL ensure badge animations (for diamond tier) run smoothly at 60fps
+12. THE Gang Green Platform SHALL test badge rendering on mobile devices to ensure clarity at smaller sizes

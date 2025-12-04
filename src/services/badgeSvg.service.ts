@@ -16,6 +16,7 @@ import {
   extractSVGContent,
 } from '../utils/badgeTemplateLoader';
 import { BADGE_VIEWBOX } from '../assets/badges';
+import { optimizeBadgeSVG, validateBadgeSVG, ensureSquareAspectRatio } from '../utils/badgeSvgOptimizer';
 
 /**
  * Badge SVG Service Class
@@ -156,17 +157,62 @@ class BadgeSvgService {
         // Continue without metadata
       }
 
-      // Optimize if not animated
-      if (!config.animated) {
-        try {
-          svg = optimizeSVG(svg);
-        } catch (optimizeError) {
-          console.warn('[BadgeSvgService] SVG optimization failed, using unoptimized:', {
+      // Apply comprehensive badge optimizations (viewBox, dimensions, aspect ratio, file size)
+      try {
+        svg = ensureSquareAspectRatio(svg);
+        
+        // Use comprehensive optimization that includes both rendering quality and file size
+        const { optimizeBadgeComplete } = await import('../utils/badgeSvgOptimizer');
+        const optimizationResult = optimizeBadgeComplete(svg, {
+          renderingOptions: {
+            addRenderingOptimizations: true,
+          },
+          fileSizeOptions: {
+            removeComments: true,
+            removeMetadata: !config.animated, // Keep metadata for animated badges
+            minifyPaths: true,
+            reducePrecision: 2,
+            mergeRedundantPaths: true,
+            removeEmptyGroups: true,
+            removeUnusedDefs: true,
+            minifyStyles: true,
+            removeWhitespace: true,
+          },
+        });
+        
+        svg = optimizationResult.svg;
+        
+        // Log optimization results
+        console.log('[BadgeSvgService] Badge optimization complete:', {
+          badgeId: config.id,
+          fileSize: `${optimizationResult.fileSize.actualKB}KB`,
+          targetMet: optimizationResult.fileSize.passes,
+          percentOfTarget: `${optimizationResult.fileSize.percentOfTarget}%`,
+          validationPassed: optimizationResult.validation.valid,
+        });
+        
+        // Warn if file size target not met
+        if (!optimizationResult.fileSize.passes) {
+          console.warn('[BadgeSvgService] Badge exceeds 50KB target:', {
             badgeId: config.id,
-            error: optimizeError,
+            actualKB: optimizationResult.fileSize.actualKB,
+            targetKB: optimizationResult.fileSize.targetKB,
           });
-          // Continue with unoptimized SVG
         }
+        
+        // Warn about validation issues
+        if (!optimizationResult.validation.valid) {
+          console.warn('[BadgeSvgService] Badge SVG validation issues:', {
+            badgeId: config.id,
+            issues: optimizationResult.validation.issues,
+          });
+        }
+      } catch (badgeOptError) {
+        console.warn('[BadgeSvgService] Badge SVG optimization failed, using unoptimized:', {
+          badgeId: config.id,
+          error: badgeOptError,
+        });
+        // Continue with unoptimized SVG
       }
 
       console.log('[BadgeSvgService] Badge generated successfully:', {
@@ -608,22 +654,49 @@ class BadgeSvgService {
 
   /**
    * Generate simple fallback badge SVG
+   * Enhanced with tier-specific styling and proper aspect ratio
    */
   private generateFallbackBadge(config: BadgeConfig): string {
     const tierColors: Record<string, { primary: string; secondary: string }> = {
+      hummingbird: { primary: '#14B8A6', secondary: '#0D9488' },
       bronze: { primary: '#CD7F32', secondary: '#8B4513' },
       silver: { primary: '#C0C0C0', secondary: '#808080' },
       gold: { primary: '#FFD700', secondary: '#FFA500' },
       platinum: { primary: '#E5E4E2', secondary: '#B0B0B0' },
       diamond: { primary: '#B9F2FF', secondary: '#00CED1' },
+      hero: { primary: '#FFD700', secondary: '#FF8C00' },
     };
 
     const colors = tierColors[config.tier] || tierColors.bronze;
     const badgeName = config.metadata?.badgeName || 'Badge';
     const tierName = config.tier.charAt(0).toUpperCase() + config.tier.slice(1);
+    
+    // Add glow filter for premium tiers
+    const isPremiumTier = ['platinum', 'diamond', 'hero'].includes(config.tier);
+    const glowFilter = isPremiumTier
+      ? `<filter id="fallback-glow-${config.id}">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>`
+      : '';
+    
+    const glowAttribute = isPremiumTier ? ` filter="url(#fallback-glow-${config.id})"` : '';
+    
+    // Add decorative stars for diamond tier
+    const diamondStars = config.tier === 'diamond'
+      ? `<g opacity="0.6">
+          <circle cx="100" cy="100" r="3" fill="white"/>
+          <circle cx="400" cy="120" r="2" fill="white"/>
+          <circle cx="380" cy="380" r="3" fill="white"/>
+          <circle cx="120" cy="400" r="2" fill="white"/>
+        </g>`
+      : '';
 
     return `
-      <svg viewBox="${BADGE_VIEWBOX}" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="${BADGE_VIEWBOX}" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="fallback-gradient-${config.id}" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:${colors.primary};stop-opacity:1" />
@@ -632,29 +705,47 @@ class BadgeSvgService {
           <filter id="fallback-shadow-${config.id}">
             <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.3"/>
           </filter>
+          ${glowFilter}
         </defs>
         
         <!-- Background Circle -->
-        <circle cx="250" cy="250" r="220" fill="url(#fallback-gradient-${config.id})" filter="url(#fallback-shadow-${config.id})"/>
+        <circle cx="250" cy="250" r="180" fill="url(#fallback-gradient-${config.id})" filter="url(#fallback-shadow-${config.id})"/>
         
         <!-- Inner Circle -->
-        <circle cx="250" cy="250" r="180" fill="none" stroke="white" stroke-width="4" opacity="0.3"/>
+        <circle cx="250" cy="250" r="150" fill="none" stroke="white" stroke-width="3" opacity="0.3"/>
         
         <!-- Award Icon -->
-        <g transform="translate(250, 250)">
-          <path d="M0,-80 L20,-40 L60,-40 L30,-10 L40,30 L0,0 L-40,30 L-30,-10 L-60,-40 L-20,-40 Z" 
-                fill="white" opacity="0.9"/>
+        <g transform="translate(250, 230)">
+          <path d="M0,-60 L15,-30 L45,-35 L25,-10 L30,20 L0,0 L-30,20 L-25,-10 L-45,-35 L-15,-30 Z" 
+                fill="white" opacity="0.9"${glowAttribute}/>
+          ${isPremiumTier ? '<circle cx="0" cy="-60" r="6" fill="white" opacity="0.95"/>' : ''}
         </g>
         
         <!-- Tier Text -->
-        <text x="250" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white">
+        <text x="250" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" opacity="0.95">
           ${tierName}
         </text>
         
         <!-- Badge Name -->
-        <text x="250" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="white" opacity="0.8">
-          ${badgeName}
+        <text x="250" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="white" opacity="0.8">
+          ${badgeName.length > 20 ? badgeName.substring(0, 20) + '...' : badgeName}
         </text>
+        
+        ${diamondStars}
+        
+        <!-- Metadata -->
+        <metadata>
+          <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                   xmlns:dc="http://purl.org/dc/elements/1.1/">
+            <rdf:Description>
+              <dc:title>${badgeName}</dc:title>
+              <dc:creator>GangGreen Platform</dc:creator>
+              <dc:description>Fallback badge - ${tierName} tier</dc:description>
+              <dc:type>NFT Badge Fallback</dc:type>
+              <dc:format>image/svg+xml</dc:format>
+            </rdf:Description>
+          </rdf:RDF>
+        </metadata>
       </svg>
     `.trim();
   }

@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { featureDeprecationService } from '../../services/featureDeprecation.service';
 
 /**
- * Handles deprecated routes for Track 3
- * Redirects users from deprecated features to Track 3 alternatives
+ * Handles deprecated routes
+ * Redirects users from deprecated features to active alternatives
  */
 export const DeprecatedRouteHandler: React.FC = () => {
   const location = useLocation();
@@ -17,7 +17,7 @@ export const DeprecatedRouteHandler: React.FC = () => {
       // Log informational message
       const redirectName = redirect.to.split('/')[1] || 'home';
       console.log(
-        `[Track 3] ${redirect.message || 'Redirecting to ' + redirectName}`
+        `[Redirect] ${redirect.message || 'Redirecting to ' + redirectName}`
       );
 
       // Redirect to alternative

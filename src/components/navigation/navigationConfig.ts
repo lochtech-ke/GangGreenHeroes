@@ -47,7 +47,7 @@ export const standaloneNavigationItems: NavItemConfig[] = [
 ];
 
 // Navigation groups for mega menu dropdowns
-// Track 3 Focus: Community Engagement and Sustainability
+// Focus: Community Engagement and Sustainability
 export const navigationGroups: NavGroupConfig[] = [
   {
     id: 'community',

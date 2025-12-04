@@ -203,7 +203,7 @@ export function UserMenu({ user, onLogout }: UserMenuProps) {
                 <span>My Journey</span>
               </Link>
 
-              {/* My Badges Link - Track 3 Focus */}
+              {/* My Badges Link */}
               <Link
                 to="/badges"
                 className="flex items-center px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:bg-gray-50"

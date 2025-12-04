@@ -19,7 +19,7 @@ interface MetricCardProps {
 }
 
 /**
- * Metrics grid for Track 3 community engagement
+ * Metrics grid for community engagement
  * Displays actions, posts, initiatives, and referrals
  */
 export const MetricsGrid: React.FC<MetricsGridProps> = ({

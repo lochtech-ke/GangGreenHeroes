@@ -11,6 +11,7 @@ import {
   SocialProofSection,
   LeaderboardPreview,
   PartnershipSection,
+  UbuntuPhilosophySection,
 } from '../components/home';
 import { UnifiedFooter } from '../components/common/UnifiedFooter';
 
@@ -83,6 +84,10 @@ export function HomePage() {
 
         <div id="features">
           <FeatureHighlights features={mockFeatures} />
+        </div>
+
+        <div id="ubuntu">
+          <UbuntuPhilosophySection />
         </div>
 
         <SocialProofSection

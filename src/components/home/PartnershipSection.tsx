@@ -138,15 +138,7 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
       websiteUrl: 'https://antugrow.com/',
       category: 'technology',
     },
-    {
-      id: 'wangari-maathai',
-      name: 'Wangari Maathai Hackathon 2025',
-      logoUrl: '/images/partners/wangari-hackathon-logo.png',
-      description:
-        'Innovation challenge focused on environmental conservation and community engagement in Africa - Track 3.',
-      websiteUrl: '#',
-      category: 'event',
-    },
+
   ];
 
   const displayPartners = partners && partners.length > 0 ? partners : defaultPartners;
@@ -172,11 +164,12 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
               <Handshake size={40} className="text-green-600" />
             </motion.div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Trusted Partners
+              Our Trusted Partners
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-600 mx-auto mb-6 rounded-full" />
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Working with leading organizations to drive environmental conservation across Africa.
+              Together with leading organizations, we're driving environmental conservation across Africa. 
+              <span className="font-semibold text-green-600"> Together We Grow — Ubuntu in Action.</span>
             </p>
           </div>
         </AnimatedSection>
@@ -193,24 +186,24 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
           <div className="glass rounded-3xl p-8 md:p-12 backdrop-blur-lg">
             <div className="text-center mb-8">
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                Built for Impact
+                Built for Collective Impact
               </h3>
               <p className="text-gray-700 max-w-2xl mx-auto">
-                Developed for Track 3 (Community Engagement and Sustainability) of the Wangari
-                Maathai Hackathon, honoring the legacy of Kenya's environmental champion.
+                Together, we honor the legacy of Prof. Wangari Maathai, Kenya's environmental champion and Nobel Peace Prize Laureate, 
+                through community engagement and sustainability initiatives. We believe in the power of Ubuntu — when we work together, we achieve more.
               </p>
             </div>
 
-            {/* Key Achievements with Glass Cards */}
+            {/* Key Achievements with Glass Cards - Ubuntu messaging */}
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <motion.div
                 whileHover={{ y: -4 }}
                 className="glass-green rounded-2xl p-6 text-center backdrop-blur-sm"
               >
                 <div className="text-4xl mb-3">🌍</div>
-                <h4 className="font-bold text-gray-900 mb-2">Environmental Focus</h4>
+                <h4 className="font-bold text-gray-900 mb-2">Our Environmental Mission</h4>
                 <p className="text-sm text-gray-700">
-                  Dedicated to catalyzing a carbon-negative Africa through technology
+                  Together, we're catalyzing a carbon-negative Africa through technology and collective action
                 </p>
               </motion.div>
 
@@ -219,9 +212,9 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
                 className="glass-green rounded-2xl p-6 text-center backdrop-blur-sm"
               >
                 <div className="text-4xl mb-3">🤝</div>
-                <h4 className="font-bold text-gray-900 mb-2">Community-Driven</h4>
+                <h4 className="font-bold text-gray-900 mb-2">Ubuntu in Action</h4>
                 <p className="text-sm text-gray-700">
-                  Empowering local communities to take ownership of conservation efforts
+                  We empower local communities to take collective ownership of conservation efforts — because we are stronger together
                 </p>
               </motion.div>
 
@@ -230,9 +223,9 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
                 className="glass-green rounded-2xl p-6 text-center backdrop-blur-sm"
               >
                 <div className="text-4xl mb-3">🔬</div>
-                <h4 className="font-bold text-gray-900 mb-2">Innovation-Powered</h4>
+                <h4 className="font-bold text-gray-900 mb-2">Our Innovation</h4>
                 <p className="text-sm text-gray-700">
-                  Leveraging AI, blockchain, and gamification for measurable impact
+                  We leverage AI, blockchain, and gamification to amplify our collective impact
                 </p>
               </motion.div>
             </div>

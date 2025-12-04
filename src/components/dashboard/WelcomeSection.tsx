@@ -10,7 +10,7 @@ interface WelcomeSectionProps {
 }
 
 /**
- * Welcome section for Track 3 dashboard
+ * Welcome section for dashboard
  * Displays user name and current badge
  */
 export const WelcomeSection: React.FC<WelcomeSectionProps> = ({
