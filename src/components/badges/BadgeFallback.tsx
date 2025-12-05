@@ -93,19 +93,19 @@ const tierConfig: Record<BadgeTier, {
 // Size configuration
 const sizeConfig = {
   sm: {
-    container: 'w-32 h-32',
+    container: 'aspect-square w-32',
     icon: 48,
     text: 'text-xs',
     tierText: 'text-[10px]',
   },
   md: {
-    container: 'w-48 h-48',
+    container: 'aspect-square w-48',
     icon: 64,
     text: 'text-sm',
     tierText: 'text-xs',
   },
   lg: {
-    container: 'w-64 h-64',
+    container: 'aspect-square w-64',
     icon: 80,
     text: 'text-base',
     tierText: 'text-sm',
@@ -139,9 +139,11 @@ export const BadgeFallback: React.FC<BadgeFallbackProps> = ({
       {/* SVG Fallback Badge */}
       <svg
         viewBox="0 0 400 400"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid meet"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full drop-shadow-2xl"
-        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
           {/* Tier-specific gradient */}
@@ -296,14 +298,15 @@ export const BadgeLoadingSpinner: React.FC<{
       aria-label="Loading badge"
     >
       {/* Glass container */}
-      <div className="relative w-full h-full flex items-center justify-center glass rounded-2xl backdrop-blur-md">
+      <div className="relative aspect-square w-full flex items-center justify-center glass rounded-2xl backdrop-blur-md">
         {/* Spinning ring */}
         <div
           className={`
             animate-spin rounded-full
             border-4 border-green-200
             border-t-green-600
-            ${size === 'sm' ? 'w-12 h-12' : size === 'md' ? 'w-16 h-16' : 'w-20 h-20'}
+            aspect-square
+            ${size === 'sm' ? 'w-12' : size === 'md' ? 'w-16' : 'w-20'}
           `}
         />
         

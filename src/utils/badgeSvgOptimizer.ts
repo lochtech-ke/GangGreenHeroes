@@ -290,6 +290,54 @@ export const DEFAULT_FILE_SIZE_OPTIONS: SVGFileSizeOptimizationOptions = {
 };
 
 /**
+ * Ensure critical aspect ratio attributes are present
+ * This function validates and restores width, height, preserveAspectRatio, and viewBox
+ * if they were accidentally removed during optimization
+ */
+function ensureCriticalAttributes(svgString: string): string {
+  let result = svgString;
+  
+  // Check if SVG tag exists
+  if (!result.includes('<svg')) {
+    return result;
+  }
+
+  // Ensure viewBox is present
+  if (!result.includes('viewBox=')) {
+    result = result.replace(
+      /<svg/,
+      `<svg viewBox="${BADGE_VIEWBOX}"`
+    );
+  }
+
+  // Ensure width is present
+  if (!result.includes('width=')) {
+    result = result.replace(
+      /viewBox="[^"]*"/,
+      `$& width="100%"`
+    );
+  }
+
+  // Ensure height is present
+  if (!result.includes('height=')) {
+    result = result.replace(
+      /width="[^"]*"/,
+      `$& height="100%"`
+    );
+  }
+
+  // Ensure preserveAspectRatio is present
+  if (!result.includes('preserveAspectRatio=')) {
+    result = result.replace(
+      /height="[^"]*"/,
+      `$& preserveAspectRatio="xMidYMid meet"`
+    );
+  }
+
+  return result;
+}
+
+/**
  * Optimize SVG for minimal file size
  */
 export function optimizeSVGFileSize(
@@ -339,6 +387,9 @@ export function optimizeSVGFileSize(
     optimized = removeWhitespace(optimized);
   }
 
+  // 9. Validate and restore critical attributes if they were removed
+  optimized = ensureCriticalAttributes(optimized);
+
   return optimized;
 }
 
@@ -351,6 +402,7 @@ function removeComments(svg: string): string {
 
 /**
  * Remove unnecessary metadata while preserving essential badge information
+ * IMPORTANT: This function preserves critical SVG attributes (viewBox, width, height, preserveAspectRatio)
  */
 function removeUnnecessaryMetadata(svg: string): string {
   // Remove RDF metadata (verbose and not needed for display)
@@ -363,16 +415,16 @@ function removeUnnecessaryMetadata(svg: string): string {
   result = result.replace(/<!DOCTYPE[^>]*>/g, '');
   
   // Remove xmlns declarations we don't need (keep main SVG namespace)
-  result = result.replace(/xmlns:rdf="[^"]*"/g, '');
-  result = result.replace(/xmlns:dc="[^"]*"/g, '');
-  result = result.replace(/xmlns:cc="[^"]*"/g, '');
-  result = result.replace(/xmlns:svg="[^"]*"/g, '');
+  result = result.replace(/xmlns:rdf="[^"]*"\s*/g, '');
+  result = result.replace(/xmlns:dc="[^"]*"\s*/g, '');
+  result = result.replace(/xmlns:cc="[^"]*"\s*/g, '');
+  result = result.replace(/xmlns:svg="[^"]*"\s*/g, '');
   
   // Remove editor metadata (Inkscape, Illustrator, etc.)
-  result = result.replace(/sodipodi:[^=]*="[^"]*"/g, '');
-  result = result.replace(/inkscape:[^=]*="[^"]*"/g, '');
-  result = result.replace(/xmlns:sodipodi="[^"]*"/g, '');
-  result = result.replace(/xmlns:inkscape="[^"]*"/g, '');
+  result = result.replace(/sodipodi:[^=]*="[^"]*"\s*/g, '');
+  result = result.replace(/inkscape:[^=]*="[^"]*"\s*/g, '');
+  result = result.replace(/xmlns:sodipodi="[^"]*"\s*/g, '');
+  result = result.replace(/xmlns:inkscape="[^"]*"\s*/g, '');
   
   return result;
 }
@@ -501,21 +553,24 @@ function minifyStyles(svg: string): string {
 }
 
 /**
- * Remove unnecessary whitespace
+ * Remove unnecessary whitespace while preserving attribute spacing
+ * IMPORTANT: Preserves spaces between attributes to maintain valid SVG structure
  */
 function removeWhitespace(svg: string): string {
   let result = svg;
   
-  // Remove whitespace between tags
+  // Remove whitespace between tags (but not within tags)
   result = result.replace(/>\s+</g, '><');
   
   // Remove leading/trailing whitespace
   result = result.trim();
   
-  // Collapse multiple spaces to single space in text content
-  // (but preserve spaces in attributes)
-  result = result.replace(/>\s+/g, '>');
-  result = result.replace(/\s+</g, '<');
+  // Collapse multiple spaces within tags to single space (preserves attribute separation)
+  result = result.replace(/<([^>]+)>/g, (match, content) => {
+    // Collapse multiple spaces to single space within tag
+    const normalized = content.replace(/\s+/g, ' ').trim();
+    return `<${normalized}>`;
+  });
   
   return result;
 }

@@ -12,22 +12,15 @@ export default defineConfig({
     // Requirements: 6.5, 7.1, 7.4, 7.5
     
     // Enable minification for production
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console.logs in production
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
-      },
-    },
+    minify: 'esbuild',
     
     // Optimize chunk splitting for better caching
     rollupOptions: {
+      external: ['openai'],
       output: {
         manualChunks: {
           // Separate vendor chunks for better caching
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['@headlessui/react', '@heroicons/react'],
           // Keep splash screen in main bundle for fast initial load
         },
       },

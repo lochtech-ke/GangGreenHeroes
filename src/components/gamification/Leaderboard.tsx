@@ -24,7 +24,7 @@ interface LeaderboardProps {
 
 export const Leaderboard: React.FC<LeaderboardProps> = ({
   currentUserId,
-  defaultType = 'green_coins',
+  defaultType = 'gg_coins',
   defaultTimeframe = 'monthly',
   defaultScope = 'global',
   limit = 50
@@ -184,8 +184,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
   };
 
   const getTypeIcon = (type: LeaderboardType) => {
-    const icons = {
-      green_coins: Award,
+    const icons: Record<LeaderboardType, typeof Award> = {
+      gg_coins: Award,
       trees_planted: TrendingUp,
       community_impact: Users
     };
@@ -402,7 +402,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   <div className="text-right">
                     <p className="text-2xl font-bold text-gray-900">{entry.score.toLocaleString()}</p>
                     <p className="text-xs text-gray-600">
-                      {selectedType === 'green_coins' && 'coins'}
+                      {selectedType === 'gg_coins' && 'coins'}
                       {selectedType === 'trees_planted' && 'trees'}
                       {selectedType === 'community_impact' && 'points'}
                     </p>

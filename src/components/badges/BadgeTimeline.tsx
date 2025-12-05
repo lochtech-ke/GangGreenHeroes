@@ -122,7 +122,7 @@ export const BadgeTimeline: React.FC<BadgeTimelineProps> = ({
                 {/* Badge Icon */}
                 <div className="relative z-10 flex-shrink-0">
                   {badgeErrors.has(badge.id) ? (
-                    <div className="w-12 h-12 rounded-lg bg-red-50 border-2 border-red-200 flex items-center justify-center">
+                    <div className="aspect-square w-12 rounded-lg bg-red-50 border-2 border-red-200 flex items-center justify-center">
                       <AlertCircle className="w-6 h-6 text-red-500" />
                     </div>
                   ) : loadingBadges.has(badge.id) ? (

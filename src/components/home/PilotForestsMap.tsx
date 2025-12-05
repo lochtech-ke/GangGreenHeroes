@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { Leaf, Users, TrendingUp, Heart, BookOpen, Sparkles } from 'lucide-react';
 import 'leaflet/dist/leaflet.css';
-import { PILOT_FORESTS, type ForestCulturalContext } from '@/data/pilotForests';
+import { PILOT_FORESTS } from '../../data/pilotForests';
 
 interface ForestLocation {
   id: string;

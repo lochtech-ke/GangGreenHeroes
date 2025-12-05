@@ -295,7 +295,7 @@ export const GeometricBadgePreview: React.FC = () => {
               <img
                 src={getIconPath(selectedAchievement)}
                 alt={`${formatAchievementName(selectedAchievement)} ${selectedTier} badge`}
-                className="w-64 h-64"
+                className="aspect-square w-64"
               />
               <div className="mt-4 text-center">
                 <p className="text-lg font-semibold text-gray-900">
@@ -355,7 +355,7 @@ export const GeometricBadgePreview: React.FC = () => {
                 <img
                   src={getIconPath(achievement)}
                   alt={formatAchievementName(achievement)}
-                  className="w-full h-32 mb-2"
+                  className="aspect-square w-full h-32 mb-2"
                 />
                 <p className="text-sm font-medium text-gray-900 text-center">
                   {formatAchievementName(achievement)}

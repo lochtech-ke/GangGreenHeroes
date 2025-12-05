@@ -451,19 +451,19 @@ export const missionErrors = {
     ),
 
   capacityReached: (missionId: string, context?: Record<string, any>) =>
-    new ValidationError(
+    new ServiceError(
       'Mission has reached maximum capacity',
       'CAPACITY_REACHED',
-      'low',
+      ErrorSeverity.LOW,
       { missionId, ...context },
       false
     ),
 
   verificationRequired: (missionId: string, context?: Record<string, any>) =>
-    new ValidationError(
+    new ServiceError(
       'Verification evidence is required to complete this mission',
       'VERIFICATION_REQUIRED',
-      'medium',
+      ErrorSeverity.MEDIUM,
       { missionId, ...context },
       false
     ),
@@ -474,28 +474,28 @@ export const missionErrors = {
  */
 export const communityErrors = {
   notFound: (communityId: string, context?: Record<string, any>) =>
-    new DatabaseError(
+    new ServiceError(
       `Community not found: ${communityId}`,
       'COMMUNITY_NOT_FOUND',
-      'low',
+      ErrorSeverity.LOW,
       { communityId, ...context },
       false
     ),
 
   alreadyMember: (communityId: string, userId: string, context?: Record<string, any>) =>
-    new ValidationError(
+    new ServiceError(
       'You are already a member of this community',
       'ALREADY_MEMBER',
-      'low',
+      ErrorSeverity.LOW,
       { communityId, userId, ...context },
       false
     ),
 
   notMember: (communityId: string, userId: string, context?: Record<string, any>) =>
-    new ValidationError(
+    new ServiceError(
       'You must be a member to perform this action',
       'NOT_MEMBER',
-      'medium',
+      ErrorSeverity.MEDIUM,
       { communityId, userId, ...context },
       false
     ),
@@ -506,28 +506,28 @@ export const communityErrors = {
  */
 export const ggCoinErrors = {
   insufficientBalance: (required: number, available: number, context?: Record<string, any>) =>
-    new ValidationError(
+    new ServiceError(
       `Insufficient GG Coins. Required: ${required}, Available: ${available}`,
       'INSUFFICIENT_BALANCE',
-      'low',
+      ErrorSeverity.LOW,
       { required, available, ...context },
       false
     ),
 
   invalidAmount: (amount: number, context?: Record<string, any>) =>
-    new ValidationError(
+    new ServiceError(
       `Invalid coin amount: ${amount}. Amount must be positive.`,
       'INVALID_AMOUNT',
-      'low',
+      ErrorSeverity.LOW,
       { amount, ...context },
       false
     ),
 
   transactionFailed: (transactionId: string, context?: Record<string, any>) =>
-    new DatabaseError(
+    new ServiceError(
       `GG Coin transaction failed: ${transactionId}`,
       'TRANSACTION_FAILED',
-      'high',
+      ErrorSeverity.HIGH,
       { transactionId, ...context },
       true
     ),

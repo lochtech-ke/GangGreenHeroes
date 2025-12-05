@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Award, ArrowRight, Share2, Twitter, Facebook, Instagram, Linkedin, Copy, Check } from 'lucide-react';
 import { GlassButton } from '../common/GlassButton';
-import { generateSocialMediaBadge, getSocialMediaText } from '../../services/hummingbirdBadge.service';
+import { generateSocialMediaBadge, getSocialMediaText, generateWelcomeBadge } from '../../services/hummingbirdBadge.service';
 import { useAuthContext } from '../../contexts/AuthContext';
 
 interface HummingbirdWelcomeProps {
@@ -447,7 +447,6 @@ const HummingbirdBadgePreview: React.FC<{ userId?: string }> = ({ userId }) => {
 
     const generatePreview = async () => {
       try {
-        const { generateWelcomeBadge } = await import('../../services/hummingbirdBadge.service');
         const result = await generateWelcomeBadge(userId, {
           tier: 'bronze',
           forest: 'kakamega',
@@ -469,8 +468,8 @@ const HummingbirdBadgePreview: React.FC<{ userId?: string }> = ({ userId }) => {
 
   if (isLoading) {
     return (
-      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-2xl">
-        <div className="w-8 h-8 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+      <div className="aspect-square w-32 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-2xl">
+        <div className="aspect-square w-8 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -478,7 +477,7 @@ const HummingbirdBadgePreview: React.FC<{ userId?: string }> = ({ userId }) => {
   if (badgeSvg) {
     return (
       <div 
-        className="w-32 h-32 rounded-full shadow-2xl overflow-hidden bg-white"
+        className="aspect-square w-32 rounded-full shadow-2xl overflow-hidden bg-white"
         dangerouslySetInnerHTML={{ __html: badgeSvg }}
       />
     );
@@ -486,7 +485,7 @@ const HummingbirdBadgePreview: React.FC<{ userId?: string }> = ({ userId }) => {
 
   // Fallback to icon if badge generation fails
   return (
-    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-2xl">
+    <div className="aspect-square w-32 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-2xl">
       <Award className="w-20 h-20 text-white" strokeWidth={1.5} />
     </div>
   );

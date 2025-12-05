@@ -75,7 +75,7 @@ export const CurrentBadgeDisplay: React.FC<CurrentBadgeDisplayProps> = ({
         className={`flex flex-col items-center ${className}`}
       >
         <div className="relative mb-4">
-          <div className="w-64 h-64 rounded-xl bg-red-50 border-2 border-red-200 flex flex-col items-center justify-center p-6 text-center">
+          <div className="aspect-square w-64 rounded-xl bg-red-50 border-2 border-red-200 flex flex-col items-center justify-center p-6 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mb-3" />
             <p className="text-red-700 font-semibold mb-2">Failed to Load Badge</p>
             <p className="text-sm text-red-600">

@@ -80,7 +80,7 @@ export const NextBadgePreview: React.FC<NextBadgePreviewProps> = ({
         {/* Badge with Locked Overlay or Error State */}
         <div className="relative flex-shrink-0">
           {hasError ? (
-            <div className="w-40 h-40 rounded-xl bg-red-50 border-2 border-red-200 flex flex-col items-center justify-center p-4 text-center">
+            <div className="aspect-square w-40 rounded-xl bg-red-50 border-2 border-red-200 flex flex-col items-center justify-center p-4 text-center">
               <AlertCircle className="w-8 h-8 text-red-500 mb-2" />
               <p className="text-xs text-red-600">Failed to load badge preview</p>
             </div>
@@ -105,7 +105,7 @@ export const NextBadgePreview: React.FC<NextBadgePreviewProps> = ({
               {/* Lock overlay */}
               {!isLoading && !hasError && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-900/40 rounded-xl backdrop-blur-sm">
-                  <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center shadow-lg">
+                  <div className="aspect-square w-12 rounded-full bg-gray-700 flex items-center justify-center shadow-lg">
                     <Lock className="w-7 h-7 text-white" />
                   </div>
                 </div>

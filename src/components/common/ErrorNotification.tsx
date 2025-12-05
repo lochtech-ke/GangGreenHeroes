@@ -110,7 +110,7 @@ export function ErrorNotification({
   const [isExiting, setIsExiting] = useState(false);
 
   const isAppError = error instanceof AppError;
-  const severity = isAppError ? error.severity : 'medium';
+  const severity = isAppError ? error.severity : ErrorSeverity.MEDIUM;
   const recoverable = isAppError ? error.recoverable : false;
   const message = error.message;
 

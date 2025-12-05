@@ -124,7 +124,7 @@ const AchievementItem: React.FC<{ achievement: RecentAchievement }> = ({ achieve
 export const SocialProofSection: React.FC<SocialProofProps> = ({
   testimonials,
   recentAchievements,
-  userPhotos,
+  userPhotos: _userPhotos,
 }) => {
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
 
@@ -205,7 +205,7 @@ export const SocialProofSection: React.FC<SocialProofProps> = ({
   ];
 
   // Default user photos
-  const defaultPhotos = [
+  const _defaultPhotos = [
     'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=300',
     'https://images.unsplash.com/photo-1511497584788-876760111969?w=300',
     'https://images.unsplash.com/photo-1448375240586-882707db888b?w=300',

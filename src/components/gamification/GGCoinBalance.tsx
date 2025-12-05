@@ -74,7 +74,7 @@ export const GGCoinBalance: React.FC<GGCoinBalanceProps> = ({
               isAnimating ? 'scale-110 text-green-600' : 'text-gray-900'
             }`}
           >
-            {ggCoinService.formatGGCoins(balance, true)}
+            {ggCoinService.formatGGCoins(balance)}
           </span>
           <span className="text-sm text-gray-500">coins</span>
         </div>
@@ -87,7 +87,7 @@ export const GGCoinBalance: React.FC<GGCoinBalanceProps> = ({
             }`}
           >
             {balanceChange > 0 ? '+' : ''}
-            {ggCoinService.formatGGCoins(Math.abs(balanceChange), false)}
+            {ggCoinService.formatGGCoins(Math.abs(balanceChange))}
           </span>
         )}
       </div>

@@ -59,8 +59,17 @@ export const LearningDashboard: React.FC = () => {
 
       setModules(modulesData);
       setProgress(progressData);
-      setDailyNugget(nugget);
-      setStats(statsData);
+      if (nugget) {
+        setDailyNugget(nugget);
+      }
+      if (statsData) {
+        setStats({
+          modulesCompleted: statsData.modulesCompleted,
+          totalGreenCoinsEarned: statsData.totalGGCoinsEarned || statsData.totalGreenCoinsEarned || 0,
+          certificatesEarned: statsData.certificatesEarned,
+          currentStreak: statsData.currentStreak,
+        });
+      }
     } catch (err) {
       console.error('Failed to load learning dashboard:', err);
       setError(err instanceof Error ? err.message : 'Failed to load dashboard');

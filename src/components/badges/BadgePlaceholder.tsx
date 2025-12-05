@@ -23,10 +23,9 @@ export const BadgePlaceholder: React.FC<BadgePlaceholderProps> = ({
 }) => {
   return (
     <div
-      className={`badge-placeholder ${className} ${animated ? 'animate-pulse' : ''}`}
+      className={`badge-placeholder aspect-square ${className} ${animated ? 'animate-pulse' : ''}`}
       style={{
         width: size,
-        height: size,
         borderRadius: '8px',
         background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
         backgroundSize: '200% 100%',

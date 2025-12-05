@@ -12,11 +12,54 @@ import {
   replacePlaceholders,
   embedMetadata,
   validateBadgeConfig,
-  optimizeSVG,
   extractSVGContent,
 } from '../utils/badgeTemplateLoader';
 import { BADGE_VIEWBOX } from '../assets/badges';
-import { optimizeBadgeSVG, validateBadgeSVG, ensureSquareAspectRatio } from '../utils/badgeSvgOptimizer';
+import { ensureSquareAspectRatio, optimizeBadgeComplete } from '../utils/badgeSvgOptimizer';
+import { hummingbirdBadgeService, generateWelcomeBadge } from './hummingbirdBadge.service';
+
+/**
+ * Ensure SVG has proper attributes for square aspect ratio and correct rendering
+ * @param svg - SVG string to process
+ * @returns SVG string with enforced attributes
+ */
+function ensureSVGAttributes(svg: string): string {
+  try {
+    // Parse SVG
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(svg, 'image/svg+xml');
+    
+    // Check for parse errors
+    const parseError = doc.querySelector('parsererror');
+    if (parseError) {
+      console.error('[ensureSVGAttributes] SVG parse error:', parseError.textContent);
+      return svg; // Return original if parsing fails
+    }
+    
+    const svgElement = doc.querySelector('svg');
+    
+    if (svgElement) {
+      // Ensure required attributes for proper rendering
+      svgElement.setAttribute('width', '100%');
+      svgElement.setAttribute('height', '100%');
+      svgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      
+      // Ensure viewBox is set to standard badge dimensions
+      if (!svgElement.getAttribute('viewBox')) {
+        svgElement.setAttribute('viewBox', '0 0 500 500');
+      }
+      
+      // Serialize back to string
+      const serializer = new XMLSerializer();
+      return serializer.serializeToString(doc);
+    }
+    
+    return svg;
+  } catch (error) {
+    console.error('[ensureSVGAttributes] Error processing SVG:', error);
+    return svg; // Return original on error
+  }
+}
 
 /**
  * Badge SVG Service Class
@@ -32,7 +75,6 @@ class BadgeSvgService {
     try {
       // Check if this is a hummingbird welcome badge
       if (config.achievement === 'welcome_badge') {
-        const { hummingbirdBadgeService } = await import('./hummingbirdBadge.service');
         return await hummingbirdBadgeService.generateHummingbirdBadge(config as any);
       }
 
@@ -162,7 +204,6 @@ class BadgeSvgService {
         svg = ensureSquareAspectRatio(svg);
         
         // Use comprehensive optimization that includes both rendering quality and file size
-        const { optimizeBadgeComplete } = await import('../utils/badgeSvgOptimizer');
         const optimizationResult = optimizeBadgeComplete(svg, {
           renderingOptions: {
             addRenderingOptimizations: true,
@@ -214,6 +255,9 @@ class BadgeSvgService {
         });
         // Continue with unoptimized SVG
       }
+
+      // Ensure SVG has proper attributes for square aspect ratio
+      svg = ensureSVGAttributes(svg);
 
       console.log('[BadgeSvgService] Badge generated successfully:', {
         badgeId: config.id,
@@ -307,7 +351,6 @@ class BadgeSvgService {
   ): Promise<Blob> {
     // Check if this is a hummingbird badge and use specialized export
     if (config.achievement === 'welcome_badge') {
-      const { hummingbirdBadgeService } = await import('./hummingbirdBadge.service');
       return await hummingbirdBadgeService.exportHummingbirdBadge(config as any, options);
     }
 
@@ -466,7 +509,6 @@ class BadgeSvgService {
     } = {}
   ): Promise<BadgeGenerationResult> {
     try {
-      const { generateWelcomeBadge } = await import('./hummingbirdBadge.service');
       return await generateWelcomeBadge(userId, options);
     } catch (error) {
       console.error('[BadgeSvgService] Hummingbird badge generation failed:', error);
@@ -501,7 +543,7 @@ class BadgeSvgService {
             day: 'numeric' 
           });
 
-      const svg = `
+      let svg = `
 <svg viewBox="${BADGE_VIEWBOX}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <!-- Hero Gradient -->
@@ -606,6 +648,9 @@ class BadgeSvgService {
 </svg>
       `.trim();
 
+      // Ensure SVG has proper attributes for square aspect ratio
+      svg = ensureSVGAttributes(svg);
+
       console.log('[BadgeSvgService] Hero badge generated successfully:', {
         badgeId: config.id,
         userName,
@@ -695,7 +740,7 @@ class BadgeSvgService {
         </g>`
       : '';
 
-    return `
+    const svg = `
       <svg viewBox="${BADGE_VIEWBOX}" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="fallback-gradient-${config.id}" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -748,6 +793,9 @@ class BadgeSvgService {
         </metadata>
       </svg>
     `.trim();
+    
+    // Ensure SVG has proper attributes for square aspect ratio
+    return ensureSVGAttributes(svg);
   }
 
   /**

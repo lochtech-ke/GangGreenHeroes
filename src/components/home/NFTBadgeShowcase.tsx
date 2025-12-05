@@ -173,7 +173,7 @@ const FeaturedBadgeCard: React.FC<{
         {/* Badge SVG with Rotation on Hover */}
         <div className="p-6 flex justify-center items-center bg-gradient-to-br from-green-50/50 to-emerald-50/50 backdrop-blur-sm">
           <motion.div
-            className="w-48 h-48 flex items-center justify-center"
+            className="aspect-square w-48 flex items-center justify-center"
             animate={{ rotate: isHovered ? 5 : 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -183,7 +183,7 @@ const FeaturedBadgeCard: React.FC<{
             ) : badgeSvg && !hasError ? (
               // Successfully generated SVG with rendering quality optimizations
               <div
-                className="w-full h-full drop-shadow-2xl badge-svg"
+                className="aspect-square w-full drop-shadow-2xl badge-svg"
                 data-badge-svg
                 dangerouslySetInnerHTML={{ __html: badgeSvg }}
               />
@@ -192,7 +192,7 @@ const FeaturedBadgeCard: React.FC<{
               <img
                 src={badge.imageUrl}
                 alt={badge.name}
-                className="w-full h-full object-contain drop-shadow-2xl"
+                className="aspect-square w-full object-contain drop-shadow-2xl"
                 onError={() => {
                   console.error('[NFTBadgeShowcase] Image load failed:', badge.imageUrl);
                   // Show BadgeFallback instead of hiding

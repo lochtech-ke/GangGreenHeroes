@@ -141,7 +141,7 @@ export const HeroBadgeMarketplace: React.FC<HeroBadgeMarketplaceProps> = ({
             <div className="flex flex-col md:flex-row gap-6">
               {/* Badge Visual */}
               <div className="flex-shrink-0">
-                <div className="w-48 h-48 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                <div className="aspect-square w-48 bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-2xl">
                   <Crown className="w-24 h-24 text-white" />
                 </div>
               </div>

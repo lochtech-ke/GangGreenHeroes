@@ -173,9 +173,9 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({
             ) : (
               // Placeholder while waiting to load
               <div
-                className="badge-placeholder bg-gray-100 rounded-xl animate-pulse"
+                className="badge-placeholder aspect-square bg-gray-100 rounded-xl animate-pulse"
                 style={{
-                  height: compact ? 180 : 360,
+                  width: '100%',
                 }}
               />
             )}

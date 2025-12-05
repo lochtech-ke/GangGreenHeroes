@@ -616,5 +616,167 @@ describe('Badge SVG File Size Optimization - Task 22.5', () => {
       expect(result.validation.valid).toBe(true);
     });
   });
+
+  describe('Aspect ratio attribute preservation - Task 5', () => {
+    it('should preserve width attribute during file size optimization', () => {
+      const svgWithWidth = '<svg viewBox="0 0 400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithWidth);
+      
+      expect(result).toContain('width="100%"');
+    });
+
+    it('should preserve height attribute during file size optimization', () => {
+      const svgWithHeight = '<svg viewBox="0 0 400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithHeight);
+      
+      expect(result).toContain('height="100%"');
+    });
+
+    it('should preserve preserveAspectRatio attribute during file size optimization', () => {
+      const svgWithAspectRatio = '<svg viewBox="0 0 400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithAspectRatio);
+      
+      expect(result).toContain('preserveAspectRatio="xMidYMid meet"');
+    });
+
+    it('should preserve viewBox attribute during file size optimization', () => {
+      const svgWithViewBox = '<svg viewBox="0 0 400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithViewBox);
+      
+      expect(result).toContain('viewBox="0 0 400 400"');
+    });
+
+    it('should restore missing width attribute after optimization', () => {
+      const svgWithoutWidth = '<svg viewBox="0 0 400 400" height="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithoutWidth);
+      
+      expect(result).toContain('width="100%"');
+    });
+
+    it('should restore missing height attribute after optimization', () => {
+      const svgWithoutHeight = '<svg viewBox="0 0 400 400" width="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithoutHeight);
+      
+      expect(result).toContain('height="100%"');
+    });
+
+    it('should restore missing preserveAspectRatio attribute after optimization', () => {
+      const svgWithoutAspectRatio = '<svg viewBox="0 0 400 400" width="100%" height="100%"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithoutAspectRatio);
+      
+      expect(result).toContain('preserveAspectRatio="xMidYMid meet"');
+    });
+
+    it('should restore missing viewBox attribute after optimization', () => {
+      const svgWithoutViewBox = '<svg width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithoutViewBox);
+      
+      expect(result).toContain('viewBox="0 0 400 400"');
+    });
+
+    it('should preserve all critical attributes during aggressive optimization', () => {
+      const complexSvg = `
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!-- Comment -->
+        <svg viewBox="0 0 400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <metadata>
+            <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description>
+                <dc:title>Badge</dc:title>
+              </rdf:Description>
+            </rdf:RDF>
+          </metadata>
+          <defs>
+            <linearGradient id="grad1">
+              <stop offset="0%" stop-color="red"/>
+            </linearGradient>
+          </defs>
+          <circle cx="200.123456" cy="200.987654" r="100.555555" fill="url(#grad1)"/>
+        </svg>
+      `;
+      
+      const result = optimizeSVGFileSize(complexSvg);
+      
+      // All critical attributes must be present
+      expect(result).toContain('viewBox="0 0 400 400"');
+      expect(result).toContain('width="100%"');
+      expect(result).toContain('height="100%"');
+      expect(result).toContain('preserveAspectRatio="xMidYMid meet"');
+    });
+
+    it('should validate optimized SVG has all required attributes', () => {
+      const svg = '<svg viewBox="0 0 400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const optimized = optimizeSVGFileSize(svg);
+      const validation = validateBadgeSVG(optimized);
+      
+      expect(validation.valid).toBe(true);
+      expect(validation.issues).toHaveLength(0);
+    });
+
+    it('should maintain attribute order after optimization', () => {
+      const svg = '<svg viewBox="0 0 400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svg);
+      
+      // Check that attributes appear in a logical order
+      const viewBoxIndex = result.indexOf('viewBox=');
+      const widthIndex = result.indexOf('width=');
+      const heightIndex = result.indexOf('height=');
+      const aspectRatioIndex = result.indexOf('preserveAspectRatio=');
+      
+      expect(viewBoxIndex).toBeGreaterThan(-1);
+      expect(widthIndex).toBeGreaterThan(-1);
+      expect(heightIndex).toBeGreaterThan(-1);
+      expect(aspectRatioIndex).toBeGreaterThan(-1);
+    });
+
+    it('should work with optimizeBadgeComplete to preserve attributes', () => {
+      const svg = '<svg viewBox="0 0 400 400"><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeBadgeComplete(svg);
+      
+      // Should have all critical attributes
+      expect(result.svg).toContain('viewBox="0 0 400 400"');
+      expect(result.svg).toContain('width="100%"');
+      expect(result.svg).toContain('height="100%"');
+      expect(result.svg).toContain('preserveAspectRatio="xMidYMid meet"');
+      
+      // Should pass validation
+      expect(result.validation.valid).toBe(true);
+    });
+
+    it('should handle SVG with extra whitespace around attributes', () => {
+      const svgWithWhitespace = '<svg   viewBox="0 0 400 400"   width="100%"   height="100%"   preserveAspectRatio="xMidYMid meet"  ><circle cx="200" cy="200" r="100"/></svg>';
+      const result = optimizeSVGFileSize(svgWithWhitespace);
+      
+      // Should preserve all attributes despite whitespace
+      expect(result).toContain('viewBox="0 0 400 400"');
+      expect(result).toContain('width="100%"');
+      expect(result).toContain('height="100%"');
+      expect(result).toContain('preserveAspectRatio="xMidYMid meet"');
+    });
+
+    it('should not remove attributes during metadata removal', () => {
+      const svgWithMetadata = `
+        <svg viewBox="0 0 400 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+          <metadata>
+            <rdf:RDF>
+              <rdf:Description>
+                <dc:title>Badge</dc:title>
+              </rdf:Description>
+            </rdf:RDF>
+          </metadata>
+          <circle cx="200" cy="200" r="100"/>
+        </svg>
+      `;
+      
+      const result = optimizeSVGFileSize(svgWithMetadata);
+      
+      // Should remove metadata but keep critical attributes
+      expect(result).not.toContain('rdf:RDF');
+      expect(result).toContain('viewBox="0 0 400 400"');
+      expect(result).toContain('width="100%"');
+      expect(result).toContain('height="100%"');
+      expect(result).toContain('preserveAspectRatio="xMidYMid meet"');
+    });
+  });
 });
 

@@ -147,14 +147,13 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
           />
         ) : (
           <div
-            className="badge-icon"
+            className="badge-icon aspect-square"
             style={{
               width: size,
-              height: size,
             }}
           >
             {/* Non-lazy loaded badge would go here */}
-            <div className="w-full h-full bg-gray-200 rounded-lg animate-pulse" />
+            <div className="aspect-square w-full bg-gray-200 rounded-lg animate-pulse" />
           </div>
         )}
       </div>
@@ -239,13 +238,12 @@ export const CompactBadgeCard: React.FC<CompactBadgeCardProps> = ({
           />
         ) : (
           <div
-            className="badge-icon"
+            className="badge-icon aspect-square"
             style={{
               width: size,
-              height: size,
             }}
           >
-            <div className="w-full h-full bg-gray-200 rounded-lg animate-pulse" />
+            <div className="aspect-square w-full bg-gray-200 rounded-lg animate-pulse" />
           </div>
         )}
       </div>

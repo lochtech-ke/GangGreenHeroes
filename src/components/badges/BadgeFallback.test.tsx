@@ -61,6 +61,18 @@ describe('BadgeFallback', () => {
       const svg = container.querySelector('svg');
       expect(svg?.getAttribute('preserveAspectRatio')).toBe('xMidYMid meet');
     });
+
+    it('should have width="100%" attribute on SVG', () => {
+      const { container } = render(<BadgeFallback tier="gold" />);
+      const svg = container.querySelector('svg');
+      expect(svg?.getAttribute('width')).toBe('100%');
+    });
+
+    it('should have height="100%" attribute on SVG', () => {
+      const { container } = render(<BadgeFallback tier="silver" />);
+      const svg = container.querySelector('svg');
+      expect(svg?.getAttribute('height')).toBe('100%');
+    });
   });
 
   describe('Tier-Specific Styling', () => {
@@ -113,22 +125,22 @@ describe('BadgeFallback', () => {
     it('should render small size correctly', () => {
       const { container } = render(<BadgeFallback tier="bronze" size="sm" />);
       const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper.classList.contains('aspect-square')).toBe(true);
       expect(wrapper.classList.contains('w-32')).toBe(true);
-      expect(wrapper.classList.contains('h-32')).toBe(true);
     });
 
     it('should render medium size correctly', () => {
       const { container } = render(<BadgeFallback tier="silver" size="md" />);
       const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper.classList.contains('aspect-square')).toBe(true);
       expect(wrapper.classList.contains('w-48')).toBe(true);
-      expect(wrapper.classList.contains('h-48')).toBe(true);
     });
 
     it('should render large size correctly', () => {
       const { container } = render(<BadgeFallback tier="gold" size="lg" />);
       const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper.classList.contains('aspect-square')).toBe(true);
       expect(wrapper.classList.contains('w-64')).toBe(true);
-      expect(wrapper.classList.contains('h-64')).toBe(true);
     });
   });
 
@@ -171,10 +183,22 @@ describe('BadgeLoadingSpinner', () => {
   });
 
   describe('Aspect Ratio', () => {
-    it('should maintain 1:1 aspect ratio', () => {
+    it('should maintain 1:1 aspect ratio on outer container', () => {
       const { container } = render(<BadgeLoadingSpinner />);
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper.classList.contains('aspect-square')).toBe(true);
+    });
+
+    it('should maintain 1:1 aspect ratio on inner glass container', () => {
+      const { container } = render(<BadgeLoadingSpinner />);
+      const glassContainer = container.querySelector('.glass');
+      expect(glassContainer?.classList.contains('aspect-square')).toBe(true);
+    });
+
+    it('should maintain 1:1 aspect ratio on spinner ring', () => {
+      const { container } = render(<BadgeLoadingSpinner />);
+      const spinner = container.querySelector('.animate-spin');
+      expect(spinner?.classList.contains('aspect-square')).toBe(true);
     });
   });
 
@@ -182,18 +206,21 @@ describe('BadgeLoadingSpinner', () => {
     it('should render small size correctly', () => {
       const { container } = render(<BadgeLoadingSpinner size="sm" />);
       const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper.classList.contains('aspect-square')).toBe(true);
       expect(wrapper.classList.contains('w-32')).toBe(true);
     });
 
     it('should render medium size correctly', () => {
       const { container } = render(<BadgeLoadingSpinner size="md" />);
       const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper.classList.contains('aspect-square')).toBe(true);
       expect(wrapper.classList.contains('w-48')).toBe(true);
     });
 
     it('should render large size correctly', () => {
       const { container } = render(<BadgeLoadingSpinner size="lg" />);
       const wrapper = container.firstChild as HTMLElement;
+      expect(wrapper.classList.contains('aspect-square')).toBe(true);
       expect(wrapper.classList.contains('w-64')).toBe(true);
     });
   });
