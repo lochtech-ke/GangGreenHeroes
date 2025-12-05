@@ -24,6 +24,7 @@
     "migrate-badges": "vite-node scripts/migrate-badges.ts",
     "verify-migration": "vite-node scripts/verify-migration.ts",
     "rollback-migration": "vite-node scripts/rollback-migration.ts",
+    "regenerate-badges": "vite-node scripts/regenerate-badges.ts",
     "submission:validate": "node scripts/validate-submission.js",
     "submission:package": "node scripts/package-submission.js",
     "submission:checklist": "node scripts/submission-checklist.js",

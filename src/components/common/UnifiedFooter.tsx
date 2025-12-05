@@ -125,12 +125,9 @@ export function UnifiedFooter({ className = '' }: UnifiedFooterProps) {
 
   return (
     <footer
-      className={`relative bg-gradient-to-br from-gray-900 via-green-900/20 to-gray-900 text-white border-t border-white/10 ${className}`}
+      className={`bg-black text-white border-t border-gray-800 ${className}`}
     >
-      {/* Glass overlay */}
-      <div className="absolute inset-0 glass-dark backdrop-blur-sm"></div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand Section */}
@@ -238,7 +235,7 @@ export function UnifiedFooter({ className = '' }: UnifiedFooterProps) {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="glass-card p-3 rounded-full hover:bg-green-500/20 hover:scale-110 transition-all group"
+                  className="p-3 rounded-full hover:bg-green-500/20 hover:scale-110 transition-all group"
                   aria-label={social.label}
                 >
                   <Icon size={20} className="text-gray-300 group-hover:text-green-400" />
@@ -251,7 +248,7 @@ export function UnifiedFooter({ className = '' }: UnifiedFooterProps) {
         {/* Wangari Maathai Quote */}
         <div className="border-t border-white/10 pt-8 mb-8">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="glass-green rounded-xl p-6">
+            <div className="bg-gray-900 rounded-xl p-6">
               <p className="text-lg md:text-xl text-white italic mb-3 leading-relaxed">
                 "I will do the best I can."
               </p>

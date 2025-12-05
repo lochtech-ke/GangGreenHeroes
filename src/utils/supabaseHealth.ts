@@ -113,11 +113,11 @@ export async function checkSupabaseHealth(
   console.log('[Health] Performing Supabase health check...');
 
   try {
-    // Quick connection test with 1 second timeout using auth.getSession()
+    // Connection test with 5 second timeout using auth.getSession()
     const healthCheckPromise = supabase.auth.getSession();
 
     const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('Health check timeout')), 1000)
+      setTimeout(() => reject(new Error('Health check timeout')), 5000)
     );
 
     const { error } = await Promise.race([
@@ -140,14 +140,19 @@ export async function checkSupabaseHealth(
     healthCheckMonitor.recordCheck(lastHealthCheck);
 
     if (isHealthy) {
-      console.log('[Health] Supabase is healthy', {
-        duration: `${duration}ms`,
-      });
-      
-      // Log performance warning if check takes longer than 500ms
-      if (duration > 500) {
-        console.warn('[Health] Health check took longer than 500ms:', {
+      // Classify performance and log accordingly
+      if (duration < 1000) {
+        console.log('[Health] Supabase is healthy (optimal performance)', {
           duration: `${duration}ms`,
+        });
+      } else if (duration < 2000) {
+        console.log('[Health] Supabase is healthy (acceptable performance)', {
+          duration: `${duration}ms`,
+        });
+      } else {
+        console.warn('[Health] Supabase is healthy (slow performance)', {
+          duration: `${duration}ms`,
+          warning: 'Health check exceeded 2000ms threshold',
         });
       }
     } else {
@@ -163,10 +168,20 @@ export async function checkSupabaseHealth(
     const errorMessage =
       error instanceof Error ? error.message : String(error);
 
-    console.error('[Health] Health check failed:', {
-      error: errorMessage,
-      duration: `${duration}ms`,
-    });
+    // Classify the error type for better logging
+    const isTimeout = errorMessage.includes('timeout');
+    
+    if (isTimeout) {
+      console.error('[Health] Health check timed out (>5000ms):', {
+        error: errorMessage,
+        duration: `${duration}ms`,
+      });
+    } else {
+      console.error('[Health] Health check failed:', {
+        error: errorMessage,
+        duration: `${duration}ms`,
+      });
+    }
 
     // Cache the failure
     lastHealthCheck = {

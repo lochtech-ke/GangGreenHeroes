@@ -4,6 +4,7 @@
  */
 
 import { supabase } from './supabase';
+import { governanceTokenEarningService } from './governanceTokenEarning.service';
 import type {
   Initiative,
   InitiativeFilters,
@@ -113,6 +114,20 @@ export async function createInitiative(initiativeData: CreateInitiativeData) {
     progress_percentage: 0,
   };
 
+  // Award governance tokens for initiative creation (Requirement 1.2)
+  // Get current user from auth
+  const { data: userData } = await supabase.auth.getUser();
+  if (userData?.user) {
+    await governanceTokenEarningService.awardForInitiativeCreation(
+      userData.user.id,
+      data.id,
+      {
+        initiative_title: initiativeData.title,
+        forest: initiativeData.forest,
+      }
+    );
+  }
+
   return { initiative, error: null };
 }
 
@@ -129,6 +144,17 @@ export async function joinInitiative(initiativeId: string, userId: string) {
     })
     .select()
     .single();
+
+  // Award governance tokens for initiative participation (Requirement 1.3)
+  if (data && !error) {
+    await governanceTokenEarningService.awardForInitiativeParticipation(
+      userId,
+      initiativeId,
+      {
+        joined_at: new Date().toISOString(),
+      }
+    );
+  }
 
   return { participant: data, error };
 }

@@ -191,8 +191,12 @@ class HummingbirdBadgeService {
       // Replace placeholders
       svg = this.replaceHummingbirdPlaceholders(svg, config);
       
-      // Insert defs
-      svg = svg.replace('<defs>', `<defs>${defs}`);
+      // Insert defs - replace the entire <defs></defs> section
+      if (defs) {
+        // Remove the outer <defs></defs> wrapper from the generated defs since we're replacing the template's defs
+        const defsContent = defs.replace(/<\/?defs[^>]*>/g, '').trim();
+        svg = svg.replace(/<defs>[\s\S]*?<\/defs>/, `<defs>${defsContent}</defs>`);
+      }
       
       // Insert forest pattern
       if (forestPatternContent) {

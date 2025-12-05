@@ -5,7 +5,9 @@
 
 
 
-  - [ ] 1.1 Create governance_tokens table with user relationships
+  - [x] 1.1 Create governance_tokens table with user relationships
+
+
     - Write migration file for governance_tokens table with balance, delegation fields
 
     - Add unique constraint on user_id
@@ -16,7 +18,8 @@
     - Add foreign key to users table
     - _Requirements: 1.3_
 
-  - [ ] 1.3 Create proposals table with voting metadata
+  - [x] 1.3 Create proposals table with voting metadata
+
     - Write migration for proposals table with all status types
     - Add category enum and status enum constraints
 
@@ -27,23 +30,29 @@
     - Add tie_breaker flag field
 
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
+
   - [ ] 1.5 Create voting_snapshots table for power calculation
     - Write migration for voting_snapshots to capture voting power at proposal start
+
 
     - _Requirements: 3.2_
   - [ ] 1.6 Create senior_users table for tie-breaking authority
     - Write migration for senior_users with seniority levels
+
     - _Requirements: 4.2, 4.3_
 
   - [ ] 1.7 Create proposal_categories and token_earning_rules configuration tables
     - Write migrations for configuration tables
+
     - Insert default categories and earning rules
 
     - _Requirements: 6.1, 6.2, 6.3_
-  - [ ] 1.8 Create petitions and petition_signatures tables
+  - [x] 1.8 Create petitions and petition_signatures tables
+
     - Write migration for petitions table with blockchain fields
     - Write migration for petition_signatures with wallet addresses
     - Add unique constraints on petition_id/user_id and petition_id/wallet_address
+
     - _Requirements: 9.1, 9.2, 10.1, 10.4_
   - [ ] 1.9 Create petition_config table for petition parameters
     - Write migration for petition configuration
@@ -62,7 +71,9 @@
     - Implement Supabase client integration
     - _Requirements: 1.1, 1.2, 1.3, 1.4_
 
-  - [ ] 2.2 Implement token delegation logic
+  - [x] 2.2 Implement token delegation logic
+
+
     - Write delegateTokens and revokeDelegation methods
     - Add circular delegation detection
     - _Requirements: 7.1, 7.2, 7.5_
@@ -71,7 +82,9 @@
 
     - Write getVotingPower method that includes delegated power
     - _Requirements: 3.2, 7.3_
-  - [ ] 2.4 Create token earning automation hooks
+  - [x] 2.4 Create token earning automation hooks
+
+
     - Write functions to award tokens on tree planting, initiative creation
     - Integrate with existing gamification events
     - _Requirements: 1.1, 1.2, 1.3_

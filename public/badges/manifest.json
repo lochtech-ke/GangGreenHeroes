@@ -1,0 +1,177 @@
+[
+  {
+    "type": "tree-planter",
+    "tier": "bronze",
+    "name": "Tree Planter",
+    "filename": "badge-tree-planter-bronze.svg",
+    "value": 10
+  },
+  {
+    "type": "tree-planter",
+    "tier": "silver",
+    "name": "Tree Planter",
+    "filename": "badge-tree-planter-silver.svg",
+    "value": 50
+  },
+  {
+    "type": "tree-planter",
+    "tier": "gold",
+    "name": "Tree Planter",
+    "filename": "badge-tree-planter-gold.svg",
+    "value": 100
+  },
+  {
+    "type": "tree-planter",
+    "tier": "platinum",
+    "name": "Tree Planter",
+    "filename": "badge-tree-planter-platinum.svg",
+    "value": 500
+  },
+  {
+    "type": "tree-planter",
+    "tier": "diamond",
+    "name": "Tree Planter",
+    "filename": "badge-tree-planter-diamond.svg",
+    "value": 1000
+  },
+  {
+    "type": "forest-guardian",
+    "tier": "bronze",
+    "name": "Forest Guardian",
+    "filename": "badge-forest-guardian-bronze.svg",
+    "value": 1
+  },
+  {
+    "type": "forest-guardian",
+    "tier": "silver",
+    "name": "Forest Guardian",
+    "filename": "badge-forest-guardian-silver.svg",
+    "value": 3
+  },
+  {
+    "type": "forest-guardian",
+    "tier": "gold",
+    "name": "Forest Guardian",
+    "filename": "badge-forest-guardian-gold.svg",
+    "value": 5
+  },
+  {
+    "type": "forest-guardian",
+    "tier": "platinum",
+    "name": "Forest Guardian",
+    "filename": "badge-forest-guardian-platinum.svg",
+    "value": 10
+  },
+  {
+    "type": "forest-guardian",
+    "tier": "diamond",
+    "name": "Forest Guardian",
+    "filename": "badge-forest-guardian-diamond.svg",
+    "value": 20
+  },
+  {
+    "type": "carbon-champion",
+    "tier": "bronze",
+    "name": "Carbon Champion",
+    "filename": "badge-carbon-champion-bronze.svg",
+    "value": 100
+  },
+  {
+    "type": "carbon-champion",
+    "tier": "silver",
+    "name": "Carbon Champion",
+    "filename": "badge-carbon-champion-silver.svg",
+    "value": 500
+  },
+  {
+    "type": "carbon-champion",
+    "tier": "gold",
+    "name": "Carbon Champion",
+    "filename": "badge-carbon-champion-gold.svg",
+    "value": 1000
+  },
+  {
+    "type": "carbon-champion",
+    "tier": "platinum",
+    "name": "Carbon Champion",
+    "filename": "badge-carbon-champion-platinum.svg",
+    "value": 5000
+  },
+  {
+    "type": "carbon-champion",
+    "tier": "diamond",
+    "name": "Carbon Champion",
+    "filename": "badge-carbon-champion-diamond.svg",
+    "value": 10000
+  },
+  {
+    "type": "eco-warrior",
+    "tier": "bronze",
+    "name": "Eco Warrior",
+    "filename": "badge-eco-warrior-bronze.svg",
+    "value": 1000
+  },
+  {
+    "type": "eco-warrior",
+    "tier": "silver",
+    "name": "Eco Warrior",
+    "filename": "badge-eco-warrior-silver.svg",
+    "value": 5000
+  },
+  {
+    "type": "eco-warrior",
+    "tier": "gold",
+    "name": "Eco Warrior",
+    "filename": "badge-eco-warrior-gold.svg",
+    "value": 10000
+  },
+  {
+    "type": "eco-warrior",
+    "tier": "platinum",
+    "name": "Eco Warrior",
+    "filename": "badge-eco-warrior-platinum.svg",
+    "value": 25000
+  },
+  {
+    "type": "eco-warrior",
+    "tier": "diamond",
+    "name": "Eco Warrior",
+    "filename": "badge-eco-warrior-diamond.svg",
+    "value": 50000
+  },
+  {
+    "type": "green-pioneer",
+    "tier": "bronze",
+    "name": "Green Pioneer",
+    "filename": "badge-green-pioneer-bronze.svg",
+    "value": 5
+  },
+  {
+    "type": "green-pioneer",
+    "tier": "silver",
+    "name": "Green Pioneer",
+    "filename": "badge-green-pioneer-silver.svg",
+    "value": 10
+  },
+  {
+    "type": "green-pioneer",
+    "tier": "gold",
+    "name": "Green Pioneer",
+    "filename": "badge-green-pioneer-gold.svg",
+    "value": 20
+  },
+  {
+    "type": "green-pioneer",
+    "tier": "platinum",
+    "name": "Green Pioneer",
+    "filename": "badge-green-pioneer-platinum.svg",
+    "value": 30
+  },
+  {
+    "type": "green-pioneer",
+    "tier": "diamond",
+    "name": "Green Pioneer",
+    "filename": "badge-green-pioneer-diamond.svg",
+    "value": 50
+  }
+]

@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { antugrowService } from './antugrow.service';
+import { governanceTokenEarningService } from './governanceTokenEarning.service';
 import type {
   Tree,
   CreateTreeData,
@@ -63,6 +64,19 @@ class TreeService {
       // Register with Antugrow if configured
       if (antugrowService.isConfigured()) {
         await this.registerTreeWithAntugrow(formattedTree);
+      }
+
+      // Award governance tokens for tree planting (Requirement 1.1)
+      if (data.planted_by) {
+        await governanceTokenEarningService.awardForTreePlanting(
+          data.planted_by,
+          1, // 1 tree planted
+          {
+            tree_id: tree.id,
+            species: data.species,
+            initiative_id: data.initiative_id,
+          }
+        );
       }
 
       return { tree: formattedTree, error: null };

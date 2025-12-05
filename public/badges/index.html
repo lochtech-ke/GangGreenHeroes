@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>#GangGreen NFT Badges - Preview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 3px solid #667eea;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #667eea;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #666;
+    }
+
+    .badge-section {
+      margin-bottom: 4rem;
+    }
+
+    .badge-section h2 {
+      font-size: 2rem;
+      color: #764ba2;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #eee;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .badge-card {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .badge-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      border-color: #667eea;
+    }
+
+    .badge-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .badge-info h3 {
+      font-size: 1.1rem;
+      color: #667eea;
+      margin-bottom: 0.25rem;
+    }
+
+    .badge-info p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .badge-value {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .stats {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .stats h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .stat-item {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #eee;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌳 #GangGreen NFT Badges</h1>
+      <p class="subtitle">Dynamic Geometric Badge Collection</p>
+    </header>
+
+    <div class="stats">
+      <h3>📊 Collection Stats</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-value">25</span>
+          <span class="stat-label">Total Badges</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">5</span>
+          <span class="stat-label">Badge Types</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">5</span>
+          <span class="stat-label">Tier Levels</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">SVG</span>
+          <span class="stat-label">Format</span>
+        </div>
+      </div>
+    </div>
+
+    
+      <section class="badge-section">
+        <h2>Tree Planter</h2>
+        <div class="badge-grid">
+          
+      <div class="badge-card">
+        <img src="badge-tree-planter-bronze.svg" alt="Tree Planter - bronze" />
+        <div class="badge-info">
+          <h3>BRONZE</h3>
+          <p>Tree Planter</p>
+          <span class="badge-value">10</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-tree-planter-silver.svg" alt="Tree Planter - silver" />
+        <div class="badge-info">
+          <h3>SILVER</h3>
+          <p>Tree Planter</p>
+          <span class="badge-value">50</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-tree-planter-gold.svg" alt="Tree Planter - gold" />
+        <div class="badge-info">
+          <h3>GOLD</h3>
+          <p>Tree Planter</p>
+          <span class="badge-value">100</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-tree-planter-platinum.svg" alt="Tree Planter - platinum" />
+        <div class="badge-info">
+          <h3>PLATINUM</h3>
+          <p>Tree Planter</p>
+          <span class="badge-value">500</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-tree-planter-diamond.svg" alt="Tree Planter - diamond" />
+        <div class="badge-info">
+          <h3>DIAMOND</h3>
+          <p>Tree Planter</p>
+          <span class="badge-value">1,000</span>
+        </div>
+      </div>
+    
+        </div>
+      </section>
+    
+      <section class="badge-section">
+        <h2>Forest Guardian</h2>
+        <div class="badge-grid">
+          
+      <div class="badge-card">
+        <img src="badge-forest-guardian-bronze.svg" alt="Forest Guardian - bronze" />
+        <div class="badge-info">
+          <h3>BRONZE</h3>
+          <p>Forest Guardian</p>
+          <span class="badge-value">1</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-forest-guardian-silver.svg" alt="Forest Guardian - silver" />
+        <div class="badge-info">
+          <h3>SILVER</h3>
+          <p>Forest Guardian</p>
+          <span class="badge-value">3</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-forest-guardian-gold.svg" alt="Forest Guardian - gold" />
+        <div class="badge-info">
+          <h3>GOLD</h3>
+          <p>Forest Guardian</p>
+          <span class="badge-value">5</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-forest-guardian-platinum.svg" alt="Forest Guardian - platinum" />
+        <div class="badge-info">
+          <h3>PLATINUM</h3>
+          <p>Forest Guardian</p>
+          <span class="badge-value">10</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-forest-guardian-diamond.svg" alt="Forest Guardian - diamond" />
+        <div class="badge-info">
+          <h3>DIAMOND</h3>
+          <p>Forest Guardian</p>
+          <span class="badge-value">20</span>
+        </div>
+      </div>
+    
+        </div>
+      </section>
+    
+      <section class="badge-section">
+        <h2>Carbon Champion</h2>
+        <div class="badge-grid">
+          
+      <div class="badge-card">
+        <img src="badge-carbon-champion-bronze.svg" alt="Carbon Champion - bronze" />
+        <div class="badge-info">
+          <h3>BRONZE</h3>
+          <p>Carbon Champion</p>
+          <span class="badge-value">100</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-carbon-champion-silver.svg" alt="Carbon Champion - silver" />
+        <div class="badge-info">
+          <h3>SILVER</h3>
+          <p>Carbon Champion</p>
+          <span class="badge-value">500</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-carbon-champion-gold.svg" alt="Carbon Champion - gold" />
+        <div class="badge-info">
+          <h3>GOLD</h3>
+          <p>Carbon Champion</p>
+          <span class="badge-value">1,000</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-carbon-champion-platinum.svg" alt="Carbon Champion - platinum" />
+        <div class="badge-info">
+          <h3>PLATINUM</h3>
+          <p>Carbon Champion</p>
+          <span class="badge-value">5,000</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-carbon-champion-diamond.svg" alt="Carbon Champion - diamond" />
+        <div class="badge-info">
+          <h3>DIAMOND</h3>
+          <p>Carbon Champion</p>
+          <span class="badge-value">10,000</span>
+        </div>
+      </div>
+    
+        </div>
+      </section>
+    
+      <section class="badge-section">
+        <h2>Eco Warrior</h2>
+        <div class="badge-grid">
+          
+      <div class="badge-card">
+        <img src="badge-eco-warrior-bronze.svg" alt="Eco Warrior - bronze" />
+        <div class="badge-info">
+          <h3>BRONZE</h3>
+          <p>Eco Warrior</p>
+          <span class="badge-value">1,000</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-eco-warrior-silver.svg" alt="Eco Warrior - silver" />
+        <div class="badge-info">
+          <h3>SILVER</h3>
+          <p>Eco Warrior</p>
+          <span class="badge-value">5,000</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-eco-warrior-gold.svg" alt="Eco Warrior - gold" />
+        <div class="badge-info">
+          <h3>GOLD</h3>
+          <p>Eco Warrior</p>
+          <span class="badge-value">10,000</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-eco-warrior-platinum.svg" alt="Eco Warrior - platinum" />
+        <div class="badge-info">
+          <h3>PLATINUM</h3>
+          <p>Eco Warrior</p>
+          <span class="badge-value">25,000</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-eco-warrior-diamond.svg" alt="Eco Warrior - diamond" />
+        <div class="badge-info">
+          <h3>DIAMOND</h3>
+          <p>Eco Warrior</p>
+          <span class="badge-value">50,000</span>
+        </div>
+      </div>
+    
+        </div>
+      </section>
+    
+      <section class="badge-section">
+        <h2>Green Pioneer</h2>
+        <div class="badge-grid">
+          
+      <div class="badge-card">
+        <img src="badge-green-pioneer-bronze.svg" alt="Green Pioneer - bronze" />
+        <div class="badge-info">
+          <h3>BRONZE</h3>
+          <p>Green Pioneer</p>
+          <span class="badge-value">5</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-green-pioneer-silver.svg" alt="Green Pioneer - silver" />
+        <div class="badge-info">
+          <h3>SILVER</h3>
+          <p>Green Pioneer</p>
+          <span class="badge-value">10</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-green-pioneer-gold.svg" alt="Green Pioneer - gold" />
+        <div class="badge-info">
+          <h3>GOLD</h3>
+          <p>Green Pioneer</p>
+          <span class="badge-value">20</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-green-pioneer-platinum.svg" alt="Green Pioneer - platinum" />
+        <div class="badge-info">
+          <h3>PLATINUM</h3>
+          <p>Green Pioneer</p>
+          <span class="badge-value">30</span>
+        </div>
+      </div>
+    
+      <div class="badge-card">
+        <img src="badge-green-pioneer-diamond.svg" alt="Green Pioneer - diamond" />
+        <div class="badge-info">
+          <h3>DIAMOND</h3>
+          <p>Green Pioneer</p>
+          <span class="badge-value">50</span>
+        </div>
+      </div>
+    
+        </div>
+      </section>
+    
+
+    <footer>
+      <p><strong>#GangGreen Platform</strong> - Carbon-Negative Africa Initiative</p>
+      <p>MIT License © 2025 Loch Tech Solutions</p>
+    </footer>
+  </div>
+</body>
+</html>
