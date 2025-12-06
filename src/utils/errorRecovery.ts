@@ -148,11 +148,11 @@ export class ErrorRecoveryManager implements IErrorRecoveryManager {
   private stats: Map<string, RecoveryStats> = new Map();
 
   constructor(
-    retryManager: RetryManager = retryManager,
-    circuitBreaker: CircuitBreakerRegistry = circuitBreakerRegistry
+    retryManagerInstance?: RetryManager,
+    circuitBreakerInstance?: CircuitBreakerRegistry
   ) {
-    this.retryManager = retryManager;
-    this.circuitBreaker = circuitBreaker;
+    this.retryManager = retryManagerInstance || retryManager;
+    this.circuitBreaker = circuitBreakerInstance || circuitBreakerRegistry;
 
     // Register predefined strategies
     Object.entries(PREDEFINED_STRATEGIES).forEach(([key, strategy]) => {

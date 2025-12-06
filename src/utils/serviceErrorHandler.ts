@@ -76,15 +76,23 @@ export async function withServiceErrorHandling<T>(
   } catch (error) {
     // If it's already an AppError, add context and re-throw
     if (error instanceof AppError) {
-      error.context = {
-        ...error.context,
-        component: context.service,
-        action: context.method,
-        userId: context.userId,
-        ...context.metadata,
-      };
-      errorHandler.handleError(error);
-      throw error;
+      // Create new error with merged context (don't mutate readonly property)
+      const ErrorClass = error.constructor as any;
+      const enhancedError = new ErrorClass(
+        error.message,
+        error.code,
+        error.severity,
+        {
+          ...error.context,
+          component: context.service,
+          action: context.method,
+          userId: context.userId,
+          ...context.metadata,
+        },
+        error.recoverable
+      );
+      errorHandler.handleError(enhancedError);
+      throw enhancedError;
     }
 
     // Convert unknown errors to AppError
@@ -176,7 +184,7 @@ export const validationErrors = {
       fieldName,
       undefined,
       undefined,
-      { fieldName, ...context }
+      { metadata: { fieldName, ...context } }
     ),
 
   invalidFormat: (fieldName: string, expectedFormat: string, context?: Record<string, any>) =>
@@ -186,7 +194,7 @@ export const validationErrors = {
       fieldName,
       undefined,
       expectedFormat,
-      { fieldName, expectedFormat, ...context }
+      { metadata: { fieldName, expectedFormat, ...context } }
     ),
 
   outOfRange: (fieldName: string, min: number, max: number, context?: Record<string, any>) =>
@@ -196,7 +204,7 @@ export const validationErrors = {
       fieldName,
       undefined,
       `${min}-${max}`,
-      { fieldName, min, max, ...context }
+      { metadata: { fieldName, min, max, ...context } }
     ),
 
   invalidAge: (age: number, context?: Record<string, any>) =>
@@ -206,7 +214,7 @@ export const validationErrors = {
       'age',
       age,
       '13-120',
-      { age, ...context }
+      { metadata: { age, ...context } }
     ),
 
   duplicateEntry: (fieldName: string, value: string, context?: Record<string, any>) =>
@@ -216,7 +224,7 @@ export const validationErrors = {
       fieldName,
       value,
       'unique',
-      { fieldName, value, ...context }
+      { metadata: { fieldName, value, ...context } }
     ),
 };
 
@@ -233,7 +241,7 @@ export const databaseErrors = {
       query,
       undefined,
       undefined,
-      { query, ...context }
+      { metadata: { query, ...context } }
     ),
 
   connectionFailed: (context?: Record<string, any>) =>
@@ -253,7 +261,7 @@ export const databaseErrors = {
       query,
       undefined,
       undefined,
-      { query, ...context }
+      { metadata: { query, ...context } }
     ),
 
   constraintViolation: (constraint: string, context?: Record<string, any>) =>
@@ -263,7 +271,7 @@ export const databaseErrors = {
       undefined,
       undefined,
       undefined,
-      { constraint, ...context }
+      { metadata: { constraint, ...context } }
     ),
 
   recordNotFound: (table: string, id: string, context?: Record<string, any>) =>
@@ -273,7 +281,7 @@ export const databaseErrors = {
       undefined,
       table,
       'select',
-      { table, id, ...context }
+      { metadata: { table, id, ...context } }
     ),
 };
 
@@ -290,7 +298,7 @@ export const networkErrors = {
       undefined,
       url,
       undefined,
-      { url, ...context }
+      { metadata: { url, ...context } }
     ),
 
   timeout: (url: string, context?: Record<string, any>) =>
@@ -300,7 +308,7 @@ export const networkErrors = {
       undefined,
       url,
       undefined,
-      { url, ...context }
+      { metadata: { url, ...context } }
     ),
 
   offline: (context?: Record<string, any>) =>
@@ -320,7 +328,7 @@ export const networkErrors = {
       statusCode,
       url,
       undefined,
-      { url, statusCode, ...context }
+      { metadata: { url, statusCode, ...context } }
     ),
 };
 
@@ -337,7 +345,7 @@ export const badgeErrors = {
       undefined,
       badgeType,
       'generate',
-      { badgeType, ...context }
+      { metadata: { badgeType, ...context } }
     ),
 
   invalidTier: (tier: string, context?: Record<string, any>) =>
@@ -347,7 +355,7 @@ export const badgeErrors = {
       undefined,
       undefined,
       undefined,
-      { tier, ...context }
+      { metadata: { tier, ...context } }
     ),
 
   alreadyOwned: (badgeId: string, userId: string, context?: Record<string, any>) =>
@@ -357,7 +365,7 @@ export const badgeErrors = {
       badgeId,
       undefined,
       undefined,
-      { badgeId, userId, ...context }
+      { metadata: { badgeId, userId, ...context } }
     ),
 
   insufficientProgress: (badgeId: string, required: number, current: number, context?: Record<string, any>) =>
@@ -367,7 +375,7 @@ export const badgeErrors = {
       badgeId,
       undefined,
       undefined,
-      { badgeId, required, current, ...context }
+      { metadata: { badgeId, required, current, ...context } }
     ),
 };
 
@@ -384,7 +392,7 @@ export const curationErrors = {
       undefined,
       undefined,
       undefined,
-      { contentId, ...context }
+      { metadata: { contentId, ...context } }
     ),
 
   invalidCohort: (cohort: string, context?: Record<string, any>) =>
@@ -394,7 +402,7 @@ export const curationErrors = {
       undefined,
       undefined,
       cohort,
-      { cohort, ...context }
+      { metadata: { cohort, ...context } }
     ),
 
   ruleValidationFailed: (ruleId: string, reason: string, context?: Record<string, any>) =>
@@ -404,7 +412,7 @@ export const curationErrors = {
       undefined,
       undefined,
       undefined,
-      { ruleId, reason, ...context }
+      { metadata: { ruleId, reason, ...context } }
     ),
 
   engineFailure: (context?: Record<string, any>) =>
@@ -436,18 +444,20 @@ export const missionErrors = {
     new DatabaseError(
       `Mission not found: ${missionId}`,
       'MISSION_NOT_FOUND',
-      'low',
-      { missionId, ...context },
-      false
+      undefined,
+      'missions',
+      'select',
+      { metadata: { missionId, ...context } }
     ),
 
   alreadyJoined: (missionId: string, userId: string, context?: Record<string, any>) =>
     new ValidationError(
       'You have already joined this mission',
       'ALREADY_JOINED',
-      'low',
-      { missionId, userId, ...context },
-      false
+      'mission_id',
+      missionId,
+      'unique',
+      { metadata: { missionId, userId, ...context } }
     ),
 
   capacityReached: (missionId: string, context?: Record<string, any>) =>

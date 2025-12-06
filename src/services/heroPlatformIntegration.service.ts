@@ -138,30 +138,30 @@ class HeroPlatformIntegrationService {
       const wasMultiplied = finalReward > baseReward;
 
       // Credit GG Coins
-      const creditResult = await ggCoinService.creditCoins({
+      const creditResult = await ggCoinService.creditCoins(
         userId,
-        amount: finalReward,
-        transactionType: 'achievement_reward',
-        referenceType: 'achievement',
-        referenceId: initiativeId,
-        description: wasMultiplied
+        finalReward,
+        'achievement_reward',
+        wasMultiplied
           ? `${activityDescription} (Hero bonus applied: ${baseReward} → ${finalReward} GG Coins)`
           : activityDescription,
-        metadata: {
+        {
           ...metadata,
           base_reward: baseReward,
           final_reward: finalReward,
           hero_multiplier_applied: wasMultiplied,
           initiative_id: initiativeId,
-        },
-      });
+          reference_type: 'achievement',
+          reference_id: initiativeId,
+        }
+      );
 
-      if (!creditResult || !creditResult.success) {
+      if (!creditResult) {
         return {
           success: false,
           rewardAmount: 0,
           wasMultiplied: false,
-          error: creditResult?.error || 'Failed to credit GG Coins',
+          error: 'Failed to credit GG Coins',
         };
       }
 

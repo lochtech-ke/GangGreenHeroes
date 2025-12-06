@@ -85,9 +85,10 @@ export const LazyBadge: React.FC<LazyBadgeProps> = ({
       <div
         ref={elementRef}
         data-badge-id={config.id}
-        className={`badge-error aspect-square ${className}`}
+        className={`badge-error ${className}`}
         style={{
           width: size,
+          height: size,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -109,10 +110,11 @@ export const LazyBadge: React.FC<LazyBadgeProps> = ({
     <div
       ref={elementRef}
       data-badge-id={config.id}
-      className={`lazy-badge aspect-square ${className}`}
+      className={`lazy-badge ${className}`}
       dangerouslySetInnerHTML={{ __html: svg || '' }}
       style={{
         width: size,
+        height: size,
       }}
     />
   );

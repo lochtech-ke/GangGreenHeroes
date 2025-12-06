@@ -283,24 +283,24 @@ class HeroRewardEngineService {
       console.log(`[HeroRewardEngineService] Distributing ${calculation.totalAmount} GG Coins to ${userId}`);
 
       // Credit GG Coins
-      const creditResult = await ggCoinService.creditCoins({
+      const creditResult = await ggCoinService.creditCoins(
         userId,
-        amount: calculation.totalAmount,
-        transactionType: 'hero_daily_reward',
-        referenceType: 'hero_reward',
-        referenceId: `hero_daily_${targetDate}_${userId}`,
-        description: `Daily Hero badge reward for ${targetDate} (${calculation.consecutiveDays} consecutive days)`,
-        metadata: {
+        calculation.totalAmount,
+        'hero_daily_reward',
+        `Daily Hero badge reward for ${targetDate} (${calculation.consecutiveDays} consecutive days)`,
+        {
           rewardDate: targetDate,
           baseAmount: calculation.baseAmount,
           bonusAmount: calculation.bonusAmount,
           consecutiveDays: calculation.consecutiveDays,
           activityMultiplier: calculation.activityMultiplier,
-        },
-      });
+          reference_type: 'hero_reward',
+          reference_id: `hero_daily_${targetDate}_${userId}`,
+        }
+      );
 
-      if (!creditResult || !creditResult.success) {
-        throw new Error(creditResult?.error || 'Failed to credit GG Coins');
+      if (!creditResult) {
+        throw new Error('Failed to credit GG Coins');
       }
 
       // Record daily reward

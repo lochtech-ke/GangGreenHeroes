@@ -16,6 +16,13 @@ describe('Badge SVG Defs Fix', () => {
       achievement: 'tree_planter',
       metadata: {
         badgeName: 'Test Badge',
+        tierLevel: 1,
+        forestName: 'Kakamega Forest',
+        achievementType: 'tree_planter',
+        achievementCount: 10,
+        earnedDate: new Date().toISOString(),
+        uniqueBadgeId: 'test-badge-1',
+        userId: 'test-user-1',
         userName: 'Test User',
       },
     };
@@ -57,6 +64,13 @@ describe('Badge SVG Defs Fix', () => {
         achievement: 'tree_planter',
         metadata: {
           badgeName: `${tier} Badge`,
+          tierLevel: 1,
+          forestName: 'Kakamega Forest',
+          achievementType: 'tree_planter',
+          achievementCount: 10,
+          earnedDate: new Date().toISOString(),
+          uniqueBadgeId: `test-${tier}`,
+          userId: 'test-user-1',
         },
       };
 
@@ -86,6 +100,13 @@ describe('Badge SVG Defs Fix', () => {
       achievement: 'ganggreen_hero',
       metadata: {
         badgeName: 'GangGreen Hero',
+        tierLevel: 7,
+        forestName: 'Kakamega Forest',
+        achievementType: 'ganggreen_hero',
+        achievementCount: 1,
+        earnedDate: new Date().toISOString(),
+        uniqueBadgeId: 'test-hero',
+        userId: 'test-user-hero',
         userName: 'Hero User',
       },
     };
@@ -116,9 +137,16 @@ describe('Badge SVG Defs Fix', () => {
       id: 'test-tags',
       tier: 'silver',
       forest: 'karura',
-      achievement: 'forest_guardian',
+      achievement: 'forest_protector',
       metadata: {
         badgeName: 'Test Badge',
+        tierLevel: 2,
+        forestName: 'Karura Forest',
+        achievementType: 'forest_protector',
+        achievementCount: 5,
+        earnedDate: new Date().toISOString(),
+        uniqueBadgeId: 'test-tags',
+        userId: 'test-user-2',
       },
     };
 
@@ -142,9 +170,16 @@ describe('Badge SVG Defs Fix', () => {
       id: 'test-content',
       tier: 'gold',
       forest: 'mau',
-      achievement: 'climate_champion',
+      achievement: 'climate_hero',
       metadata: {
         badgeName: 'Test Badge',
+        tierLevel: 3,
+        forestName: 'Mau Forest',
+        achievementType: 'climate_hero',
+        achievementCount: 15,
+        earnedDate: new Date().toISOString(),
+        uniqueBadgeId: 'test-content',
+        userId: 'test-user-3',
       },
     };
 

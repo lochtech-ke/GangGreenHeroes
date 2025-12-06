@@ -173,7 +173,8 @@ const FeaturedBadgeCard: React.FC<{
         {/* Badge SVG with Rotation on Hover */}
         <div className="p-6 flex justify-center items-center bg-gradient-to-br from-green-50/50 to-emerald-50/50 backdrop-blur-sm">
           <motion.div
-            className="aspect-square w-48 flex items-center justify-center"
+            className="flex items-center justify-center"
+            style={{ width: 192, height: 192 }}
             animate={{ rotate: isHovered ? 5 : 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -183,7 +184,8 @@ const FeaturedBadgeCard: React.FC<{
             ) : badgeSvg && !hasError ? (
               // Successfully generated SVG with rendering quality optimizations
               <div
-                className="aspect-square w-full drop-shadow-2xl badge-svg"
+                className="drop-shadow-2xl badge-svg"
+                style={{ width: 192, height: 192 }}
                 data-badge-svg
                 dangerouslySetInnerHTML={{ __html: badgeSvg }}
               />
@@ -192,7 +194,8 @@ const FeaturedBadgeCard: React.FC<{
               <img
                 src={badge.imageUrl}
                 alt={badge.name}
-                className="aspect-square w-full object-contain drop-shadow-2xl"
+                className="object-contain drop-shadow-2xl"
+                style={{ width: 192, height: 192 }}
                 onError={() => {
                   console.error('[NFTBadgeShowcase] Image load failed:', badge.imageUrl);
                   // Show BadgeFallback instead of hiding
@@ -369,7 +372,7 @@ export const NFTBadgeShowcase: React.FC<BadgeShowcaseProps> = ({
               <Award size={40} className="text-green-600" />
             </motion.div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Earn NFT Badges
+              Earn Digital Badges
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-600 mx-auto mb-6 rounded-full" />
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">

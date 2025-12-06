@@ -14,7 +14,7 @@
 import { SupabaseClient, PostgrestError } from '@supabase/supabase-js';
 import { supabase } from '../services/supabase';
 import { RetryManager } from './retryManager';
-import { CircuitBreaker } from './circuitBreaker';
+import { CircuitBreakerRegistry } from './circuitBreaker';
 import { errorHandler } from './errorHandler';
 import { DatabaseError, NetworkError, AuthError } from '../types/errors';
 
@@ -52,7 +52,7 @@ const DEFAULT_CONFIG: ApiClientConfig = {
 export class ApiClient {
   private client: SupabaseClient;
   private retryManager: RetryManager;
-  private circuitBreaker: CircuitBreaker;
+  private circuitBreaker: CircuitBreakerRegistry;
   private config: ApiClientConfig;
 
   constructor(config: Partial<ApiClientConfig> = {}) {
@@ -60,15 +60,25 @@ export class ApiClient {
     this.config = { ...DEFAULT_CONFIG, ...config };
 
     // Initialize retry manager
-    this.retryManager = new RetryManager({
+    this.retryManager = new RetryManager();
+    
+    // Register custom database strategy with config values
+    this.retryManager.registerStrategy('database', {
       maxRetries: this.config.retryAttempts,
-      initialDelay: this.config.retryDelay,
-      maxDelay: 10000,
+      retryDelay: this.config.retryDelay,
       backoffMultiplier: 2,
+      shouldRetry: (error: Error, attempt: number) => {
+        const message = error.message.toLowerCase();
+        return attempt < this.config.retryAttempts && 
+               (message.includes('timeout') || message.includes('connection') || message.includes('network'));
+      },
     });
 
-    // Initialize circuit breaker
-    this.circuitBreaker = new CircuitBreaker({
+    // Initialize circuit breaker registry
+    this.circuitBreaker = new CircuitBreakerRegistry();
+    
+    // Set default config for circuit breakers
+    this.circuitBreaker.setDefaultConfig({
       failureThreshold: this.config.circuitBreakerThreshold,
       resetTimeout: this.config.circuitBreakerTimeout,
       monitoringPeriod: 60000,
@@ -88,7 +98,7 @@ export class ApiClient {
     context?: Record<string, any>
   ): Promise<T> {
     // Check circuit breaker
-    if (this.config.enableCircuitBreaker && this.circuitBreaker.isOpen(operationKey)) {
+    if (this.config.enableCircuitBreaker && this.circuitBreaker.isCircuitOpen(operationKey)) {
       const error = new DatabaseError(
         'Circuit breaker is open for this operation',
         'CIRCUIT_BREAKER_OPEN',
@@ -135,7 +145,7 @@ export class ApiClient {
     // Execute with circuit breaker and retry if enabled
     if (this.config.enableCircuitBreaker) {
       const executeWithCircuitBreaker = async () => {
-        return await this.circuitBreaker.execute(executeOperation);
+        return await this.circuitBreaker.execute(operationKey, executeOperation);
       };
 
       if (this.config.enableRetry) {
@@ -333,14 +343,14 @@ export class ApiClient {
    * Reset circuit breaker for a specific operation
    */
   resetCircuitBreaker(operationKey: string): void {
-    this.circuitBreaker.reset(operationKey);
+    this.circuitBreaker.resetCircuit(operationKey);
   }
 
   /**
    * Check if circuit breaker is open for an operation
    */
   isCircuitOpen(operationKey: string): boolean {
-    return this.circuitBreaker.isOpen(operationKey);
+    return this.circuitBreaker.isCircuitOpen(operationKey);
   }
 }
 

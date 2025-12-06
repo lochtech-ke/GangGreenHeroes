@@ -136,24 +136,27 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({
       {/* Badge Icon */}
       <div className="flex justify-center mb-4">
         {lazyLoad ? (
-          <ObservedBadge
-            config={config}
-            size={size}
-            optimizeForMobile={true}
-            rootMargin="200px"
-            threshold={0.01}
-            onLoad={onLoad}
-            onError={onError}
-          />
+          <div style={{ width: size, height: size }}>
+            <ObservedBadge
+              config={config}
+              size={size}
+              optimizeForMobile={true}
+              rootMargin="200px"
+              threshold={0.01}
+              onLoad={onLoad}
+              onError={onError}
+            />
+          </div>
         ) : (
           <div
-            className="badge-icon aspect-square"
+            className="badge-icon"
             style={{
               width: size,
+              height: size,
             }}
           >
             {/* Non-lazy loaded badge would go here */}
-            <div className="aspect-square w-full bg-gray-200 rounded-lg animate-pulse" />
+            <div className="w-full h-full bg-gray-200 rounded-lg animate-pulse" />
           </div>
         )}
       </div>
@@ -227,23 +230,26 @@ export const CompactBadgeCard: React.FC<CompactBadgeCardProps> = ({
     >
       <div className="flex justify-center mb-2">
         {lazyLoad ? (
-          <ObservedBadge
-            config={config}
-            size={size}
-            optimizeForMobile={true}
-            rootMargin="100px"
-            threshold={0.01}
-            onLoad={onLoad}
-            onError={onError}
-          />
+          <div style={{ width: size, height: size }}>
+            <ObservedBadge
+              config={config}
+              size={size}
+              optimizeForMobile={true}
+              rootMargin="100px"
+              threshold={0.01}
+              onLoad={onLoad}
+              onError={onError}
+            />
+          </div>
         ) : (
           <div
-            className="badge-icon aspect-square"
+            className="badge-icon"
             style={{
               width: size,
+              height: size,
             }}
           >
-            <div className="aspect-square w-full bg-gray-200 rounded-lg animate-pulse" />
+            <div className="w-full h-full bg-gray-200 rounded-lg animate-pulse" />
           </div>
         )}
       </div>

@@ -99,7 +99,7 @@ export const CurrentBadgeDisplay: React.FC<CurrentBadgeDisplayProps> = ({
       className={`flex flex-col items-center ${className}`}
     >
       {/* Badge Display with Geometric Design */}
-      <div className="relative mb-4">
+      <div className="relative mb-4" style={{ width: 256, height: 256 }}>
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center">
             <BadgePlaceholder size={256} animated={true} />
@@ -116,7 +116,7 @@ export const CurrentBadgeDisplay: React.FC<CurrentBadgeDisplayProps> = ({
             repeatDelay: isHummingbird ? 2 : 3,
           }}
           className="relative"
-          style={{ opacity: isLoading ? 0 : 1 }}
+          style={{ opacity: isLoading ? 0 : 1, width: 256, height: 256 }}
         >
           {/* BadgeCard with geometric rendering */}
           <BadgeCard

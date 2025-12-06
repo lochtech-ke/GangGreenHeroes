@@ -157,7 +157,7 @@ export const ggCoinTransactionFactory = fc.record({
   user_id: fc.uuid(),
   transaction_type: fc.constantFrom('earn', 'spend', 'bonus', 'referral'),
   amount: fc.integer({ min: 1, max: 1000 }),
-  source: fc.string({ minLength: 3, max: 100 }),
+  source: fc.string({ minLength: 3, maxLength: 100 }),
   description: fc.string({ minLength: 5, maxLength: 200 }),
   timestamp: fc.date().map(d => d.toISOString()),
 });

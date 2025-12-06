@@ -160,12 +160,14 @@ export async function getMissionById(
         }
       }
 
+      const mission = result.data;
+      
       return {
-        ...data,
-        organizer: data.organizer ? {
-          id: data.organizer.id,
-          display_name: data.organizer.user_profiles?.display_name || 'Unknown',
-          avatar: data.organizer.user_profiles?.avatar,
+        ...mission,
+        organizer: mission.organizer ? {
+          id: mission.organizer.id,
+          display_name: mission.organizer.user_profiles?.display_name || 'Unknown',
+          avatar: mission.organizer.user_profiles?.avatar,
         } : undefined,
         user_participation: userParticipation,
       };

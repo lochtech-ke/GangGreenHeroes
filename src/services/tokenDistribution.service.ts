@@ -4,12 +4,11 @@ import type {
   TokenDistribution,
   DistributionConfig,
   ManualTokenAward,
-  TokenDistributionError,
-  TokenDistributionErrorCode,
   TokenDistributionResponse,
   DistributionSummary,
   TokenAllocationMap,
 } from '../types/tokenDistribution.types';
+import { TokenDistributionError, TokenDistributionErrorCode } from '../types/tokenDistribution.types';
 import type { ContributionScore } from '../types/contributionAnalyzer.types';
 
 /**

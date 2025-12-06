@@ -112,23 +112,7 @@
 /* ===== Gradient Background ===== */
 
 .splash-gradient-bg {
-  background: linear-gradient(
-    135deg,
-    #0D4D2D 0%,
-    #1a5c3a 50%,
-    #0D4D2D 100%
-  );
-  background-size: 200% 200%;
-  animation: gradient-shift 10s ease infinite;
-}
-
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+  background: #0D4D2D;
 }
 
 /* ===== Responsive Design Breakpoints ===== */
@@ -267,8 +251,7 @@
 
   /* Disable gradient shift */
   .splash-gradient-bg {
-    animation: none;
-    background-position: 0% 50%;
+    background: #0D4D2D;
   }
 
   /* Disable pulse animations */
@@ -368,12 +351,7 @@
 @media (prefers-color-scheme: dark) {
   /* Already using dark theme, but can be adjusted if needed */
   .splash-gradient-bg {
-    background: linear-gradient(
-      135deg,
-      #0a3d24 0%,
-      #154d2f 50%,
-      #0a3d24 100%
-    );
+    background: #0a3d24;
   }
 }
 
@@ -405,10 +383,8 @@
   backface-visibility: hidden;
 }
 
-/* Optimize gradient background animation */
+/* Optimize gradient background */
 .splash-gradient-bg {
-  /* Use transform instead of background-position for better performance */
-  will-change: background-position;
   /* Enable hardware acceleration */
   transform: translateZ(0);
 }
