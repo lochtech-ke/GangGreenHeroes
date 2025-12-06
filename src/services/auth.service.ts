@@ -171,10 +171,16 @@ class AuthService {
     try {
       console.log('[AuthService] Initiating Google OAuth sign-in...');
 
+      // Use environment variable for app URL, fallback to window.location.origin
+      const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
+      const redirectUrl = `${appUrl}/auth/callback`;
+      
+      console.log('[AuthService] OAuth redirect URL:', redirectUrl);
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -458,8 +464,9 @@ class AuthService {
    */
   async requestPasswordReset(email: string): Promise<{ error: Error | null }> {
     try {
+      const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${appUrl}/reset-password`,
       });
       return { error };
     } catch (error) {
