@@ -3,7 +3,8 @@
  * Green Mentor AI system for personalized guidance and recommendations
  */
 
-import OpenAI from 'openai';
+// OpenAI import removed - this service needs to be refactored to use backend API
+// import OpenAI from 'openai';
 import { supabase } from './supabase';
 import {
   ChatMessage,
@@ -16,29 +17,32 @@ import {
   ConceptExplanation,
   ExplanationRequest
 } from '../types/aiCompanion.types';
+import { AgeCohort } from '../types/contentCuration.types';
 
 class AICompanionService {
-  private openai: OpenAI;
+  // private openai: OpenAI;
   private config: AIServiceConfig;
 
   constructor() {
-    const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-    if (!apiKey) {
-      throw new Error('OpenAI API key not found in environment variables');
-    }
+    // Temporarily disabled - needs backend API implementation
+    // const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    // if (!apiKey) {
+    //   throw new Error('OpenAI API key not found in environment variables');
+    // }
 
     this.config = {
-      apiKey,
+      apiKey: '', // Disabled
       model: 'gpt-4o-mini',
       maxTokens: 1000,
       temperature: 0.7,
       systemPrompt: this.getSystemPrompt()
     };
 
-    this.openai = new OpenAI({
-      apiKey: this.config.apiKey,
-      dangerouslyAllowBrowser: true // Note: In production, API calls should go through backend
-    });
+    // OpenAI client disabled - needs backend implementation
+    // this.openai = new OpenAI({
+    //   apiKey: this.config.apiKey,
+    //   dangerouslyAllowBrowser: true
+    // });
   }
 
   // ============================================================================
@@ -162,30 +166,23 @@ class AICompanionService {
    */
   async explainConcept(request: ExplanationRequest): Promise<ConceptExplanation> {
     try {
-      const { concept, ageCohort, userInterests, context } = request;
+      const { concept, ageCohort } = request;
 
-      // Build age-appropriate prompt
-      const prompt = this.buildExplanationPrompt(concept, ageCohort, userInterests, context);
-
-      // Generate explanation using AI
-      const response = await this.openai.chat.completions.create({
-        model: this.config.model,
-        messages: [
-          { role: 'system', content: this.getEducationalSystemPrompt(ageCohort) },
-          { role: 'user', content: prompt }
+      // TODO: Implement backend API call to Supabase Edge Function
+      // For now, return a placeholder explanation
+      const explanation: ConceptExplanation = {
+        concept,
+        simpleExplanation: `${concept} is an important environmental concept. This feature requires backend API implementation.`,
+        ageAppropriateLevel: this.getAgeLevel(ageCohort),
+        examples: [
+          'Example 1: Tree planting in Kakamega Forest',
+          'Example 2: Community conservation efforts'
         ],
-        max_tokens: 800,
-        temperature: 0.7
-      });
+        relatedConcepts: ['Climate Change', 'Conservation', 'Sustainability'],
+        actionableSteps: ['Learn more about this topic', 'Join a local initiative']
+      };
 
-      const content = response.choices[0].message.content || '';
-
-      // Parse the AI response into structured explanation
-      const explanation = this.parseExplanationResponse(content, concept, ageCohort);
-
-      // Store explanation for analytics
       await this.trackExplanationAnalytics(request, explanation);
-
       return explanation;
     } catch (error) {
       console.error('Error explaining concept:', error);
@@ -230,21 +227,8 @@ class AICompanionService {
     context?: string
   ): Promise<string> {
     try {
-      const prompt = context 
-        ? `Context: ${context}\n\nQuestion: ${question}`
-        : question;
-
-      const response = await this.openai.chat.completions.create({
-        model: this.config.model,
-        messages: [
-          { role: 'system', content: this.getEducationalSystemPrompt(ageCohort) },
-          { role: 'user', content: prompt }
-        ],
-        max_tokens: 600,
-        temperature: 0.7
-      });
-
-      return response.choices[0].message.content || 'I apologize, but I could not generate an answer at this time.';
+      // TODO: Implement backend API call to Supabase Edge Function
+      return 'The AI companion feature is currently being upgraded. Please check back soon for personalized climate guidance!';
     } catch (error) {
       console.error('Error answering question:', error);
       throw this.handleAIError(error);
@@ -425,35 +409,12 @@ RELATED CONCEPTS: [2-3 related topics they might want to learn about]`;
     context: ChatContext | undefined,
     history: ChatMessage[]
   ): Promise<AIResponse> {
-    const messages = [
-      { role: 'system' as const, content: this.getSystemPrompt() },
-      ...history.slice(-5).map(msg => ({
-        role: msg.role as 'user' | 'assistant',
-        content: msg.content
-      })),
-      { 
-        role: 'user' as const, 
-        content: this.buildContextualMessage(message, context) 
-      }
-    ];
-
-    const response = await this.openai.chat.completions.create({
-      model: this.config.model,
-      messages,
-      max_tokens: this.config.maxTokens,
-      temperature: this.config.temperature
-    });
-
-    const choice = response.choices[0];
+    // TODO: Implement backend API call to Supabase Edge Function
+    // For now, return a placeholder response
     return {
-      content: choice.message.content || '',
-      usage: response.usage ? {
-        promptTokens: response.usage.prompt_tokens,
-        completionTokens: response.usage.completion_tokens,
-        totalTokens: response.usage.total_tokens
-      } : undefined,
-      model: response.model,
-      finishReason: choice.finish_reason
+      content: 'The AI companion feature is currently being upgraded to provide better, more secure responses. Please check back soon!',
+      model: this.config.model,
+      finishReason: 'stop'
     };
   }
 
