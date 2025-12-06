@@ -93,6 +93,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Responsive sizing for mobile */
+  max-width: min(200px, 40vw);
+  max-height: min(200px, 40vw);
 }
 
 /* Add subtle floating effect to hummingbird */
@@ -113,6 +116,12 @@
 
 .splash-gradient-bg {
   background: #0D4D2D;
+  /* Fix for mobile viewport height issues */
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height */
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 /* ===== Responsive Design Breakpoints ===== */
@@ -120,10 +129,14 @@
 /* Mobile (< 640px) - Default styles */
 .splash-container {
   padding: var(--space-md);
+  /* Ensure content fits on mobile screens */
+  max-height: 100vh;
+  max-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  overflow: hidden;
 }
 
 .splash-title {
-  font-size: var(--text-4xl);
+  font-size: clamp(2rem, 8vw, var(--text-4xl));
   line-height: var(--leading-tight);
 }
 
@@ -434,10 +447,64 @@ img {
 /* Prevent layout shifts during load */
 .hummingbird-container {
   /* Reserve space to prevent layout shift */
-  min-height: 200px;
-  min-width: 200px;
+  min-height: min(200px, 40vw);
+  min-width: min(200px, 40vw);
   /* Contain layout changes */
   contain: layout;
+}
+
+/* Mobile viewport fixes */
+@supports (height: 100dvh) {
+  .splash-gradient-bg {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+}
+
+/* Additional mobile-specific adjustments */
+@media (max-width: 639px) {
+  .splash-container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .splash-title {
+    font-size: clamp(1.75rem, 10vw, 2.5rem);
+    margin: 0.5rem 0;
+  }
+  
+  /* Reduce spacing on very small screens */
+  @media (max-height: 667px) {
+    .splash-container {
+      gap: 0.75rem;
+    }
+    
+    .hummingbird-container {
+      max-width: min(150px, 35vw);
+      max-height: min(150px, 35vw);
+      min-height: min(150px, 35vw);
+      min-width: min(150px, 35vw);
+    }
+  }
+  
+  /* Extra small screens (iPhone SE, etc.) */
+  @media (max-height: 568px) {
+    .splash-container {
+      gap: 0.5rem;
+      padding: 0.75rem;
+    }
+    
+    .splash-title {
+      font-size: clamp(1.5rem, 9vw, 2rem);
+    }
+    
+    .hummingbird-container {
+      max-width: min(120px, 30vw);
+      max-height: min(120px, 30vw);
+      min-height: min(120px, 30vw);
+      min-width: min(120px, 30vw);
+    }
+  }
 }
 
 /* ===== Utility Classes ===== */
