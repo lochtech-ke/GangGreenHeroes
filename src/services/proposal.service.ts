@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import { governanceTokenService } from './governanceToken.service';
+import { governanceNotificationService } from './governanceNotification.service';
 import type {
   Proposal,
   CreateProposalInput,
@@ -75,6 +76,11 @@ class ProposalService {
         .single();
 
       if (error) throw error;
+
+      // Send notifications to eligible voters
+      if (data) {
+        await governanceNotificationService.notifyNewProposal(data);
+      }
 
       return {
         success: true,
@@ -383,6 +389,137 @@ class ProposalService {
     const votingEnds = new Date(proposal.voting_ends_at);
 
     return now >= votingStarts && now <= votingEnds && proposal.status === 'active';
+  }
+
+  /**
+   * Process expired proposals and finalize them
+   * Should be called periodically (e.g., via cron job or scheduled task)
+   */
+  async processExpiredProposals(): Promise<{
+    processed: number;
+    finalized: string[];
+    errors: string[];
+  }> {
+    try {
+      const now = new Date();
+
+      // Get all active proposals with expired voting periods
+      const { data: expiredProposals, error } = await supabase
+        .from('proposals')
+        .select('*')
+        .eq('status', 'active')
+        .lt('voting_ends_at', now.toISOString());
+
+      if (error) throw error;
+
+      const finalized: string[] = [];
+      const errors: string[] = [];
+
+      // Finalize each expired proposal
+      for (const proposal of expiredProposals || []) {
+        const result = await this.finalizeProposal(proposal.id);
+        if (result.success) {
+          finalized.push(proposal.id);
+        } else {
+          errors.push(proposal.id);
+        }
+      }
+
+      return {
+        processed: (expiredProposals || []).length,
+        finalized,
+        errors,
+      };
+    } catch (error) {
+      console.error('Error processing expired proposals:', error);
+      return {
+        processed: 0,
+        finalized: [],
+        errors: [],
+      };
+    }
+  }
+
+  /**
+   * Automatically transition proposal status based on voting period
+   * This method checks if a proposal should transition from draft to active
+   */
+  async checkAndTransitionProposalStatus(proposalId: string): Promise<ServiceResponse<Proposal>> {
+    try {
+      const proposal = await this.getProposalById(proposalId);
+      if (!proposal) {
+        return {
+          success: false,
+          error: {
+            code: 'PROPOSAL_NOT_FOUND' as GovernanceErrorCode,
+            message: 'Proposal not found',
+          },
+        };
+      }
+
+      const now = new Date();
+      const votingStarts = new Date(proposal.voting_starts_at);
+      const votingEnds = new Date(proposal.voting_ends_at);
+
+      // Transition from draft to active if voting period has started
+      if (proposal.status === 'draft' && now >= votingStarts) {
+        return await this.updateProposalStatus(proposalId, 'active');
+      }
+
+      // Finalize if voting period has ended
+      if (proposal.status === 'active' && now > votingEnds) {
+        return await this.finalizeProposal(proposalId);
+      }
+
+      // No transition needed
+      return {
+        success: true,
+        data: proposal,
+      };
+    } catch (error) {
+      console.error('Error checking proposal status transition:', error);
+      return {
+        success: false,
+        error: {
+          code: 'DATABASE_ERROR' as GovernanceErrorCode,
+          message: 'Failed to check proposal status',
+          details: error,
+        },
+      };
+    }
+  }
+
+  /**
+   * Get proposals that need status updates
+   * Returns proposals that should transition to a new status
+   */
+  async getProposalsNeedingStatusUpdate(): Promise<Proposal[]> {
+    try {
+      const now = new Date();
+
+      // Get draft proposals that should be active
+      const { data: draftProposals, error: draftError } = await supabase
+        .from('proposals')
+        .select('*')
+        .eq('status', 'draft')
+        .lte('voting_starts_at', now.toISOString());
+
+      if (draftError) throw draftError;
+
+      // Get active proposals that should be finalized
+      const { data: activeProposals, error: activeError } = await supabase
+        .from('proposals')
+        .select('*')
+        .eq('status', 'active')
+        .lt('voting_ends_at', now.toISOString());
+
+      if (activeError) throw activeError;
+
+      return [...(draftProposals || []), ...(activeProposals || [])];
+    } catch (error) {
+      console.error('Error fetching proposals needing status update:', error);
+      return [];
+    }
   }
 }
 

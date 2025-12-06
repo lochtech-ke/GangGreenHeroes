@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabase';
 import { authService } from '../services/auth.service';
@@ -12,8 +12,15 @@ export function AuthCallbackPage() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
+    // Prevent multiple executions (React StrictMode runs effects twice in dev)
+    if (hasProcessed.current) {
+      return;
+    }
+    hasProcessed.current = true;
+
     const handleCallback = async () => {
       try {
         console.log('[AuthCallbackPage] Processing OAuth callback...');
@@ -61,11 +68,23 @@ export function AuthCallbackPage() {
           console.log('[AuthCallbackPage] Code exchange successful:', !!data.session);
         }
 
-        // If we have tokens in the URL hash, Supabase will automatically exchange them
-        // We need to wait a moment for the auth state to update
-        if (accessToken) {
-          console.log('[AuthCallbackPage] Waiting for auth state to update...');
-          await new Promise(resolve => setTimeout(resolve, 1000));
+        // If we have tokens in the URL hash, manually set the session
+        // Supabase should auto-exchange but we'll do it explicitly for reliability
+        if (accessToken && refreshToken) {
+          console.log('[AuthCallbackPage] Setting session from hash tokens...');
+          const { data, error: setSessionError } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+
+          if (setSessionError) {
+            console.error('[AuthCallbackPage] Error setting session:', setSessionError);
+            setError(setSessionError.message);
+            setIsLoading(false);
+            return;
+          }
+
+          console.log('[AuthCallbackPage] Session set successfully:', !!data.session);
         }
 
         // Now check the session
@@ -94,6 +113,9 @@ export function AuthCallbackPage() {
 
             // Create profile if needed
             await authService.ensureUserProfile(user.id, metadata);
+
+            // Clear the hash from URL to prevent re-processing
+            window.history.replaceState(null, '', window.location.pathname);
 
             // Successful authentication, redirect to dashboard
             console.log('[AuthCallbackPage] Redirecting to dashboard');

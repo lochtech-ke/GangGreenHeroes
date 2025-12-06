@@ -18,7 +18,7 @@ import type { HummingbirdAnimationProps } from '../../types/splash.types';
 const HummingbirdAnimation = ({
   format = 'gif',
   size = 'md',
-  fallbackImage = '/assets/splash/hummingbird-static.png',
+  fallbackImage = '/assets/splash/hummingbird-static.svg',
   className = ''
 }: HummingbirdAnimationProps) => {
   const [hasError, setHasError] = useState(false);
@@ -32,10 +32,10 @@ const HummingbirdAnimation = ({
     lg: 'w-64 h-64 md:w-80 md:h-80'
   };
 
-  // Animation source path
+  // Animation source path - using SVG files that actually exist
   const animationSrc = format === 'gif' 
-    ? '/assets/splash/hummingbird.gif'
-    : '/assets/splash/hummingbird.json';
+    ? '/assets/splash/hummingbird-animated.svg'
+    : '/assets/splash/hummingbird-colorful.svg';
 
   /**
    * Handle image load error

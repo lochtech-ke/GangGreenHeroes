@@ -31,15 +31,19 @@
 
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 1.5 Create voting_snapshots table for power calculation
+  - [x] 1.5 Create voting_snapshots table for power calculation
+
+
     - Write migration for voting_snapshots to capture voting power at proposal start
 
 
     - _Requirements: 3.2_
+
   - [ ] 1.6 Create senior_users table for tie-breaking authority
     - Write migration for senior_users with seniority levels
 
     - _Requirements: 4.2, 4.3_
+
 
   - [ ] 1.7 Create proposal_categories and token_earning_rules configuration tables
     - Write migrations for configuration tables
@@ -53,8 +57,10 @@
     - Write migration for petition_signatures with wallet addresses
     - Add unique constraints on petition_id/user_id and petition_id/wallet_address
 
+
     - _Requirements: 9.1, 9.2, 10.1, 10.4_
-  - [ ] 1.9 Create petition_config table for petition parameters
+  - [x] 1.9 Create petition_config table for petition parameters
+
     - Write migration for petition configuration
     - Insert default petition categories and thresholds
     - _Requirements: 12.1, 12.2, 12.3_
@@ -85,10 +91,13 @@
   - [x] 2.4 Create token earning automation hooks
 
 
+
     - Write functions to award tokens on tree planting, initiative creation
     - Integrate with existing gamification events
     - _Requirements: 1.1, 1.2, 1.3_
-  - [ ] 2.5 Write unit tests for token service
+  - [x] 2.5 Write unit tests for token service
+
+
     - Test delegation logic, circular delegation prevention
     - Test voting power calculations
     - _Requirements: 1.1-1.5, 7.1-7.5_
@@ -102,16 +111,21 @@
     - Implement proposal validation logic
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-  - [ ] 3.2 Implement proposal lifecycle management
+  - [x] 3.2 Implement proposal lifecycle management
+
+
     - Write updateProposalStatus and finalizeProposal methods
     - Add automatic status transitions based on voting period
     - _Requirements: 5.1, 5.5_
-  - [ ] 3.3 Create voting period scheduler
+  - [x] 3.3 Create voting period scheduler
+
+
     - Write function to automatically start and end voting periods
     - Implement notification triggers for voting start/end
 
     - _Requirements: 2.5, 6.2_
-  - [ ] 3.4 Implement proposal filtering and search
+  - [x] 3.4 Implement proposal filtering and search
+
     - Write getProposalsByCategory and getProposalHistory methods with filters
     - _Requirements: 5.2, 5.3_
   - [ ] 3.5 Write unit tests for proposal service
@@ -124,19 +138,28 @@
 
 - [x] 4. Implement voting engine service
 
-  - [ ] 4.1 Create VotingService class with vote casting logic
+  - [x] 4.1 Create VotingService class with vote casting logic
+
+
     - Write castVote and updateVote methods
     - Implement voting power snapshot creation
 
     - _Requirements: 3.1, 3.2, 3.3_
-  - [ ] 4.2 Implement vote tally calculation
+
+  - [x] 4.2 Implement vote tally calculation
+
+
     - Write calculateVoteTally method with real-time aggregation
 
     - Update proposal vote counts on each vote
+
     - _Requirements: 3.5, 5.2_
+
   - [ ] 4.3 Implement quorum validation
     - Write checkQuorum method based on configuration
     - Mark proposals as invalid when quorum not met
+
+
 
     - _Requirements: 6.4_
   - [ ] 4.4 Create voting snapshot system
@@ -158,7 +181,10 @@
     - Write getSeniorUser method to find highest seniority user
     - _Requirements: 4.1, 4.2_
 
-  - [ ] 5.2 Implement tie-breaker notification system
+  - [x] 5.2 Implement tie-breaker notification system
+
+
+
     - Write notifyTieBreaker method to alert senior user
     - Create tie-break request records
 
@@ -183,7 +209,9 @@
     - Write GovernanceToken, TokenTransaction, TokenEarningRule interfaces
     - _Requirements: 1.1-1.5, 8.1_
 
-  - [ ] 6.2 Define proposal types
+  - [x] 6.2 Define proposal types
+
+
     - Write Proposal, ProposalCategory, CreateProposalInput interfaces
 
     - _Requirements: 2.1-2.5_
@@ -192,6 +220,7 @@
     - Write Vote, VotingSnapshot, VoteTally interfaces
     - _Requirements: 3.1-3.5_
 
+
   - [ ] 6.4 Define tie-breaker types
     - Write SeniorUser, TieBreakRequest interfaces
 
@@ -199,8 +228,10 @@
   - [x] 6.5 Define petition types
 
     - Write Petition, PetitionSignature, PetitionConfig, CreatePetitionInput interfaces
+
     - _Requirements: 9.1-9.5, 10.1-10.5, 11.1-11.5_
-  - [ ] 6.6 Define Web3 integration types
+  - [x] 6.6 Define Web3 integration types
+
     - Write Web3Connection, ContractInteraction interfaces
     - _Requirements: 10.1, 10.2, 10.3_
   - [ ] 6.7 Define error types
@@ -216,11 +247,16 @@
     - Show active proposals requiring votes
     - Display voting history and delegation status
     - _Requirements: 1.5, 5.1, 7.4, 8.2_
-  - [ ] 7.2 Create TokenBalanceCard component
+  - [x] 7.2 Create TokenBalanceCard component
+
+
     - Display governance token balance separately from GG Coins
     - Show earning history and transaction log
     - _Requirements: 1.4, 1.5, 8.2, 8.5_
-  - [ ] 7.3 Create DelegationPanel component
+
+  - [x] 7.3 Create DelegationPanel component
+
+
     - Build interface to delegate and revoke voting power
     - Display current delegation status
     - _Requirements: 7.1, 7.2, 7.4_
@@ -228,12 +264,16 @@
 
 - [x] 8. Build proposal list and detail UI components
 
-  - [ ] 8.1 Create ProposalList component
+  - [x] 8.1 Create ProposalList component
+
+
     - Display list of proposals with status badges
     - Implement filtering by category, status, date
     - Add sorting options
     - _Requirements: 5.1, 5.3_
-  - [ ] 8.2 Create ProposalCard component
+  - [x] 8.2 Create ProposalCard component
+
+
     - Show proposal title, description, vote distribution
     - Display time remaining for active proposals
     - Show participation rate
@@ -246,59 +286,81 @@
     - Include voting interface
     - Display voting history
     - _Requirements: 5.2, 5.4_
-  - [ ] 8.4 Create VoteButton component
+  - [x] 8.4 Create VoteButton component
+
+
     - Build voting interface with For/Against/Abstain options
     - Show user's current vote if already cast
     - Display voting power being used
     - _Requirements: 3.1, 3.3, 3.4_
 
 - [ ] 9. Build proposal creation UI
-  - [ ] 9.1 Create CreateProposalForm component
+  - [x] 9.1 Create CreateProposalForm component
+
+
     - Build form with title, description, category fields
     - Add validation for minimum token requirement
     - Show preview before submission
     - _Requirements: 2.1, 2.2, 2.3, 2.4_
-  - [ ] 9.2 Implement proposal submission logic
+
+  - [x] 9.2 Implement proposal submission logic
+
     - Connect form to ProposalService
     - Handle validation errors
     - Show success confirmation
     - _Requirements: 2.1, 2.4, 2.5_
 
 - [ ] 10. Build tie-breaker UI for senior users
-  - [ ] 10.1 Create TieBreakerDashboard component
+  - [x] 10.1 Create TieBreakerDashboard component
+
+
+
     - Display list of proposals requiring tie-breaking
     - Show proposal details and vote distribution
     - _Requirements: 4.1, 4.5_
-  - [ ] 10.2 Create TieBreakerVoteInterface component
+  - [x] 10.2 Create TieBreakerVoteInterface component
+
+
     - Build interface for senior user to cast deciding vote
     - Show tie-breaker history
     - _Requirements: 4.3, 4.4_
-  - [ ] 10.3 Implement role-based access control
+  - [x] 10.3 Implement role-based access control
+
     - Restrict tie-breaker UI to senior users only
     - _Requirements: 4.2_
 
 - [ ] 11. Implement real-time updates
-  - [ ] 11.1 Set up Supabase real-time subscriptions for votes
+  - [x] 11.1 Set up Supabase real-time subscriptions for votes
+
+
     - Subscribe to vote table changes
     - Update vote tallies in real-time
     - _Requirements: 3.5_
+
   - [ ] 11.2 Set up real-time subscriptions for proposal status
     - Subscribe to proposal status changes
     - Update UI when proposals are finalized
     - _Requirements: 5.5_
-  - [ ] 11.3 Implement real-time token balance updates
+  - [x] 11.3 Implement real-time token balance updates
+
+
     - Subscribe to governance_tokens changes
     - Update balance display when tokens are earned
     - _Requirements: 1.4, 1.5_
 
-- [ ] 12. Implement notification system
-  - [ ] 12.1 Create notification triggers for new proposals
+- [-] 12. Implement notification system
+
+  - [x] 12.1 Create notification triggers for new proposals
+
     - Send notifications to all eligible voters when proposal is created
     - _Requirements: 2.5_
+
   - [ ] 12.2 Create notification triggers for voting reminders
     - Send reminders before voting period ends
+
     - _Requirements: 2.5_
-  - [ ] 12.3 Create notification triggers for tie-breaker requests
+  - [x] 12.3 Create notification triggers for tie-breaker requests
+
     - Notify senior user when tie-breaker vote is needed
     - _Requirements: 4.5_
   - [ ] 12.4 Create notification triggers for proposal outcomes
@@ -306,11 +368,15 @@
     - _Requirements: 5.5_
 
 - [ ] 13. Integrate with existing systems
-  - [ ] 13.1 Integrate token earning with tree planting events
+  - [x] 13.1 Integrate token earning with tree planting events
+
     - Hook into existing tree planting completion events
     - Award governance tokens automatically
     - _Requirements: 1.1_
-  - [ ] 13.2 Integrate token earning with initiative creation
+
+  - [x] 13.2 Integrate token earning with initiative creation
+
+
     - Hook into initiative approval events
     - Award governance tokens to initiative creators
     - _Requirements: 1.2_

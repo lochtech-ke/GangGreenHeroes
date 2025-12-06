@@ -21,7 +21,7 @@ import { SettingsPage } from './pages/SettingsPage';
 import { SocialFeedPage } from './pages/SocialFeedPage';
 import { EventsPage } from './pages/EventsPage';
 import { JourneyDashboardPage } from './pages/JourneyDashboardPage';
-import { GovernancePage } from './pages/GovernancePage';
+import GovernancePage from './pages/GovernancePage';
 import { ProposalDetailPage } from './pages/ProposalDetailPage';
 import { PetitionDetailPage } from './pages/PetitionDetailPage';
 import { PetitionsPage } from './pages/PetitionsPage';
@@ -63,7 +63,7 @@ import { GreenCoinsPage } from './pages/GreenCoinsPage';
 
 // Feature flags (can be moved to environment variables)
 const CHATBOT_ENABLED = true;
-const VIVIAN_SPLASH_ENABLED = true; // Feature flag for v1.0 Vivian splash screen
+const VIVIAN_SPLASH_ENABLED = true; // Feature flag for v1.0 Vivian splash screen - enabled (disables stickman)
 
 /**
  * RouteErrorBoundary Component
