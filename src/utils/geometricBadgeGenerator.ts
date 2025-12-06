@@ -738,21 +738,34 @@ function generateGeometricIconWithConfig(
 
 /**
  * Generate background geometric pattern
+ * Uses deterministic pattern generation to avoid undefined SVG paths
  */
 function generateBackgroundPattern(config: GeometricConfig, size: number): string {
   const polygons: string[] = [];
   const colors = config.primaryColors;
   
-  for (let i = 0; i < 20; i++) {
-    const x1 = Math.random() * size;
-    const y1 = Math.random() * size;
-    const x2 = x1 + (Math.random() - 0.5) * 100;
-    const y2 = y1 + (Math.random() - 0.5) * 100;
-    const x3 = x1 + (Math.random() - 0.5) * 100;
-    const y3 = y1 + (Math.random() - 0.5) * 100;
-    
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    polygons.push(`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="${color}"/>`);
+  // Use deterministic pattern generation instead of random
+  const gridSize = 5;
+  const cellSize = size / gridSize;
+  
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      const x = col * cellSize;
+      const y = row * cellSize;
+      
+      // Create triangular pattern
+      const x1 = x;
+      const y1 = y;
+      const x2 = x + cellSize;
+      const y2 = y;
+      const x3 = x + cellSize / 2;
+      const y3 = y + cellSize;
+      
+      const colorIndex = (row + col) % colors.length;
+      const color = colors[colorIndex];
+      
+      polygons.push(`<polygon points="${x1.toFixed(2)},${y1.toFixed(2)} ${x2.toFixed(2)},${y2.toFixed(2)} ${x3.toFixed(2)},${y3.toFixed(2)}" fill="${color}"/>`);
+    }
   }
   
   return polygons.join('\n    ');
