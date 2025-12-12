@@ -5,6 +5,7 @@ import { GlassButton } from '../common/GlassButton';
 import { AnimatedSection } from '../common/AnimatedSection';
 import { BadgeSvgService } from '../../services/badgeSvg.service';
 import { BadgeFallback, BadgeLoadingSpinner } from '../badges/BadgeFallback';
+import { GeometricHummingbirdBadge } from '../badges/GeometricHummingbirdBadge';
 import type { BadgeTier, ForestType, AchievementType } from '../../types/badge.types';
 
 interface FeaturedBadge {
@@ -78,62 +79,7 @@ const FeaturedBadgeCard: React.FC<{
   index: number;
 }> = ({ badge, onClick, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [badgeSvg, setBadgeSvg] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
   const config = tierConfig[badge.tier];
-
-  // Generate SVG badge using the badge service
-  React.useEffect(() => {
-    const generateBadge = async () => {
-      setIsLoading(true);
-      setHasError(false);
-
-      try {
-        const badgeService = new BadgeSvgService();
-        const result = await badgeService.generateBadge({
-          id: badge.id,
-          tier: badge.tier,
-          forest: badge.forest,
-          achievement: badge.achievement,
-          metadata: {
-            badgeName: badge.name,
-            tierLevel: ['bronze', 'silver', 'gold', 'platinum', 'diamond'].indexOf(badge.tier) + 1,
-            forestName: badge.forest,
-            achievementType: badge.achievement,
-            achievementCount: 0,
-            earnedDate: new Date().toISOString(),
-            uniqueBadgeId: badge.id,
-            userId: 'preview',
-          },
-          animated: badge.tier === 'diamond',
-        });
-
-        if (result.success && result.svg) {
-          setBadgeSvg(result.svg);
-          setHasError(false);
-        } else {
-          console.error('[NFTBadgeShowcase] Badge generation failed:', {
-            badgeId: badge.id,
-            badgeName: badge.name,
-            error: result.error,
-          });
-          setHasError(true);
-        }
-      } catch (error) {
-        console.error('[NFTBadgeShowcase] Exception generating badge SVG:', {
-          badgeId: badge.id,
-          badgeName: badge.name,
-          error: error instanceof Error ? error.message : 'Unknown error',
-        });
-        setHasError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    generateBadge();
-  }, [badge]);
 
   return (
     <motion.div
@@ -170,45 +116,14 @@ const FeaturedBadgeCard: React.FC<{
           </span>
         </div>
 
-        {/* Badge SVG with Rotation on Hover */}
-        <div className="p-6 flex justify-center items-center bg-white">
-          <motion.div
-            className="flex items-center justify-center"
-            style={{ width: 192, height: 192 }}
-            animate={{ rotate: isHovered ? 5 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {isLoading ? (
-              // Loading state with glass effect
-              <BadgeLoadingSpinner size="md" />
-            ) : badgeSvg && !hasError ? (
-              // Successfully generated SVG with rendering quality optimizations
-              <div
-                className="drop-shadow-2xl badge-svg w-full h-full flex items-center justify-center"
-                data-badge-svg
-                dangerouslySetInnerHTML={{ __html: badgeSvg }}
-              />
-            ) : badge.imageUrl ? (
-              // Fallback to imageUrl if provided
-              <img
-                src={badge.imageUrl}
-                alt={badge.name}
-                className="w-full h-full object-contain drop-shadow-2xl"
-                onError={() => {
-                  console.error('[NFTBadgeShowcase] Image load failed:', badge.imageUrl);
-                  // Show BadgeFallback instead of hiding
-                  setHasError(true);
-                }}
-              />
-            ) : (
-              // Final fallback: BadgeFallback component with tier-specific styling
-              <BadgeFallback
-                tier={badge.tier}
-                badgeName={badge.name}
-                size="md"
-              />
-            )}
-          </motion.div>
+        {/* Geometric Hummingbird Badge */}
+        <div className="p-6 flex justify-center items-center bg-gradient-to-br from-white to-gray-50">
+          <GeometricHummingbirdBadge
+            tier={badge.tier}
+            size="md"
+            animated={true}
+            className="transition-transform duration-300"
+          />
         </div>
 
         {/* Badge Info */}
