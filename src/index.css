@@ -492,6 +492,13 @@ body {
   height: 100%;
 }
 
+/* Ensure SVGs within badge-svg containers fill properly */
+.badge-svg svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* Responsive badge sizing with maintained quality */
 .badge-responsive {
   width: 128px;

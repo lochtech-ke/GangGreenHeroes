@@ -82,13 +82,13 @@ const FeaturedBadgeCard: React.FC<{
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const config = tierConfig[badge.tier];
-  
+
   // Generate SVG badge using the badge service
   React.useEffect(() => {
     const generateBadge = async () => {
       setIsLoading(true);
       setHasError(false);
-      
+
       try {
         const badgeService = new BadgeSvgService();
         const result = await badgeService.generateBadge({
@@ -108,7 +108,7 @@ const FeaturedBadgeCard: React.FC<{
           },
           animated: badge.tier === 'diamond',
         });
-        
+
         if (result.success && result.svg) {
           setBadgeSvg(result.svg);
           setHasError(false);
@@ -131,7 +131,7 @@ const FeaturedBadgeCard: React.FC<{
         setIsLoading(false);
       }
     };
-    
+
     generateBadge();
   }, [badge]);
 
@@ -171,7 +171,7 @@ const FeaturedBadgeCard: React.FC<{
         </div>
 
         {/* Badge SVG with Rotation on Hover */}
-        <div className="p-6 flex justify-center items-center bg-gradient-to-br from-green-50/50 to-emerald-50/50 backdrop-blur-sm">
+        <div className="p-6 flex justify-center items-center bg-white">
           <motion.div
             className="flex items-center justify-center"
             style={{ width: 192, height: 192 }}
@@ -184,8 +184,7 @@ const FeaturedBadgeCard: React.FC<{
             ) : badgeSvg && !hasError ? (
               // Successfully generated SVG with rendering quality optimizations
               <div
-                className="drop-shadow-2xl badge-svg"
-                style={{ width: 192, height: 192 }}
+                className="drop-shadow-2xl badge-svg w-full h-full flex items-center justify-center"
                 data-badge-svg
                 dangerouslySetInnerHTML={{ __html: badgeSvg }}
               />
@@ -194,8 +193,7 @@ const FeaturedBadgeCard: React.FC<{
               <img
                 src={badge.imageUrl}
                 alt={badge.name}
-                className="object-contain drop-shadow-2xl"
-                style={{ width: 192, height: 192 }}
+                className="w-full h-full object-contain drop-shadow-2xl"
                 onError={() => {
                   console.error('[NFTBadgeShowcase] Image load failed:', badge.imageUrl);
                   // Show BadgeFallback instead of hiding
