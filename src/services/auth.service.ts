@@ -6,6 +6,7 @@ import { categorizeAuthError } from '../types/authError.types';
 import { logAuthError } from '../utils/errorLogging';
 import { hummingbirdBadgeService } from './hummingbirdBadge.service';
 import { badgeProgressionService } from './badgeProgression.service';
+import { storeCurrentPageAsDestination } from '../utils/redirectDestination';
 import type {
   User,
   RegisterData,
@@ -170,6 +171,10 @@ class AuthService {
   async signInWithGoogle(): Promise<{ error: Error | null }> {
     try {
       console.log('[AuthService] Initiating Google OAuth sign-in...');
+
+      // Store current page as redirect destination before OAuth redirect
+      // Requirements: 5.5
+      storeCurrentPageAsDestination();
 
       // Use environment variable for app URL, fallback to window.location.origin
       const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;

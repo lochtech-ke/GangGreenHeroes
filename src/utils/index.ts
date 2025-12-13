@@ -10,3 +10,4 @@ export * from './badgeTemplateLoader';
 export * from './geometricBadgeGenerator';
 export * from './svgGenerators';
 export * from './mobileOptimization';
+export * from './errorLogger';

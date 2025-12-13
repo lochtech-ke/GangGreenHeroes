@@ -1,36 +1,26 @@
 /**
  * Error Context System
- * Captures and manages error context including breadcrumbs, navigation history, and user actions
- * Requirements: C15.1, C15.2, C15.3, C15.4, C15.5
+ * Provides utilities for collecting and managing error context information
+ * Requirements: 1.3, 15.1, 15.2, 15.3, 15.4, 15.5
  */
 
 import { ErrorContext, Breadcrumb } from '../types/errors';
-
-/**
- * Maximum number of breadcrumbs to store
- */
-const MAX_BREADCRUMBS = 10;
-
-/**
- * Maximum number of navigation history entries to store
- */
-const MAX_NAVIGATION_HISTORY = 10;
+import { sanitizeObject } from './errorLogging';
 
 /**
  * Error Context Manager
- * Manages error context collection including breadcrumbs, navigation history, and component hierarchy
+ * Collects and manages contextual information for error reporting
  */
 export class ErrorContextManager {
   private static instance: ErrorContextManager;
   private breadcrumbs: Breadcrumb[] = [];
-  private navigationHistory: string[] = [];
-  private currentRoute: string = '';
-  private componentHierarchy: string[] = [];
-  private sessionId: string;
-  private requestIdCounter: number = 0;
+  private maxBreadcrumbs: number = 20;
+  private userActions: Array<{ timestamp: Date; action: string; component?: string; data?: any }> = [];
+  private maxUserActions: number = 10;
+  private navigationHistory: Array<{ timestamp: Date; route: string; referrer?: string }> = [];
+  private maxNavigationHistory: number = 5;
 
   private constructor() {
-    this.sessionId = this.generateSessionId();
     this.setupNavigationTracking();
   }
 
@@ -45,198 +35,148 @@ export class ErrorContextManager {
   }
 
   /**
-   * Generate a unique session ID
-   */
-  private generateSessionId(): string {
-    return `session_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
-  }
-
-  /**
-   * Generate a unique request ID
-   */
-  public generateRequestId(): string {
-    this.requestIdCounter++;
-    return `req_${this.sessionId}_${this.requestIdCounter}`;
-  }
-
-  /**
    * Set up navigation tracking
-   * Requirements: C15.1
    */
   private setupNavigationTracking(): void {
-    if (typeof window === 'undefined') {
-      return;
+    if (typeof window !== 'undefined') {
+      // Track initial page load
+      this.addNavigationEntry(window.location.pathname, document.referrer);
+
+      // Track navigation changes (for SPAs)
+      const originalPushState = history.pushState;
+      const originalReplaceState = history.replaceState;
+
+      history.pushState = (...args) => {
+        originalPushState.apply(history, args);
+        this.addNavigationEntry(window.location.pathname);
+      };
+
+      history.replaceState = (...args) => {
+        originalReplaceState.apply(history, args);
+        this.addNavigationEntry(window.location.pathname);
+      };
+
+      // Track back/forward navigation
+      window.addEventListener('popstate', () => {
+        this.addNavigationEntry(window.location.pathname);
+      });
     }
-
-    // Track initial route
-    this.updateRoute(window.location.pathname);
-
-    // Track route changes (for SPAs)
-    const originalPushState = window.history.pushState;
-    const originalReplaceState = window.history.replaceState;
-
-    window.history.pushState = (...args) => {
-      originalPushState.apply(window.history, args);
-      this.updateRoute(window.location.pathname);
-    };
-
-    window.history.replaceState = (...args) => {
-      originalReplaceState.apply(window.history, args);
-      this.updateRoute(window.location.pathname);
-    };
-
-    // Track popstate (back/forward navigation)
-    window.addEventListener('popstate', () => {
-      this.updateRoute(window.location.pathname);
-    });
   }
 
   /**
-   * Update current route and navigation history
-   * Requirements: C15.1
+   * Add navigation entry to history
    */
-  private updateRoute(route: string): void {
-    if (route === this.currentRoute) {
-      return;
+  private addNavigationEntry(route: string, referrer?: string): void {
+    const entry = {
+      timestamp: new Date(),
+      route,
+      referrer,
+    };
+
+    this.navigationHistory.push(entry);
+
+    // Keep only the last N entries
+    if (this.navigationHistory.length > this.maxNavigationHistory) {
+      this.navigationHistory = this.navigationHistory.slice(-this.maxNavigationHistory);
     }
 
-    // Add to navigation history
-    this.navigationHistory.push(route);
-    if (this.navigationHistory.length > MAX_NAVIGATION_HISTORY) {
-      this.navigationHistory.shift();
-    }
-
-    this.currentRoute = route;
-
-    // Add breadcrumb for navigation
+    // Also add as breadcrumb
     this.addBreadcrumb({
       timestamp: new Date(),
       category: 'navigation',
       message: `Navigated to ${route}`,
       level: 'info',
-      data: { route },
+      data: { route, referrer },
     });
   }
 
   /**
-   * Add a breadcrumb to the trail
-   * Requirements: C15.2
+   * Add breadcrumb for error context
+   * Requirements: 15.2
    */
   public addBreadcrumb(breadcrumb: Breadcrumb): void {
-    this.breadcrumbs.push(breadcrumb);
-    
-    // Keep only the last MAX_BREADCRUMBS
-    if (this.breadcrumbs.length > MAX_BREADCRUMBS) {
-      this.breadcrumbs.shift();
+    // Sanitize breadcrumb data
+    const sanitizedBreadcrumb: Breadcrumb = {
+      ...breadcrumb,
+      data: breadcrumb.data ? sanitizeObject(breadcrumb.data) : undefined,
+    };
+
+    this.breadcrumbs.push(sanitizedBreadcrumb);
+
+    // Keep only the last N breadcrumbs
+    if (this.breadcrumbs.length > this.maxBreadcrumbs) {
+      this.breadcrumbs = this.breadcrumbs.slice(-this.maxBreadcrumbs);
     }
   }
 
   /**
-   * Add a user action breadcrumb
-   * Requirements: C15.2
+   * Add user action to tracking
+   * Requirements: 15.2
    */
-  public trackUserAction(action: string, data?: Record<string, any>): void {
+  public addUserAction(action: string, component?: string, data?: any): void {
+    const userAction = {
+      timestamp: new Date(),
+      action,
+      component,
+      data: data ? sanitizeObject(data) : undefined,
+    };
+
+    this.userActions.push(userAction);
+
+    // Keep only the last N actions
+    if (this.userActions.length > this.maxUserActions) {
+      this.userActions = this.userActions.slice(-this.maxUserActions);
+    }
+
+    // Also add as breadcrumb
     this.addBreadcrumb({
       timestamp: new Date(),
       category: 'user_action',
-      message: action,
+      message: `User ${action}${component ? ` in ${component}` : ''}`,
       level: 'info',
-      data,
+      data: { action, component, ...data },
     });
   }
 
   /**
-   * Add an API call breadcrumb
-   * Requirements: C15.3
+   * Get current breadcrumbs
    */
-  public trackApiCall(
-    method: string,
-    endpoint: string,
-    status?: number,
-    data?: Record<string, any>
-  ): void {
-    this.addBreadcrumb({
-      timestamp: new Date(),
-      category: 'api',
-      message: `${method} ${endpoint}${status ? ` - ${status}` : ''}`,
-      level: status && status >= 400 ? 'error' : 'info',
-      data: {
-        method,
-        endpoint,
-        status,
-        ...data,
-      },
-    });
+  public getBreadcrumbs(): Breadcrumb[] {
+    return [...this.breadcrumbs];
   }
 
   /**
-   * Add a form interaction breadcrumb
-   * Requirements: C15.4
+   * Get user actions history
    */
-  public trackFormInteraction(
-    formName: string,
-    action: 'focus' | 'blur' | 'change' | 'submit' | 'error',
-    fieldName?: string,
-    data?: Record<string, any>
-  ): void {
-    this.addBreadcrumb({
-      timestamp: new Date(),
-      category: 'form',
-      message: `Form ${formName}: ${action}${fieldName ? ` on ${fieldName}` : ''}`,
-      level: action === 'error' ? 'error' : 'info',
-      data: {
-        formName,
-        action,
-        fieldName,
-        ...data,
-      },
-    });
+  public getUserActions(): Array<{ timestamp: Date; action: string; component?: string; data?: any }> {
+    return [...this.userActions];
   }
 
   /**
-   * Add a component lifecycle breadcrumb
-   * Requirements: C15.5
+   * Get navigation history
+   * Requirements: 15.1
    */
-  public trackComponentLifecycle(
-    componentName: string,
-    lifecycle: 'mount' | 'unmount' | 'update' | 'error',
-    data?: Record<string, any>
-  ): void {
-    this.addBreadcrumb({
-      timestamp: new Date(),
-      category: 'component',
-      message: `${componentName}: ${lifecycle}`,
-      level: lifecycle === 'error' ? 'error' : 'info',
-      data: {
-        componentName,
-        lifecycle,
-        ...data,
-      },
-    });
+  public getNavigationHistory(): Array<{ timestamp: Date; route: string; referrer?: string }> {
+    return [...this.navigationHistory];
   }
 
   /**
-   * Set component hierarchy for error context
-   * Requirements: C15.5
+   * Build comprehensive error context
+   * Requirements: 1.3, 15.1, 15.2, 15.3, 15.4, 15.5
    */
-  public setComponentHierarchy(hierarchy: string[]): void {
-    this.componentHierarchy = hierarchy;
-  }
-
-  /**
-   * Get current error context
-   * Returns complete context including breadcrumbs, navigation history, and current state
-   */
-  public getContext(additionalContext?: Partial<ErrorContext>): ErrorContext {
+  public buildErrorContext(additionalContext?: Partial<ErrorContext>): ErrorContext {
     const context: ErrorContext = {
-      route: this.currentRoute,
-      breadcrumbs: [...this.breadcrumbs],
-      sessionId: this.sessionId,
       timestamp: new Date(),
+      route: typeof window !== 'undefined' ? window.location.pathname : undefined,
+      userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
+      breadcrumbs: this.getBreadcrumbs(),
       metadata: {
-        navigationHistory: [...this.navigationHistory],
-        componentHierarchy: [...this.componentHierarchy],
-        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
+        navigationHistory: this.getNavigationHistory(),
+        userActions: this.getUserActions(),
+        sessionId: this.getSessionId(),
+        viewport: this.getViewportInfo(),
+        performance: this.getPerformanceInfo(),
+        ...additionalContext?.metadata,
       },
       ...additionalContext,
     };
@@ -245,56 +185,188 @@ export class ErrorContextManager {
   }
 
   /**
-   * Get breadcrumbs
+   * Get or generate session ID
    */
-  public getBreadcrumbs(): Breadcrumb[] {
-    return [...this.breadcrumbs];
+  private getSessionId(): string {
+    if (typeof window === 'undefined') {
+      return 'server-session';
+    }
+
+    let sessionId = sessionStorage.getItem('error-context-session-id');
+    if (!sessionId) {
+      sessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      sessionStorage.setItem('error-context-session-id', sessionId);
+    }
+    return sessionId;
   }
 
   /**
-   * Get navigation history
+   * Get viewport information
    */
-  public getNavigationHistory(): string[] {
-    return [...this.navigationHistory];
+  private getViewportInfo(): any {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      devicePixelRatio: window.devicePixelRatio,
+      orientation: screen.orientation?.type,
+    };
   }
 
   /**
-   * Get current route
+   * Get performance information
    */
-  public getCurrentRoute(): string {
-    return this.currentRoute;
+  private getPerformanceInfo(): any {
+    if (typeof window === 'undefined' || !window.performance) {
+      return null;
+    }
+
+    const navigation = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+    const memory = (window.performance as any).memory;
+
+    return {
+      loadTime: navigation ? navigation.loadEventEnd - navigation.loadEventStart : null,
+      domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart : null,
+      memory: memory ? {
+        usedJSHeapSize: memory.usedJSHeapSize,
+        totalJSHeapSize: memory.totalJSHeapSize,
+        jsHeapSizeLimit: memory.jsHeapSizeLimit,
+      } : null,
+      timing: {
+        now: window.performance.now(),
+        timeOrigin: window.performance.timeOrigin,
+      },
+    };
   }
 
   /**
-   * Get session ID
+   * Capture form state for error context
+   * Requirements: 15.4
    */
-  public getSessionId(): string {
-    return this.sessionId;
+  public captureFormState(formElement: HTMLFormElement): any {
+    if (!formElement) {
+      return null;
+    }
+
+    const formData = new FormData(formElement);
+    const formState: any = {};
+
+    for (const [key, value] of formData.entries()) {
+      // Sanitize form values to remove sensitive data
+      if (typeof value === 'string') {
+        formState[key] = this.sanitizeFormValue(key, value);
+      } else {
+        formState[key] = '[FILE]';
+      }
+    }
+
+    return {
+      formId: formElement.id,
+      formName: formElement.name,
+      formAction: formElement.action,
+      formMethod: formElement.method,
+      fieldCount: formElement.elements.length,
+      values: formState,
+    };
   }
 
   /**
-   * Clear all breadcrumbs
+   * Sanitize form values to remove sensitive data
    */
-  public clearBreadcrumbs(): void {
+  private sanitizeFormValue(fieldName: string, value: string): string {
+    const sensitiveFields = [
+      'password', 'token', 'secret', 'key', 'pin', 'cvv', 'ssn',
+      'credit', 'card', 'account', 'routing', 'bank',
+    ];
+
+    const lowerFieldName = fieldName.toLowerCase();
+    if (sensitiveFields.some(field => lowerFieldName.includes(field))) {
+      return '[REDACTED]';
+    }
+
+    // For other fields, just return length info for long values
+    if (value.length > 100) {
+      return `[LONG_VALUE_${value.length}_CHARS]`;
+    }
+
+    return value;
+  }
+
+  /**
+   * Capture API request context
+   * Requirements: 15.3
+   */
+  public captureApiContext(url: string, method: string, requestData?: any, responseData?: any): any {
+    return {
+      url: this.sanitizeUrl(url),
+      method,
+      timestamp: new Date(),
+      requestData: requestData ? sanitizeObject(requestData) : undefined,
+      responseData: responseData ? sanitizeObject(responseData) : undefined,
+    };
+  }
+
+  /**
+   * Sanitize URL to remove sensitive query parameters
+   */
+  private sanitizeUrl(url: string): string {
+    try {
+      const urlObj = new URL(url);
+      const sensitiveParams = ['token', 'key', 'secret', 'password', 'auth', 'session'];
+      
+      for (const param of sensitiveParams) {
+        if (urlObj.searchParams.has(param)) {
+          urlObj.searchParams.set(param, '[REDACTED]');
+        }
+      }
+      
+      return urlObj.toString();
+    } catch {
+      // If URL parsing fails, just return the original
+      return url;
+    }
+  }
+
+  /**
+   * Clear all context data
+   */
+  public clear(): void {
     this.breadcrumbs = [];
-  }
-
-  /**
-   * Clear navigation history
-   */
-  public clearNavigationHistory(): void {
+    this.userActions = [];
     this.navigationHistory = [];
   }
 
   /**
-   * Reset all context
+   * Configure maximum items to keep
    */
-  public reset(): void {
-    this.breadcrumbs = [];
-    this.navigationHistory = [];
-    this.componentHierarchy = [];
-    this.sessionId = this.generateSessionId();
-    this.requestIdCounter = 0;
+  public configure(options: {
+    maxBreadcrumbs?: number;
+    maxUserActions?: number;
+    maxNavigationHistory?: number;
+  }): void {
+    if (options.maxBreadcrumbs !== undefined) {
+      this.maxBreadcrumbs = options.maxBreadcrumbs;
+      if (this.breadcrumbs.length > this.maxBreadcrumbs) {
+        this.breadcrumbs = this.breadcrumbs.slice(-this.maxBreadcrumbs);
+      }
+    }
+
+    if (options.maxUserActions !== undefined) {
+      this.maxUserActions = options.maxUserActions;
+      if (this.userActions.length > this.maxUserActions) {
+        this.userActions = this.userActions.slice(-this.maxUserActions);
+      }
+    }
+
+    if (options.maxNavigationHistory !== undefined) {
+      this.maxNavigationHistory = options.maxNavigationHistory;
+      if (this.navigationHistory.length > this.maxNavigationHistory) {
+        this.navigationHistory = this.navigationHistory.slice(-this.maxNavigationHistory);
+      }
+    }
   }
 }
 
@@ -302,66 +374,28 @@ export class ErrorContextManager {
 export const errorContextManager = ErrorContextManager.getInstance();
 
 // Export convenience functions
-
-/**
- * Add a breadcrumb
- */
-export function addBreadcrumb(breadcrumb: Breadcrumb): void {
-  errorContextManager.addBreadcrumb(breadcrumb);
+export function addBreadcrumb(category: string, message: string, level: 'info' | 'warning' | 'error' = 'info', data?: any): void {
+  errorContextManager.addBreadcrumb({
+    timestamp: new Date(),
+    category,
+    message,
+    level,
+    data,
+  });
 }
 
-/**
- * Track a user action
- */
-export function trackUserAction(action: string, data?: Record<string, any>): void {
-  errorContextManager.trackUserAction(action, data);
+export function addUserAction(action: string, component?: string, data?: any): void {
+  errorContextManager.addUserAction(action, component, data);
 }
 
-/**
- * Track an API call
- */
-export function trackApiCall(
-  method: string,
-  endpoint: string,
-  status?: number,
-  data?: Record<string, any>
-): void {
-  errorContextManager.trackApiCall(method, endpoint, status, data);
+export function buildErrorContext(additionalContext?: Partial<ErrorContext>): ErrorContext {
+  return errorContextManager.buildErrorContext(additionalContext);
 }
 
-/**
- * Track a form interaction
- */
-export function trackFormInteraction(
-  formName: string,
-  action: 'focus' | 'blur' | 'change' | 'submit' | 'error',
-  fieldName?: string,
-  data?: Record<string, any>
-): void {
-  errorContextManager.trackFormInteraction(formName, action, fieldName, data);
+export function captureFormState(formElement: HTMLFormElement): any {
+  return errorContextManager.captureFormState(formElement);
 }
 
-/**
- * Track a component lifecycle event
- */
-export function trackComponentLifecycle(
-  componentName: string,
-  lifecycle: 'mount' | 'unmount' | 'update' | 'error',
-  data?: Record<string, any>
-): void {
-  errorContextManager.trackComponentLifecycle(componentName, lifecycle, data);
-}
-
-/**
- * Get current error context
- */
-export function getErrorContext(additionalContext?: Partial<ErrorContext>): ErrorContext {
-  return errorContextManager.getContext(additionalContext);
-}
-
-/**
- * Generate a unique request ID
- */
-export function generateRequestId(): string {
-  return errorContextManager.generateRequestId();
+export function captureApiContext(url: string, method: string, requestData?: any, responseData?: any): any {
+  return errorContextManager.captureApiContext(url, method, requestData, responseData);
 }

@@ -50,6 +50,8 @@ export class ErrorHandler implements IErrorHandler {
   private severityThreshold: ErrorSeverity = ErrorSeverity.LOW;
   private trackingEnabled: boolean = true;
   private rateLimiter: ErrorRateLimiter;
+  private breadcrumbs: Array<{ timestamp: Date; category: string; message: string; level: string; data?: any }> = [];
+  private maxBreadcrumbs: number = 10;
 
   private constructor() {
     this.rateLimiter = new ErrorRateLimiter({
@@ -109,31 +111,36 @@ export class ErrorHandler implements IErrorHandler {
   /**
    * Main error handling pipeline
    * Processes errors through categorization, sanitization, rate limiting, and custom handlers
+   * Requirements: 1.1, 1.2, 1.3, 1.4
    */
   public handleError(error: Error, context?: ErrorContext): void {
     try {
       // Convert to AppError if not already
       const appError = this.ensureAppError(error, context);
 
+      // Add context enrichment
+      const enrichedError = this.enrichErrorWithContext(appError, context);
+
       // Check severity threshold
-      if (!this.shouldProcess(appError)) {
+      if (!this.shouldProcess(enrichedError)) {
         return;
       }
 
       // Categorize the error
-      const errorType = this.categorizeError(appError);
+      const errorType = this.categorizeError(enrichedError);
 
-      // Check rate limiting
-      if (!this.rateLimiter.shouldLog(appError.code)) {
-        this.rateLimiter.recordError(appError.code);
+      // Check rate limiting (bypass for critical errors)
+      if (!this.rateLimiter.shouldBypassForCritical(enrichedError.severity) && 
+          !this.rateLimiter.shouldLog(enrichedError.code)) {
+        this.rateLimiter.recordError(enrichedError.code);
         return;
       }
 
       // Record error for rate limiting
-      this.rateLimiter.recordError(appError.code);
+      this.rateLimiter.recordError(enrichedError.code);
 
       // Sanitize the error
-      const sanitizedError = this.sanitizeError(appError);
+      const sanitizedError = this.sanitizeError(enrichedError);
 
       // Log the error if tracking is enabled
       if (this.trackingEnabled) {
@@ -155,6 +162,31 @@ export class ErrorHandler implements IErrorHandler {
       // Prevent infinite loops - log to console only
       console.error('[ErrorHandler] Error in error handler:', handlerError);
     }
+  }
+
+  /**
+   * Enrich error with additional context information
+   * Requirements: 1.3
+   */
+  private enrichErrorWithContext(error: AppError, additionalContext?: ErrorContext): AppError {
+    const enrichedContext: ErrorContext = {
+      ...error.context,
+      ...additionalContext,
+      timestamp: new Date(),
+      userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
+      route: typeof window !== 'undefined' ? window.location.pathname : undefined,
+      breadcrumbs: this.getBreadcrumbs(),
+    };
+
+    // Create new error instance with enriched context
+    const ErrorClass = error.constructor as any;
+    return new ErrorClass(
+      error.message,
+      error.code,
+      error.severity,
+      enrichedContext,
+      error.recoverable
+    );
   }
 
   /**
@@ -406,6 +438,50 @@ export class ErrorHandler implements IErrorHandler {
   }
 
   /**
+   * Add breadcrumb for error context tracking
+   */
+  public addBreadcrumb(category: string, message: string, level: 'info' | 'warning' | 'error' = 'info', data?: any): void {
+    const breadcrumb = {
+      timestamp: new Date(),
+      category,
+      message,
+      level,
+      data: data ? sanitizeObject(data) : undefined,
+    };
+
+    this.breadcrumbs.push(breadcrumb);
+
+    // Keep only the last N breadcrumbs
+    if (this.breadcrumbs.length > this.maxBreadcrumbs) {
+      this.breadcrumbs = this.breadcrumbs.slice(-this.maxBreadcrumbs);
+    }
+  }
+
+  /**
+   * Get current breadcrumbs
+   */
+  public getBreadcrumbs(): Array<{ timestamp: Date; category: string; message: string; level: string; data?: any }> {
+    return [...this.breadcrumbs];
+  }
+
+  /**
+   * Clear all breadcrumbs
+   */
+  public clearBreadcrumbs(): void {
+    this.breadcrumbs = [];
+  }
+
+  /**
+   * Set maximum number of breadcrumbs to keep
+   */
+  public setMaxBreadcrumbs(max: number): void {
+    this.maxBreadcrumbs = max;
+    if (this.breadcrumbs.length > max) {
+      this.breadcrumbs = this.breadcrumbs.slice(-max);
+    }
+  }
+
+  /**
    * Reset all error handlers and configuration
    */
   public reset(): void {
@@ -413,6 +489,7 @@ export class ErrorHandler implements IErrorHandler {
     this.severityThreshold = ErrorSeverity.LOW;
     this.trackingEnabled = true;
     this.rateLimiter.resetLimits();
+    this.breadcrumbs = [];
   }
 }
 

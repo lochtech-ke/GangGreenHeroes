@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuthContext } from './contexts/AuthContext';
 import { JourneyProvider } from './contexts/JourneyContext';
@@ -60,6 +60,8 @@ import { AmbassadorDashboardPage } from './pages/AmbassadorDashboardPage';
 import { AmbassadorProfilePage } from './pages/AmbassadorProfilePage';
 import { AmbassadorHallOfFamePage } from './pages/AmbassadorHallOfFamePage';
 import { GreenCoinsPage } from './pages/GreenCoinsPage';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { setupOAuth404Handler, logOAuth404Error } from './utils/oauthErrorHandler';
 
 // Feature flags (can be moved to environment variables)
 const CHATBOT_ENABLED = true;
@@ -641,6 +643,16 @@ function AppContent() {
             </RouteErrorBoundary>
           }
         />
+        
+        {/* Catch-all route for 404 errors */}
+        <Route
+          path="*"
+          element={
+            <RouteErrorBoundary routeName="404">
+              <NotFoundPage />
+            </RouteErrorBoundary>
+          }
+        />
       </Routes>
       <ChatbotWrapper />
     </>
@@ -673,6 +685,47 @@ function AppWithRouter() {
   const location = useLocation();
   const [showVivianSplash, setShowVivianSplash] = useState(true);
   const [showStickmanPreloader, setShowStickmanPreloader] = useState(true);
+
+  // Setup OAuth 404 error handler on app initialization
+  useEffect(() => {
+    setupOAuth404Handler();
+  }, []);
+
+  // Monitor route changes for OAuth 404 errors
+  useEffect(() => {
+    // Check if current route is a 404 during OAuth flow
+    const knownRoutes = [
+      '/', '/login', '/register', '/reset-password', '/auth/callback', '/test-supabase',
+      '/social-feed', '/legal', '/onboarding-guide', '/learn', '/dashboard', '/impact-dashboard',
+      '/journey', '/badges', '/initiatives', '/marketplace', '/trees', '/carbon-credits',
+      '/gamification', '/coins', '/forum', '/communities', '/learning', '/certificates',
+      '/missions', '/events', '/profile', '/settings', '/governance', '/petitions',
+      '/ambassador'
+    ];
+
+    const isDynamicRoute = location.pathname.match(/^\/legal\/[^/]+$/) ||
+                          location.pathname.match(/^\/initiatives\/[^/]+$/) ||
+                          location.pathname.match(/^\/communities\/[^/]+$/) ||
+                          location.pathname.match(/^\/learning\/[^/]+$/) ||
+                          location.pathname.match(/^\/missions\/[^/]+$/) ||
+                          location.pathname.match(/^\/governance\/[^/]+$/) ||
+                          location.pathname.match(/^\/petitions\/[^/]+$/) ||
+                          location.pathname.match(/^\/ambassador\/[^/]+$/);
+
+    const isKnownRoute = knownRoutes.some(route => 
+      location.pathname === route || 
+      location.pathname.startsWith(route + '/')
+    ) || isDynamicRoute;
+
+    // If this is not a known route and we're in an OAuth flow, log as 404
+    if (!isKnownRoute) {
+      logOAuth404Error(window.location.href, {
+        trigger: 'unknown_route_navigation',
+        knownRoutes: knownRoutes.length,
+        routePattern: location.pathname
+      });
+    }
+  }, [location.pathname]);
 
   // Routes where splash screens should NOT be shown
   // Authentication pages need immediate interaction without waiting for animations

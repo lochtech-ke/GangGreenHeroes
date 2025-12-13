@@ -1,79 +1,241 @@
-import React, { Component, ErrorInfo } from 'react';
-import { ErrorBoundaryProps, ErrorBoundaryState, ErrorFallbackProps } from '../../types/errors';
-import { errorHandler } from '../../utils/errorHandler';
+/**
+ * React Error Boundary Component
+ * Catches JavaScript errors in child component trees and displays fallback UI
+ * Requirements: 6.1, 6.2, 6.3, 6.4, 6.5
+ */
+
+import React, { Component, ReactNode } from 'react';
+import { debugLogger } from '../../utils/debugLogger';
+import { AppError, ErrorSeverity } from '../../types/errors';
+
+export interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallback?: React.ComponentType<ErrorFallbackProps>;
+  onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
+  resetKeys?: any[];
+  level?: 'critical' | 'section' | 'component';
+  maxResetAttempts?: number;
+}
+
+export interface ErrorFallbackProps {
+  error: Error;
+  resetError: () => void;
+  level: 'critical' | 'section' | 'component';
+  resetCount: number;
+  maxResetAttempts: number;
+}
+
+export interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: React.ErrorInfo | null;
+  resetCount: number;
+  errorId: string | null;
+}
 
 /**
- * ErrorBoundary Component
- * 
- * React Error Boundary that catches JavaScript errors in child component trees,
- * logs them, and displays a fallback UI instead of crashing the entire application.
- * 
- * Features:
- * - Catches errors in componentDidCatch lifecycle
- * - Provides error state management
- * - Supports reset functionality with resetKeys
- * - Prevents error loops by limiting reset attempts
- * - Integrates with central error handler
- * - Supports different fallback UIs based on error level
- * 
- * Requirements: C6.1, C6.2, C6.3, C6.4, C6.5
+ * Default Error Fallback Component
  */
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  private readonly MAX_RESET_ATTEMPTS = 3;
-  private readonly RESET_WINDOW_MS = 10000; // 10 seconds
-  private resetTimestamps: number[] = [];
+const DefaultErrorFallback: React.FC<ErrorFallbackProps> = ({
+  error,
+  resetError,
+  level,
+  resetCount,
+  maxResetAttempts
+}) => {
+  const canReset = resetCount < maxResetAttempts;
+  
+  const getLevelConfig = () => {
+    switch (level) {
+      case 'critical':
+        return {
+          title: 'Application Error',
+          description: 'The application has encountered a critical error and needs to be restarted.',
+          bgColor: 'bg-red-50',
+          borderColor: 'border-red-200',
+          textColor: 'text-red-800',
+          buttonColor: 'bg-red-600 hover:bg-red-700'
+        };
+      case 'section':
+        return {
+          title: 'Section Error',
+          description: 'This section has encountered an error. You can try to reload it or continue using other parts of the application.',
+          bgColor: 'bg-yellow-50',
+          borderColor: 'border-yellow-200',
+          textColor: 'text-yellow-800',
+          buttonColor: 'bg-yellow-600 hover:bg-yellow-700'
+        };
+      case 'component':
+        return {
+          title: 'Component Error',
+          description: 'A component has encountered an error. You can try to reload it.',
+          bgColor: 'bg-blue-50',
+          borderColor: 'border-blue-200',
+          textColor: 'text-blue-800',
+          buttonColor: 'bg-blue-600 hover:bg-blue-700'
+        };
+      default:
+        return {
+          title: 'Error',
+          description: 'Something went wrong.',
+          bgColor: 'bg-gray-50',
+          borderColor: 'border-gray-200',
+          textColor: 'text-gray-800',
+          buttonColor: 'bg-gray-600 hover:bg-gray-700'
+        };
+    }
+  };
+
+  const config = getLevelConfig();
+
+  return (
+    <div className={`min-h-[200px] flex items-center justify-center p-4`}>
+      <div className={`max-w-md w-full ${config.bgColor} ${config.borderColor} border rounded-lg p-6`}>
+        <div className="flex items-center mb-4">
+          <div className="flex-shrink-0">
+            <svg
+              className={`h-6 w-6 ${config.textColor}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <h3 className={`text-lg font-medium ${config.textColor}`}>
+              {config.title}
+            </h3>
+          </div>
+        </div>
+        
+        <div className="mb-4">
+          <p className={`text-sm ${config.textColor}`}>
+            {config.description}
+          </p>
+          
+          {import.meta.env.DEV && (
+            <details className="mt-3">
+              <summary className={`text-xs ${config.textColor} cursor-pointer hover:underline`}>
+                Technical Details
+              </summary>
+              <div className="mt-2 p-2 bg-white rounded border">
+                <p className="text-xs text-gray-600 font-mono break-all">
+                  {error.message}
+                </p>
+                {error.stack && (
+                  <pre className="text-xs text-gray-500 mt-2 overflow-auto max-h-32">
+                    {error.stack}
+                  </pre>
+                )}
+              </div>
+            </details>
+          )}
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+          {canReset && (
+            <button
+              onClick={resetError}
+              className={`flex-1 px-4 py-2 text-white text-sm font-medium rounded-md ${config.buttonColor} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-50`}
+            >
+              Try Again
+              {resetCount > 0 && ` (${resetCount}/${maxResetAttempts})`}
+            </button>
+          )}
+          
+          <button
+            onClick={() => window.location.reload()}
+            className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          >
+            Reload Page
+          </button>
+          
+          {level === 'critical' && (
+            <button
+              onClick={() => window.location.href = '/'}
+              className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            >
+              Go Home
+            </button>
+          )}
+        </div>
+
+        {!canReset && (
+          <div className="mt-3 p-2 bg-red-100 border border-red-200 rounded">
+            <p className="text-xs text-red-700">
+              Maximum reset attempts reached. Please reload the page or contact support.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+/**
+ * React Error Boundary Class Component
+ */
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  private resetTimeoutId: number | null = null;
 
   constructor(props: ErrorBoundaryProps) {
     super(props);
+    
     this.state = {
       hasError: false,
-      error: undefined,
-      errorInfo: undefined,
-      errorId: undefined,
+      error: null,
+      errorInfo: null,
       resetCount: 0,
+      errorId: null
     };
   }
 
-  /**
-   * Static method called when an error is thrown in a child component
-   * Updates state to trigger fallback UI rendering
-   */
   static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
+    // Update state so the next render will show the fallback UI
     return {
       hasError: true,
       error,
+      errorId: `error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     };
   }
 
-  /**
-   * Lifecycle method called after an error is caught
-   * Logs error details and integrates with central error handler
-   * 
-   * Requirement C6.2: Log error with component stack trace
-   */
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    const { level = 'component', isolationId, onError } = this.props;
-
-    // Generate unique error ID for tracking
-    const errorId = `eb-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
-    // Update state with error details
-    this.setState({
-      errorInfo,
-      errorId,
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    const { onError, level = 'component' } = this.props;
+    
+    // Log error with debug logger
+    debugLogger.error('error-boundary', `Error caught in ${level} boundary`, error, {
+      componentStack: errorInfo.componentStack,
+      errorBoundary: this.constructor.name,
+      level,
+      resetCount: this.state.resetCount
     });
 
-    // Log error with central error handler
-    errorHandler.handleError(error, {
-      component: 'ErrorBoundary',
-      action: 'componentDidCatch',
-      metadata: {
-        level,
-        isolationId,
-        errorId,
-        componentStack: errorInfo.componentStack,
-        resetCount: this.state.resetCount,
+    // Create AppError for centralized error handling
+    const appError = new AppError(
+      error.message,
+      'COMPONENT_ERROR',
+      level === 'critical' ? ErrorSeverity.CRITICAL : ErrorSeverity.MEDIUM,
+      {
+        component: 'ErrorBoundary',
+        action: 'componentDidCatch',
+        metadata: {
+          componentStack: errorInfo.componentStack,
+          level,
+          resetCount: this.state.resetCount
+        }
       },
+      true // recoverable
+    );
+
+    // Update state with error info
+    this.setState({
+      errorInfo
     });
 
     // Call custom error handler if provided
@@ -81,137 +243,116 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       try {
         onError(error, errorInfo);
       } catch (handlerError) {
-        console.error('Error in custom error handler:', handlerError);
+        debugLogger.error('error-boundary', 'Error in custom error handler', handlerError);
+      }
+    }
+
+    // Report to global error handler if available
+    if (typeof window !== 'undefined' && (window as any).__ERROR_HANDLER__) {
+      try {
+        (window as any).__ERROR_HANDLER__.handleError(appError);
+      } catch (handlerError) {
+        debugLogger.error('error-boundary', 'Error in global error handler', handlerError);
       }
     }
   }
 
-  /**
-   * Check if component should reset based on resetKeys prop
-   * Requirement C6.3: Add reset functionality
-   */
-  componentDidUpdate(prevProps: ErrorBoundaryProps): void {
+  componentDidUpdate(prevProps: ErrorBoundaryProps) {
     const { resetKeys } = this.props;
     const { hasError } = this.state;
-
-    // If error state is active and resetKeys have changed, attempt reset
+    
+    // Reset error state if resetKeys have changed
     if (hasError && resetKeys && prevProps.resetKeys) {
-      const hasResetKeyChanged = resetKeys.some(
-        (key, index) => key !== prevProps.resetKeys?.[index]
+      const hasResetKeyChanged = resetKeys.some((key, index) => 
+        key !== prevProps.resetKeys![index]
       );
-
+      
       if (hasResetKeyChanged) {
         this.resetErrorBoundary();
       }
     }
   }
 
-  /**
-   * Reset error boundary state
-   * Requirement C6.5: Prevent error loops by limiting reset attempts
-   */
-  resetErrorBoundary = (): void => {
-    const now = Date.now();
+  componentWillUnmount() {
+    if (this.resetTimeoutId) {
+      clearTimeout(this.resetTimeoutId);
+    }
+  }
 
-    // Clean up old timestamps outside the reset window
-    this.resetTimestamps = this.resetTimestamps.filter(
-      (timestamp) => now - timestamp < this.RESET_WINDOW_MS
-    );
+  resetErrorBoundary = () => {
+    const { maxResetAttempts = 3 } = this.props;
+    const { resetCount } = this.state;
 
-    // Check if we've exceeded max reset attempts
-    if (this.resetTimestamps.length >= this.MAX_RESET_ATTEMPTS) {
-      console.error(
-        `ErrorBoundary: Maximum reset attempts (${this.MAX_RESET_ATTEMPTS}) reached within ${this.RESET_WINDOW_MS}ms. Preventing reset to avoid error loop.`
-      );
+    if (resetCount >= maxResetAttempts) {
+      debugLogger.warn('error-boundary', 'Maximum reset attempts reached', {
+        resetCount,
+        maxResetAttempts
+      });
       return;
     }
 
-    // Record this reset attempt
-    this.resetTimestamps.push(now);
+    debugLogger.info('error-boundary', 'Resetting error boundary', {
+      resetCount: resetCount + 1,
+      maxResetAttempts
+    });
 
-    // Reset state
-    this.setState((prevState) => ({
+    this.setState({
       hasError: false,
-      error: undefined,
-      errorInfo: undefined,
-      errorId: undefined,
-      resetCount: prevState.resetCount + 1,
-    }));
+      error: null,
+      errorInfo: null,
+      resetCount: resetCount + 1,
+      errorId: null
+    });
   };
 
-  render(): React.ReactNode {
-    const { hasError, error } = this.state;
-    const { children, fallback: FallbackComponent, level = 'component', isolationId } = this.props;
+  render() {
+    const { hasError, error, resetCount } = this.state;
+    const { children, fallback: FallbackComponent, level = 'component', maxResetAttempts = 3 } = this.props;
 
-    // Requirement C6.1: Display fallback UI when error is caught
     if (hasError && error) {
-      const fallbackProps: ErrorFallbackProps = {
-        error,
-        resetError: this.resetErrorBoundary,
-        level,
-        isolationId,
-      };
-
-      // Use custom fallback if provided, otherwise use default
-      if (FallbackComponent) {
-        return <FallbackComponent {...fallbackProps} />;
-      }
-
-      // Default fallback UI
+      const FallbackToRender = FallbackComponent || DefaultErrorFallback;
+      
       return (
-        <div
-          style={{
-            padding: '20px',
-            margin: '20px',
-            border: '1px solid #ff6b6b',
-            borderRadius: '8px',
-            backgroundColor: '#fff5f5',
-          }}
-        >
-          <h2 style={{ color: '#c92a2a', marginTop: 0 }}>Something went wrong</h2>
-          <p style={{ color: '#495057' }}>
-            We encountered an error while rendering this component.
-          </p>
-          <button
-            onClick={this.resetErrorBoundary}
-            style={{
-              padding: '8px 16px',
-              backgroundColor: '#228be6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
-          >
-            Try Again
-          </button>
-          {process.env.NODE_ENV === 'development' && (
-            <details style={{ marginTop: '16px' }}>
-              <summary style={{ cursor: 'pointer', color: '#868e96' }}>
-                Error Details (Development Only)
-              </summary>
-              <pre
-                style={{
-                  marginTop: '8px',
-                  padding: '12px',
-                  backgroundColor: '#f8f9fa',
-                  borderRadius: '4px',
-                  overflow: 'auto',
-                  fontSize: '12px',
-                }}
-              >
-                {error.toString()}
-                {error.stack && `\n\n${error.stack}`}
-              </pre>
-            </details>
-          )}
-        </div>
+        <FallbackToRender
+          error={error}
+          resetError={this.resetErrorBoundary}
+          level={level}
+          resetCount={resetCount}
+          maxResetAttempts={maxResetAttempts}
+        />
       );
     }
 
-    // Requirement C6.4: Allow rest of application to continue functioning
     return children;
   }
+}
+
+/**
+ * Higher-order component for wrapping components with error boundary
+ */
+export function withErrorBoundary<P extends object>(
+  Component: React.ComponentType<P>,
+  errorBoundaryProps?: Omit<ErrorBoundaryProps, 'children'>
+) {
+  const WrappedComponent = (props: P) => (
+    <ErrorBoundary {...errorBoundaryProps}>
+      <Component {...props} />
+    </ErrorBoundary>
+  );
+
+  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`;
+  
+  return WrappedComponent;
+}
+
+/**
+ * Hook for error boundary context (for functional components)
+ */
+export function useErrorHandler() {
+  return (error: Error, errorInfo?: any) => {
+    // Throw error to be caught by nearest error boundary
+    throw error;
+  };
 }
 
 export default ErrorBoundary;

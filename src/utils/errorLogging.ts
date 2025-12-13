@@ -48,6 +48,14 @@ const SENSITIVE_PATTERNS = [
     return `${match.substring(0, 6)}...${match.substring(match.length - 4)}`;
   }},
   
+  // Additional Web3 patterns
+  { pattern: /wallet[_-]?address["\s:=]+0x[a-fA-F0-9]{40}/gi, replacement: 'wallet_address: [REDACTED]' },
+  { pattern: /contract[_-]?address["\s:=]+0x[a-fA-F0-9]{40}/gi, replacement: 'contract_address: [REDACTED]' },
+  
+  // Extended transaction hash patterns
+  { pattern: /tx[_-]?hash["\s:=]+0x[a-fA-F0-9]{64}/gi, replacement: 'tx_hash: [REDACTED]' },
+  { pattern: /transaction[_-]?hash["\s:=]+0x[a-fA-F0-9]{64}/gi, replacement: 'transaction_hash: [REDACTED]' },
+  
   // Private keys (various formats - be aggressive with redaction)
   { pattern: /private[_-]?key["\s:=]+[0-9a-fA-F]{64}/gi, replacement: 'private_key: [REDACTED]' },
   { pattern: /priv["\s:=]+[0-9a-fA-F]{64}/gi, replacement: 'priv: [REDACTED]' },
@@ -92,6 +100,18 @@ export function sanitizeString(text: string): string {
  * @returns Sanitized object with sensitive data redacted
  */
 export function sanitizeObject(obj: any, depth: number = 0, maxDepth: number = 10): any {
+  // Use the enhanced deep sanitization by default
+  return sanitizeObjectDeep(obj, new WeakSet(), depth, maxDepth);
+}
+
+/**
+ * Legacy sanitizeObject implementation (kept for backward compatibility)
+ * @param obj - The object to sanitize
+ * @param depth - Current recursion depth (prevents infinite loops)
+ * @param maxDepth - Maximum recursion depth (default: 10)
+ * @returns Sanitized object with sensitive data redacted
+ */
+export function sanitizeObjectLegacy(obj: any, depth: number = 0, maxDepth: number = 10): any {
   // Prevent infinite recursion
   if (depth > maxDepth) {
     return '[MAX_DEPTH_EXCEEDED]';
@@ -135,6 +155,11 @@ export function sanitizeObject(obj: any, depth: number = 0, maxDepth: number = 1
     'privatekey', 'private_key', 'mnemonic', 'seed', 'seedphrase', 'seed_phrase',
     'dateofbirth', 'date_of_birth', 'dob', 'ssn', 'socialsecuritynumber',
     'creditcard', 'credit_card', 'cvv', 'pin', 'authorization', 'auth',
+    // Web3 specific keys
+    'walletaddress', 'wallet_address', 'contractaddress', 'contract_address',
+    'txhash', 'tx_hash', 'transactionhash', 'transaction_hash', 'blockhash', 'block_hash',
+    // Additional sensitive keys
+    'signature', 'nonce', 'salt', 'hash', 'digest', 'checksum',
   ];
 
   for (const [key, value] of Object.entries(obj)) {
@@ -328,6 +353,120 @@ export function sanitizeAgeData(data: any): any {
 }
 
 /**
+ * Enhanced deep sanitization for complex nested objects
+ * Handles circular references and provides more thorough sanitization
+ * @param obj - The object to sanitize
+ * @param visited - Set of visited objects to prevent circular references
+ * @param depth - Current recursion depth
+ * @param maxDepth - Maximum recursion depth
+ * @returns Sanitized object with sensitive data redacted
+ */
+export function sanitizeObjectDeep(
+  obj: any, 
+  visited: WeakSet<object> = new WeakSet(), 
+  depth: number = 0, 
+  maxDepth: number = 15
+): any {
+  // Prevent infinite recursion
+  if (depth > maxDepth) {
+    return '[MAX_DEPTH_EXCEEDED]';
+  }
+
+  if (obj === null || obj === undefined) {
+    return obj;
+  }
+
+  // Handle primitive types
+  if (typeof obj !== 'object') {
+    if (typeof obj === 'string') {
+      return sanitizeString(obj);
+    }
+    return obj;
+  }
+
+  // Handle circular references
+  if (visited.has(obj)) {
+    return '[CIRCULAR_REFERENCE]';
+  }
+  visited.add(obj);
+
+  // Handle Date objects
+  if (obj instanceof Date) {
+    return obj;
+  }
+
+  // Handle Error objects
+  if (obj instanceof Error) {
+    return {
+      name: obj.name,
+      message: sanitizeString(obj.message),
+      stack: obj.stack ? sanitizeString(obj.stack) : undefined,
+      code: (obj as any).code,
+      severity: (obj as any).severity,
+    };
+  }
+
+  // Handle arrays - deep sanitization
+  if (Array.isArray(obj)) {
+    return obj.map(item => sanitizeObjectDeep(item, visited, depth + 1, maxDepth));
+  }
+
+  // Handle objects - deep sanitization with enhanced patterns
+  const sanitized: any = {};
+  const sensitiveKeys = [
+    'password', 'token', 'secret', 'key', 'api_key', 'apikey', 'accesstoken', 'refreshtoken',
+    'privatekey', 'private_key', 'mnemonic', 'seed', 'seedphrase', 'seed_phrase',
+    'dateofbirth', 'date_of_birth', 'dob', 'ssn', 'socialsecuritynumber',
+    'creditcard', 'credit_card', 'cvv', 'pin', 'authorization', 'auth',
+    // Web3 specific keys
+    'walletaddress', 'wallet_address', 'contractaddress', 'contract_address',
+    'txhash', 'tx_hash', 'transactionhash', 'transaction_hash', 'blockhash', 'block_hash',
+    // Additional sensitive keys
+    'signature', 'nonce', 'salt', 'hash', 'digest', 'checksum',
+    // OAuth and session keys
+    'clientsecret', 'client_secret', 'sessionid', 'session_id', 'csrf', 'xsrf',
+  ];
+
+  for (const [key, value] of Object.entries(obj)) {
+    const lowerKey = key.toLowerCase();
+    
+    // Completely redact known sensitive keys
+    if (sensitiveKeys.some(sk => lowerKey.includes(sk))) {
+      sanitized[key] = '[REDACTED]';
+    } 
+    // Special handling for Web3 addresses and hashes
+    else if (typeof value === 'string' && (
+      value.match(/^0x[a-fA-F0-9]{40}$/) || // Ethereum address
+      value.match(/^0x[a-fA-F0-9]{64}$/)    // Transaction hash
+    )) {
+      if (value.length === 42) {
+        // Ethereum address - keep first 6 and last 4
+        sanitized[key] = `${value.substring(0, 6)}...${value.substring(value.length - 4)}`;
+      } else if (value.length === 66) {
+        // Transaction hash - keep first 10 and last 6
+        sanitized[key] = `${value.substring(0, 10)}...${value.substring(value.length - 6)}`;
+      } else {
+        sanitized[key] = value;
+      }
+    }
+    // Recursively sanitize nested objects and arrays
+    else if (value !== null && typeof value === 'object') {
+      sanitized[key] = sanitizeObjectDeep(value, visited, depth + 1, maxDepth);
+    } 
+    // Sanitize string values
+    else if (typeof value === 'string') {
+      sanitized[key] = sanitizeString(value);
+    } 
+    // Keep other primitive values as-is
+    else {
+      sanitized[key] = value;
+    }
+  }
+
+  return sanitized;
+}
+
+/**
  * Tests if a string contains sensitive information
  * Useful for validation in tests
  * @param text - The text to check
@@ -347,6 +486,10 @@ export function containsSensitiveData(text: string): boolean {
     /0x[a-fA-F0-9]{40}/, // Ethereum addresses
     /0x[a-fA-F0-9]{64}/, // Transaction hashes
     /\b(19|20)\d{2}[-/](0[1-9]|1[0-2])[-/](0[1-9]|[12]\d|3[01])\b/, // Dates of birth
+    // Additional patterns
+    /client[_-]?secret["\s:=]+[\w-]+/i,
+    /session[_-]?id["\s:=]+[\w-]+/i,
+    /signature["\s:=]+[\w+/=]+/i,
   ];
 
   return sensitiveIndicators.some(pattern => pattern.test(text));
