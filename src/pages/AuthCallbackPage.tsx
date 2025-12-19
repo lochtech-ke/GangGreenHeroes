@@ -25,11 +25,11 @@ export function AuthCallbackPage() {
   // Get allowed origins from environment or use defaults
   const getAllowedOrigins = (): string[] => {
     const envOrigins = import.meta.env.VITE_ALLOWED_ORIGINS;
-    
+
     if (envOrigins) {
       return envOrigins.split(',').map((origin: string) => origin.trim());
     }
-    
+
     // Default allowed origins for OAuth callbacks (production and development)
     return [
       'https://gg.lochtech.africa',           // Production domain
@@ -50,10 +50,10 @@ export function AuthCallbackPage() {
   const validateOrigin = (): boolean => {
     const currentOrigin = window.location.origin;
     const referrer = document.referrer;
-    
+
     // Check if current origin is in allowed list
     const isValidOrigin = ALLOWED_ORIGINS.includes(currentOrigin);
-    
+
     if (!isValidOrigin) {
       ErrorLogger.logSecurityError('Invalid Origin', new Error('OAuth callback from unauthorized origin'), {
         currentOrigin,
@@ -62,7 +62,7 @@ export function AuthCallbackPage() {
         userAgent: navigator.userAgent,
         timestamp: new Date().toISOString()
       });
-      
+
       return false;
     }
 
@@ -95,7 +95,7 @@ export function AuthCallbackPage() {
     if (hasError) {
       const oauthError = searchParams.get('error') || hashParams.get('error');
       const errorDescription = searchParams.get('error_description') || hashParams.get('error_description');
-      
+
       ErrorLogger.logOAuthError(new Error(`OAuth Provider Error: ${oauthError}`), {
         error: oauthError,
         description: errorDescription,
@@ -108,7 +108,7 @@ export function AuthCallbackPage() {
 
     // Check if we have any OAuth parameters at all
     const hasOAuthParams = hasAccessToken || hasCode || hasError;
-    
+
     if (!hasOAuthParams) {
       // Direct access without OAuth parameters - this is valid, redirect to login
       ErrorLogger.logRouteError('/auth/callback', new Error('Direct access without OAuth parameters'), {
@@ -117,7 +117,7 @@ export function AuthCallbackPage() {
         hasHash: !!window.location.hash,
         hasSearch: !!window.location.search
       });
-      
+
       return { isDirectAccess: true };
     }
 
@@ -153,11 +153,11 @@ export function AuthCallbackPage() {
         });
 
         const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(params.code);
-        
+
         if (exchangeError) {
           throw exchangeError;
         }
-        
+
         sessionData = data;
       }
       // Handle implicit flow (access token in hash)
@@ -192,9 +192,9 @@ export function AuthCallbackPage() {
 
       if (!session) {
         const noSessionError = new Error('No session established after OAuth callback');
-        ErrorLogger.logSessionError(noSessionError, { 
+        ErrorLogger.logSessionError(noSessionError, {
           sessionData: !!sessionData,
-          attempt 
+          attempt
         }, {
           url: window.location.href,
           hasTokens: !!(params.accessToken && params.refreshToken),
@@ -227,7 +227,7 @@ export function AuthCallbackPage() {
    */
   const isRetryableError = (error: any): boolean => {
     if (!error) return false;
-    
+
     const retryableMessages = [
       'network error',
       'timeout',
@@ -262,7 +262,7 @@ export function AuthCallbackPage() {
       try {
         // Detect OAuth flow context and log 404 errors if route is incorrect
         const oauthContext = detectOAuthFlow();
-        
+
         // If we're in an OAuth flow but not on the correct callback route, log as 404 error
         if (oauthContext.isOAuthFlow && window.location.pathname !== '/auth/callback') {
           logOAuth404Error(window.location.href, {
@@ -291,22 +291,28 @@ export function AuthCallbackPage() {
         // Parse and validate URL parameters
         const searchParams = new URLSearchParams(window.location.search);
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
-        
+
         const validationResult = validateOAuthParameters(searchParams, hashParams);
 
-        // Handle direct access without OAuth parameters
+        // Handle direct access or pre-established session (Supabase client auto-detection)
         if (validationResult.isDirectAccess) {
-          ErrorLogger.logRouteError('/auth/callback', new Error('Direct access - redirecting to login'), {
-            url: window.location.href,
-            referrer: document.referrer
-          });
-          
-          navigate('/login', { replace: true });
-          return;
-        }
+          // Check if session already exists (Common when Supabase client auto-detects and strips params)
+          const { data: { session: existingSession } } = await supabase.auth.getSession();
 
-        // Establish session with the validated parameters
-        await establishSession(validationResult);
+          if (!existingSession?.user) {
+            ErrorLogger.logRouteError('/auth/callback', new Error('Direct access - redirecting to login'), {
+              url: window.location.href,
+              referrer: document.referrer
+            });
+
+            navigate('/login', { replace: true });
+            return;
+          }
+          // Session exists, proceed without calling establishSession
+        } else {
+          // Establish session with the validated parameters
+          await establishSession(validationResult);
+        }
 
         // Get the established session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
@@ -348,7 +354,7 @@ export function AuthCallbackPage() {
               userId: session.user.id,
               continuing: true
             });
-            
+
             navigate('/dashboard', { replace: true });
           }
         } else {
@@ -364,14 +370,14 @@ export function AuthCallbackPage() {
         });
 
         const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
-        
+
         // Handle origin validation failures specifically
         if (errorMessage.includes('unauthorized origin')) {
           setError('Security Error: This authentication request appears to be from an unauthorized source. Please try signing in again from the official website.');
         } else {
           setError(errorMessage);
         }
-        
+
         setIsLoading(false);
       }
     };
@@ -391,7 +397,7 @@ export function AuthCallbackPage() {
             {retryCount > 0 ? 'Retrying sign in...' : 'Completing sign in...'}
           </h2>
           <p className="text-gray-600 mb-4">
-            {retryCount > 0 
+            {retryCount > 0
               ? `Attempt ${retryCount + 1} of ${MAX_RETRY_ATTEMPTS + 1}. Please wait...`
               : 'Please wait while we set up your account.'
             }
@@ -410,14 +416,13 @@ export function AuthCallbackPage() {
   if (error) {
     const canRetry = retryCount < MAX_RETRY_ATTEMPTS && isRetryableError({ message: error });
     const isSecurityError = error.includes('Security Error') || error.includes('unauthorized origin');
-    
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
           <div className="text-center mb-6">
-            <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 ${
-              isSecurityError ? 'bg-orange-100' : 'bg-red-100'
-            }`}>
+            <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4 ${isSecurityError ? 'bg-orange-100' : 'bg-red-100'
+              }`}>
               {isSecurityError ? (
                 <svg
                   className="h-6 w-6 text-orange-600"
@@ -460,7 +465,7 @@ export function AuthCallbackPage() {
               </p>
             )}
           </div>
-          
+
           <div className="space-y-3">
             {canRetry && !isSecurityError && (
               <button
@@ -483,7 +488,7 @@ export function AuthCallbackPage() {
               Go Home
             </button>
           </div>
-          
+
           {isSecurityError && (
             <div className="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
               <p className="text-sm text-orange-800">
@@ -492,7 +497,7 @@ export function AuthCallbackPage() {
               </p>
             </div>
           )}
-          
+
           {!canRetry && retryCount > 0 && !isSecurityError && (
             <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="text-sm text-yellow-800">
