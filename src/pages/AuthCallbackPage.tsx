@@ -257,12 +257,13 @@ export function AuthCallbackPage() {
       if (isLoading) {
         ErrorLogger.logError('OAuth Callback Timeout', new Error('Authentication timed out'), {
           url: window.location.href,
-          retryCount
+          retryCount,
+          elapsed: '45000ms'
         });
         setError('Authentication timed out. Please try again or check your connection.');
         setIsLoading(false);
       }
-    }, 15000); // 15 seconds timeout
+    }, 45000); // Increased to 45 seconds timeout for slower devices/connections
 
     return () => clearTimeout(timeoutId);
   }, [isLoading, retryCount]);

@@ -29,6 +29,7 @@ class AuthService {
    */
   async register(data: RegisterData): Promise<AuthResponse> {
     const start = performance.now();
+    console.time('AuthService.register');
 
     try {
       console.log('[AuthService] Starting registration...', {
@@ -138,6 +139,7 @@ class AuthService {
       }
 
       const duration = performance.now() - start;
+      console.timeEnd('AuthService.register');
       console.log(
         `[AuthService] Registration completed in ${duration.toFixed(2)}ms`
       );
@@ -551,6 +553,7 @@ class AuthService {
    * This function creates both the users record (if trigger failed) and user_profiles record
    */
   async ensureUserProfile(userId: string, metadata?: any): Promise<void> {
+    const start = performance.now();
     try {
       console.log('[AuthService] Ensuring user profile for OAuth user:', userId);
 
@@ -619,7 +622,7 @@ class AuthService {
             throw userInsertError;
           }
         } else {
-          console.log('[AuthService] User record created successfully');
+          console.log(`[AuthService] User record created successfully (${(performance.now() - start).toFixed(2)}ms)`);
         }
       } else {
         console.log('[AuthService] User record exists:', existingUser);
@@ -659,7 +662,7 @@ class AuthService {
             .insert(profileData);
 
           if (!profileInsertError) {
-            console.log('[AuthService] Profile created successfully for OAuth user');
+            console.log(`[AuthService] Profile created successfully for OAuth user (${(performance.now() - start).toFixed(2)}ms)`);
             return;
           }
 
@@ -683,7 +686,7 @@ class AuthService {
           throw lastError;
         }
       } else {
-        console.log('[AuthService] Profile already exists for OAuth user');
+        console.log(`[AuthService] Profile already exists for OAuth user (${(performance.now() - start).toFixed(2)}ms)`);
       }
     } catch (error) {
       console.error('[AuthService] Failed to ensure user profile:', error);
