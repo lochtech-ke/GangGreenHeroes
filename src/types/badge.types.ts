@@ -37,6 +37,7 @@ export interface BadgeMetadata {
   purchaseDate?: string;
   badgeType?: string;
   generatedAt?: string;
+  badgeStyle?: 'geometric' | 'classic';
 }
 
 export interface BadgeConfig {
@@ -46,6 +47,7 @@ export interface BadgeConfig {
   achievement: AchievementType;
   metadata: BadgeMetadata;
   animated?: boolean;
+  style?: 'geometric' | 'classic';
 }
 
 export interface TierStyle {

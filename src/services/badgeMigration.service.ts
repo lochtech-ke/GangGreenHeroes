@@ -84,12 +84,25 @@ export interface VerificationIssue {
  * Handles migration of badges from classic to geometric designs
  */
 class BadgeMigrationService {
+  private supabaseClient: typeof supabase;
   private currentMigrationId: string | null = null;
   private migrationInProgress: boolean = false;
   private currentProgress: number = 0;
   private currentBatch: number = 0;
   private totalBatches: number = 0;
   private startTime: Date | null = null;
+
+  constructor() {
+    this.supabaseClient = supabase;
+  }
+
+  /**
+   * Set custom Supabase client (e.g. for admin access)
+   */
+  setClient(client: typeof supabase) {
+    this.supabaseClient = client;
+  }
+
 
   /**
    * Default migration options
@@ -344,7 +357,7 @@ class BadgeMigrationService {
   async getMigrationStatus(): Promise<MigrationStatus> {
     if (!this.migrationInProgress || !this.currentMigrationId) {
       // Check database for latest migration
-      const { data, error } = await supabase
+      const { data, error } = await this.supabaseClient
         .from('badge_migration_log')
         .select('*')
         .eq('status', 'in_progress')
@@ -405,7 +418,7 @@ class BadgeMigrationService {
 
     try {
       // Get migration log
-      const { data: migrationLog, error: logError } = await supabase
+      const { data: migrationLog, error: logError } = await this.supabaseClient
         .from('badge_migration_log')
         .select('*')
         .eq('migration_id', migrationId)
@@ -417,7 +430,7 @@ class BadgeMigrationService {
       }
 
       // Get all backups for this migration
-      const { data: backups, error: backupError } = await supabase
+      const { data: backups, error: backupError } = await this.supabaseClient
         .from('badge_migration_backup')
         .select('*')
         .eq('migration_id', migrationId)
@@ -442,7 +455,7 @@ class BadgeMigrationService {
       for (const backup of backups) {
         try {
           // Call database function to restore badge
-          const { error: restoreError } = await supabase.rpc('restore_badge_from_backup', {
+          const { error: restoreError } = await this.supabaseClient.rpc('restore_badge_from_backup', {
             p_badge_id: backup.badge_id,
             p_migration_id: migrationId,
           });
@@ -466,7 +479,7 @@ class BadgeMigrationService {
       }
 
       // Update migration log status
-      await supabase
+      await this.supabaseClient
         .from('badge_migration_log')
         .update({
           status: 'rolled_back',
@@ -495,13 +508,35 @@ class BadgeMigrationService {
     console.log('[BadgeMigrationService] Verifying migration');
 
     const issues: VerificationIssue[] = [];
+    // Get total badges
+    const { count: totalBadges } = await this.supabaseClient
+      .from('nft_badges')
+      .select('*', { count: 'exact', head: true });
+    
+    // Get migrated badges
+    const { count: migratedBadges } = await this.supabaseClient
+      .from('nft_badges')
+      .select('*', { count: 'exact', head: true })
+      .not('migrated_at', 'is', null);
+    
+    // Get classic badges
+    const { count: classicBadges } = await this.supabaseClient
+      .from('nft_badges')
+      .select('*', { count: 'exact', head: true })
+      .or('badge_design_type.is.null,badge_design_type.eq.classic');
+    
+    // Get geometric badges
+    const { count: geometricBadges } = await this.supabaseClient
+      .from('nft_badges')
+      .select('*', { count: 'exact', head: true })
+      .eq('badge_design_type', 'geometric');
     let totalChecked = 0;
     let passed = 0;
     let failed = 0;
 
     try {
       // Get all migrated badges
-      const { data: badges, error } = await supabase
+      const { data: badges, error } = await this.supabaseClient
         .from('nft_badges')
         .select('*')
         .not('migrated_at', 'is', null);
@@ -593,7 +628,7 @@ class BadgeMigrationService {
    */
   private async getBadgesToMigrate(userId?: string): Promise<any[]> {
     try {
-      let query = supabase
+      let query = this.supabaseClient
         .from('nft_badges')
         .select('*')
         .or('badge_design_type.is.null,badge_design_type.eq.classic')
@@ -754,7 +789,7 @@ class BadgeMigrationService {
 
       // Update badge in database (if not dry run)
       if (!dryRun) {
-        const { error } = await supabase
+        const { error } = await this.supabaseClient
           .from('nft_badges')
           .update({
             badge_design_type: 'geometric',
@@ -796,7 +831,7 @@ class BadgeMigrationService {
   private async createBackup(badgeId: string, migrationId: string): Promise<boolean> {
     try {
       // Call database function to create backup
-      const { error } = await supabase.rpc('create_badge_backup', {
+      const { error } = await this.supabaseClient.rpc('create_badge_backup', {
         p_badge_id: badgeId,
         p_migration_id: migrationId,
       });
@@ -828,7 +863,7 @@ class BadgeMigrationService {
     options: Required<MigrationOptions>
   ): Promise<void> {
     try {
-      const { error } = await supabase
+      const { error } = await this.supabaseClient
         .from('badge_migration_log')
         .insert({
           migration_id: migrationId,
@@ -868,7 +903,7 @@ class BadgeMigrationService {
     errors: MigrationError[]
   ): Promise<void> {
     try {
-      const { error } = await supabase
+      const { error } = await this.supabaseClient
         .from('badge_migration_log')
         .update({
           migrated_badges: migratedBadges,
@@ -904,7 +939,7 @@ class BadgeMigrationService {
     errors: MigrationError[]
   ): Promise<void> {
     try {
-      const { error } = await supabase
+      const { error } = await this.supabaseClient
         .from('badge_migration_log')
         .update({
           status,
@@ -1125,7 +1160,7 @@ class BadgeMigrationService {
    */
   async getMigrationHistory(limit: number = 10): Promise<any[]> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await this.supabaseClient
         .from('badge_migration_log')
         .select('*')
         .order('started_at', { ascending: false })
@@ -1149,7 +1184,7 @@ class BadgeMigrationService {
    */
   async getMigrationReport(migrationId: string): Promise<any> {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await this.supabaseClient
         .from('badge_migration_log')
         .select('*')
         .eq('migration_id', migrationId)
@@ -1171,5 +1206,6 @@ class BadgeMigrationService {
 // Export singleton instance
 export const badgeMigrationService = new BadgeMigrationService();
 
-// Export class for testing
+// Export class for testing and admin usage
 export { BadgeMigrationService };
+

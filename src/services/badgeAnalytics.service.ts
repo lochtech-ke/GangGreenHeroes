@@ -23,6 +23,10 @@ export interface BadgeAnalytics {
     gg_coins_awarded: number;
     created_at: string;
   }>;
+  salesByStyle: {
+    geometric: number;
+    classic: number;
+  };
 }
 
 export interface DateRange {
@@ -70,6 +74,9 @@ class BadgeAnalyticsService {
       // Group by tier
       const salesByTier = this.groupByTier(purchases || []);
 
+      // Group by style
+      const salesByStyle = this.groupByStyle(purchases || []);
+
       // Get recent purchases
       const recentPurchases = (purchases || [])
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
@@ -90,6 +97,7 @@ class BadgeAnalyticsService {
         totalGGCoinsDistributed,
         salesByBadgeType,
         salesByTier,
+        salesByStyle,
         recentPurchases,
       };
     } catch (error) {
@@ -295,6 +303,27 @@ class BadgeAnalyticsService {
       count: (value as { count: number; revenue: number }).count,
       revenue: (value as { count: number; revenue: number }).revenue,
     }));
+  }
+
+  /**
+   * Helper method to group purchases by style
+   */
+  private groupByStyle(
+    purchases: any[]
+  ): { geometric: number; classic: number } {
+    let geometric = 0;
+    let classic = 0;
+
+    purchases.forEach(p => {
+      const style = p.metadata?.style || 'classic';
+      if (style === 'geometric') {
+        geometric++;
+      } else {
+        classic++;
+      }
+    });
+
+    return { geometric, classic };
   }
 
   /**

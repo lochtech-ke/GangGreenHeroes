@@ -5,9 +5,49 @@
  * Implements Requirement 9.5
  */
 
+import { createClient } from '@supabase/supabase-js';
 import { badgeMigrationService } from '../src/services/badgeMigration.service';
-import { supabase } from '../src/services/supabase';
 import type { VerificationResult, VerificationIssue } from '../src/services/badgeMigration.service';
+
+// Service Role Key provided by User
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvYnByeWxsdmRqYWFwempic3h4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2Mjk3NzM5MCwiZXhwIjoyMDc4NTUzMzkwfQ.bgibE2TI0HjuMKaODS_AeLif1HQAulpFJ3Ipjg4E31A';
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://wobpryllvdjaapzjbsxx.supabase.co';
+
+if (SERVICE_ROLE_KEY) {
+  console.log('Using Service Role Key for Admin Access');
+  const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+  // Inject admin client
+  badgeMigrationService.setClient(adminClient);
+} else {
+  console.warn('WARNING: No Service Role Key found. Script may fail due to RLS.');
+}
+
+
+import * as fs from 'fs';
+import * as path from 'path';
+
+// ... existing imports ...
+
+// Use process.cwd() because __dirname is not available in ESM modules
+const LOG_FILE = path.join(process.cwd(), 'scripts', 'verification_log.txt');
+
+// Initialize log file
+try {
+  // Ensure directory exists
+  const logDir = path.dirname(LOG_FILE);
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+  }
+  fs.writeFileSync(LOG_FILE, `Verification Log - ${new Date().toISOString()}\n\n`);
+} catch (e) {
+  console.error('Failed to init log file', e);
+}
+
 
 // ANSI color codes for terminal output
 const colors = {
@@ -22,10 +62,17 @@ const colors = {
 };
 
 /**
- * Print colored message to console
+ * Print colored message to console and file
  */
 function print(message: string, color: keyof typeof colors = 'reset'): void {
   console.log(`${colors[color]}${message}${colors.reset}`);
+  try {
+    // Strip ANSI codes for file log
+    const cleanMessage = message.replace(/\x1b\[[0-9;]*m/g, '');
+    fs.appendFileSync(LOG_FILE, `${cleanMessage}\n`);
+  } catch (e) {
+    // Ignore file write errors
+  }
 }
 
 /**
@@ -34,6 +81,7 @@ function print(message: string, color: keyof typeof colors = 'reset'): void {
 function printError(message: string): void {
   print(`❌ ERROR: ${message}`, 'red');
 }
+
 
 /**
  * Print success message
@@ -234,26 +282,42 @@ async function getMigrationStatistics(): Promise<{
   classicBadges: number;
   geometricBadges: number;
 }> {
+  // Use the service's client (which might be admin)
+  const statsClient = (badgeMigrationService as any).supabaseClient; // Access private client via any/hack or public getter if available. 
+  // Wait, I didn't add a getter. I'll rely on the service having the client set.
+  // Actually, getMigrationStatistics in this file uses 'supabase' from imports. I need to update it to use the injected client logic or just use badgeMigrationService if it exposed this logic.
+  // The original file imported 'supabase' from services/supabase. I should use the adminClient if available.
+  
+  // Cleanest way:
+  // Re-define getMigrationStatistics to use the same client instance we created.
+  
+  let client = statsClient;
+  if (!client) {
+     const { createClient } = await import('@supabase/supabase-js');
+     // Fallback to default logic or error
+     client = createClient(SUPABASE_URL, SERVICE_ROLE_KEY || '', { auth: { persistSession: false }});
+  }
+
   try {
     // Get total badges
-    const { count: totalBadges } = await supabase
+    const { count: totalBadges } = await client
       .from('nft_badges')
       .select('*', { count: 'exact', head: true });
     
     // Get migrated badges
-    const { count: migratedBadges } = await supabase
+    const { count: migratedBadges } = await client
       .from('nft_badges')
       .select('*', { count: 'exact', head: true })
       .not('migrated_at', 'is', null);
     
     // Get classic badges
-    const { count: classicBadges } = await supabase
+    const { count: classicBadges } = await client
       .from('nft_badges')
       .select('*', { count: 'exact', head: true })
       .or('badge_design_type.is.null,badge_design_type.eq.classic');
     
     // Get geometric badges
-    const { count: geometricBadges } = await supabase
+    const { count: geometricBadges } = await client
       .from('nft_badges')
       .select('*', { count: 'exact', head: true })
       .eq('badge_design_type', 'geometric');
@@ -393,20 +457,29 @@ async function main(): Promise<void> {
   try {
     // If specific migration ID provided, show migration details
     if (migrationId) {
+      print(`Debug: Verifying specific migration ${migrationId}`);
       await verifySpecificMigration(migrationId);
     }
     
     // Get migration statistics
     printInfo('Gathering migration statistics...');
+    print('Debug: Calling getMigrationStatistics()...');
     const stats = await getMigrationStatistics();
+    print(`Debug: Stats received: ${JSON.stringify(stats)}`);
     printMigrationStatistics(stats);
     
     // Run verification
     printInfo('Running verification checks...');
+    print('Debug: Calling badgeMigrationService.setClient()...');
+    // ... client set happens at top level, but good to verify service state if possible
+    
+    print('Debug: Calling badgeMigrationService.verifyMigration()...');
     const result = await badgeMigrationService.verifyMigration();
+    print(`Debug: Verification result: ${JSON.stringify(result)}`);
     
     // Print summary
     printVerificationSummary(result);
+    // ...
     
     // Print issues
     if (result.issues.length > 0) {
@@ -436,12 +509,20 @@ async function main(): Promise<void> {
 }
 
 // Run if executed directly
-if (require.main === module) {
+// Run if executed directly
+const IS_MAIN = process.argv[1].includes('verify-migration.ts') || 
+                (typeof import.meta !== 'undefined' && import.meta.url && import.meta.url.endsWith('verify-migration.ts'));
+
+if (IS_MAIN) {
+  console.log('🚀 Script started directly or via wrapper. Executing main()...');
   main().catch(error => {
     printError(`Fatal error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     console.error(error);
     process.exit(1);
   });
+} else {
+  console.log('ℹ️ Script loaded as module (not executing main)');
 }
 
 export { main, verifySpecificMigration, getMigrationStatistics };
+

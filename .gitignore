@@ -144,3 +144,6 @@ vite.config.ts.timestamp-*
 # Hackathon materials (preserved locally, excluded from version control)
 Hackathon Pitch Deck/
 submission/
+
+# Kiro Agent Specs
+.kiro

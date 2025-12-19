@@ -17,6 +17,7 @@ import {
 import { BADGE_VIEWBOX } from '../assets/badges';
 import { ensureSquareAspectRatio, optimizeBadgeComplete } from '../utils/badgeSvgOptimizer';
 import { hummingbirdBadgeService, generateWelcomeBadge } from './hummingbirdBadge.service';
+import { generateGeometricBadgeWithTier } from '../utils/geometricBadgeGenerator';
 
 /**
  * Ensure SVG has proper attributes for square aspect ratio and correct rendering
@@ -81,6 +82,39 @@ class BadgeSvgService {
       // Check if this is a Hero badge
       if (config.tier === 'hero' || config.achievement === 'ganggreen_hero') {
         return await this.generateHeroBadge(config);
+      }
+
+      // Check for Geometric Style Preference
+      if (config.style === 'geometric') {
+        try {
+          console.log('[BadgeSvgService] Generating Geometric badge:', {
+            badgeId: config.id,
+            tier: config.tier,
+            achievement: config.achievement
+          });
+          
+          const svg = generateGeometricBadgeWithTier(
+            config.achievement, 
+            config.tier, 
+            500, // Size matching standard viewbox
+            { 
+              ...config.metadata, 
+              badgeStyle: 'geometric' 
+            }
+          );
+          
+          return {
+            success: true,
+            svg: ensureSVGAttributes(svg),
+            metadata: { 
+              ...config.metadata, 
+              badgeStyle: 'geometric' 
+            }
+          };
+        } catch (geoError) {
+          console.error('[BadgeSvgService] Geometric generation failed, falling back to classic:', geoError);
+          // Fallback to classic generation logic below
+        }
       }
 
       // Validate configuration

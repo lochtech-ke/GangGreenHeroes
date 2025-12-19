@@ -7,11 +7,11 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, TrendingUp, Users, MapPin, Calendar, Award } from 'lucide-react';
 import { supabase } from '../../services/supabase';
-import { 
-  LeaderboardEntry, 
-  LeaderboardType, 
-  Timeframe, 
-  Scope 
+import {
+  LeaderboardEntry,
+  LeaderboardType,
+  Timeframe,
+  Scope
 } from '../../types/platform.types';
 
 interface LeaderboardProps {
@@ -47,9 +47,9 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       setError(null);
 
       const timeframeFilter = getTimeframeFilter(selectedTimeframe);
-      
+
       let query;
-      
+
       switch (selectedType) {
         case 'gg_coins':
           query = buildGGCoinsQuery(timeframeFilter);
@@ -80,8 +80,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       // Transform data to LeaderboardEntry format
       const leaderboardEntries: LeaderboardEntry[] = (data || []).map((entry: any, index: number) => ({
         userId: entry.user_id,
-        displayName: entry.display_name || 'Anonymous User',
-        avatar: entry.avatar,
+        displayName: entry.user_profiles?.full_name || 'Anonymous User',
+        avatar: entry.user_profiles?.avatar_url,
         score: entry.score,
         rank: index + 1
       }));
@@ -111,7 +111,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       .from('gg_coin_transactions')
       .select(`
         user_id,
-        user_profiles!inner(display_name, avatar)
+        user_profiles!inner(full_name, avatar_url)
       `)
       .gte('created_at', timeframeFilter)
       .eq('transaction_type', 'earn')
@@ -123,7 +123,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       .from('planted_trees')
       .select(`
         user_id,
-        user_profiles!inner(display_name, avatar)
+        user_profiles!inner(full_name, avatar_url)
       `)
       .gte('planted_date', timeframeFilter)
       .order('planted_date', { ascending: false });
@@ -135,7 +135,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
       .from('mission_participations')
       .select(`
         user_id,
-        user_profiles!inner(display_name, avatar)
+        user_profiles!inner(full_name, avatar_url)
       `)
       .gte('joined_at', timeframeFilter)
       .order('joined_at', { ascending: false });
@@ -272,11 +272,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
               <button
                 key={type}
                 onClick={() => setSelectedType(type)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${
-                  selectedType === type
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${selectedType === type
+                  ? 'bg-green-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 {getTypeLabel(type)}
               </button>
@@ -295,11 +294,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
               <button
                 key={timeframe}
                 onClick={() => setSelectedTimeframe(timeframe)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${
-                  selectedTimeframe === timeframe
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${selectedTimeframe === timeframe
+                  ? 'bg-green-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 {getTimeframeLabel(timeframe)}
               </button>
@@ -318,11 +316,10 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
               <button
                 key={scope}
                 onClick={() => setSelectedScope(scope)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${
-                  selectedScope === scope
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${selectedScope === scope
+                  ? 'bg-green-600 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 {getScopeLabel(scope)}
               </button>
@@ -361,9 +358,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
             {entries.map((entry) => (
               <div
                 key={entry.userId}
-                className={`flex items-center justify-between p-4 hover:bg-gray-50 transition-colors ${
-                  entry.userId === currentUserId ? 'bg-blue-50' : ''
-                } ${getRankColor(entry.rank)}`}
+                className={`flex items-center justify-between p-4 hover:bg-gray-50 transition-colors ${entry.userId === currentUserId ? 'bg-blue-50' : ''
+                  } ${getRankColor(entry.rank)}`}
               >
                 <div className="flex items-center gap-4 flex-1">
                   {/* Rank */}
@@ -374,8 +370,8 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                   {/* Avatar */}
                   <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                     {entry.avatar ? (
-                      <img 
-                        src={entry.avatar} 
+                      <img
+                        src={entry.avatar}
                         alt={entry.displayName}
                         className="w-full h-full object-cover"
                       />

@@ -32,6 +32,7 @@ export interface InitiatePurchaseParams {
   tier: string;
   email: string;
   metadata?: Record<string, any>;
+  style?: 'geometric' | 'classic';
 }
 
 export interface InitiatePurchaseResult {

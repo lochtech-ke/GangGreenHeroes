@@ -25,7 +25,7 @@ class BadgePurchaseService {
    * Creates a purchase record and initializes Paystack payment
    */
   async initiatePurchase(params: InitiatePurchaseParams): Promise<InitiatePurchaseResult> {
-    const { userId, badgeType, tier, email, metadata } = params;
+    const { userId, badgeType, tier, email, metadata, style } = params;
 
     try {
       console.log(`[BadgePurchaseService] Initiating purchase for user ${userId}`);
@@ -47,7 +47,10 @@ class BadgePurchaseService {
           paystack_reference: reference,
           payment_status: 'pending',
           gg_coins_awarded: ggCoinsAwarded,
-          metadata: metadata || {},
+          metadata: {
+            ...(metadata || {}),
+            style: style || 'classic', // Default to classic if not specified
+          },
         })
         .select()
         .single();
@@ -193,19 +196,19 @@ class BadgePurchaseService {
       if (!purchase.gg_coins_credited) {
         const ggCoinsToCredit = purchase.gg_coins_awarded || ggCoinService.calculatePurchaseReward(purchase.amount_kes);
         
-        const creditResult = await ggCoinService.creditCoins({
-          userId: userId,
-          amount: ggCoinsToCredit,
-          transactionType: 'purchase_reward',
-          referenceType: 'badge_purchase',
-          referenceId: purchase.id,
-          description: `Earned ${ggCoinsToCredit} GG Coins for purchasing ${purchase.badge_type} ${purchase.tier} badge (${purchase.amount_kes} KES)`,
-          metadata: {
+        const creditResult = await ggCoinService.creditCoins(
+          userId,
+          ggCoinsToCredit,
+          'earn',
+          `Earned ${ggCoinsToCredit} GG Coins for purchasing ${purchase.badge_type} ${purchase.tier} badge (${purchase.amount_kes} KES)`,
+          {
             badge_type: purchase.badge_type,
             tier: purchase.tier,
             amount_kes: purchase.amount_kes,
-          },
-        });
+            referenceType: 'badge_purchase',
+            referenceId: purchase.id,
+          }
+        );
 
         if (creditResult && creditResult.success) {
           await supabase
@@ -220,6 +223,7 @@ class BadgePurchaseService {
       const forest = (purchase.metadata?.forest as ForestType) || 'kakamega';
       const achievement = (purchase.metadata?.achievement as AchievementType) || 'tree_planter';
       const achievementCount = purchase.metadata?.achievement_count || 1;
+      const style = purchase.metadata?.style || 'classic'; // Extract style from metadata
 
       await this.generateBadgeSVG({
         purchaseId: purchase.id,
@@ -228,6 +232,7 @@ class BadgePurchaseService {
         forest,
         achievement,
         achievementCount,
+        style,
       });
 
       return {
@@ -296,20 +301,20 @@ class BadgePurchaseService {
       const ggCoinsToCredit = purchase.gg_coins_awarded || ggCoinService.calculatePurchaseReward(purchase.amount_kes);
 
       // Credit GG Coins
-      const creditResult = await ggCoinService.creditCoins({
-        userId: purchase.user_id,
-        amount: ggCoinsToCredit,
-        transactionType: 'purchase_reward',
-        referenceType: 'badge_purchase',
-        referenceId: purchase.id,
-        description: `Earned ${ggCoinsToCredit} GG Coins for purchasing ${purchase.badge_type} ${purchase.tier} badge (${purchase.amount_kes} KES)`,
-        metadata: {
+      const creditResult = await ggCoinService.creditCoins(
+        purchase.user_id,
+        ggCoinsToCredit,
+        'earn',
+        `Earned ${ggCoinsToCredit} GG Coins for purchasing ${purchase.badge_type} ${purchase.tier} badge (${purchase.amount_kes} KES)`,
+        {
           badge_type: purchase.badge_type,
           tier: purchase.tier,
           amount_kes: purchase.amount_kes,
           paystack_reference: reference,
-        },
-      });
+          referenceType: 'badge_purchase',
+          referenceId: purchase.id,
+        }
+      );
 
       if (!creditResult || !creditResult.success) {
         console.error('[BadgePurchaseService] Failed to credit GG Coins:', creditResult?.error);
@@ -433,6 +438,7 @@ class BadgePurchaseService {
     forest: ForestType;
     achievement: AchievementType;
     achievementCount?: number;
+    style?: 'geometric' | 'classic';
   }): Promise<{ success: boolean; svg?: string; error?: string }> {
     try {
       console.log(`[BadgePurchaseService] Generating badge SVG for purchase ${params.purchaseId}`);
@@ -454,6 +460,7 @@ class BadgePurchaseService {
         achievement: params.achievement,
         metadata,
         animated: params.tier === 'diamond', // Enable animations for diamond tier
+        style: params.style || 'classic', 
       };
 
       // Generate badge SVG

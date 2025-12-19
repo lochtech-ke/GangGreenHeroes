@@ -27,6 +27,7 @@ export const BadgePurchaseModal: React.FC<BadgePurchaseModalProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedStyle, setSelectedStyle] = useState<'geometric' | 'classic'>('geometric');
 
   if (!isOpen) return null;
 
@@ -41,8 +42,10 @@ export const BadgePurchaseModal: React.FC<BadgePurchaseModalProps> = ({
         badgeType,
         tier,
         email: userEmail,
+        style: selectedStyle,
         metadata: {
           badge_name: badgeName,
+          style: selectedStyle,
         },
       });
 
@@ -63,7 +66,7 @@ export const BadgePurchaseModal: React.FC<BadgePurchaseModalProps> = ({
       const pollTimer = setInterval(async () => {
         if (paystackWindow?.closed) {
           clearInterval(pollTimer);
-          
+
           // Verify payment completion
           if (result.paystack_reference) {
             const completionResult = await badgePurchaseService.completePurchase({
@@ -113,6 +116,31 @@ export const BadgePurchaseModal: React.FC<BadgePurchaseModalProps> = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
+        </div>
+
+        {/* Style Selection */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Badge Style</label>
+          <div className="flex bg-gray-100 p-1 rounded-lg">
+            <button
+              onClick={() => setSelectedStyle('geometric')}
+              className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${selectedStyle === 'geometric'
+                  ? 'bg-white text-green-700 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+                }`}
+            >
+              Geometric (New)
+            </button>
+            <button
+              onClick={() => setSelectedStyle('classic')}
+              className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${selectedStyle === 'classic'
+                  ? 'bg-white text-green-700 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+                }`}
+            >
+              Classic
+            </button>
+          </div>
         </div>
 
         {/* Badge Preview */}

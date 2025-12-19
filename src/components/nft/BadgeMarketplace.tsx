@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { BadgePurchaseModal } from './BadgePurchaseModal';
 import { BadgePurchaseConfirmation } from './BadgePurchaseConfirmation';
+import { BadgeComparisonView } from './BadgeComparisonView';
 import { BADGE_PRICE_KES } from '../../types/badgePurchase.types';
 import { BadgeSvgService } from '../../services/badgeSvg.service';
 import { hummingbirdBadgeService } from '../../services/hummingbirdBadge.service';
 import type { BadgeTier, ForestType, AchievementType } from '../../types/badge.types';
-import { Award } from 'lucide-react';
+import { Award, SplitSquareHorizontal } from 'lucide-react';
 
 interface Badge {
   id: string;
@@ -133,8 +134,10 @@ const AVAILABLE_BADGES: Badge[] = [
 const BadgeCard: React.FC<{
   badge: Badge;
   onPurchaseClick: (badge: Badge) => void;
+  onCompareClick: (badge: Badge) => void;
   getTierColor: (tier: string) => string;
-}> = ({ badge, onPurchaseClick, getTierColor }) => {
+  style: 'geometric' | 'classic';
+}> = ({ badge, onPurchaseClick, onCompareClick, getTierColor, style }) => {
   const [badgeSvg, setBadgeSvg] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -174,6 +177,7 @@ const BadgeCard: React.FC<{
               userId: 'marketplace-preview',
             },
             animated: badge.tier === 'diamond',
+            style: style,
           });
         }
 
@@ -199,7 +203,7 @@ const BadgeCard: React.FC<{
     };
 
     generateBadge();
-  }, [badge]);
+  }, [badge, style]);
 
   return (
     <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
@@ -236,6 +240,18 @@ const BadgeCard: React.FC<{
           </div>
           <span>+1</span>
         </div>
+
+        {/* Compare Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onCompareClick(badge);
+          }}
+          className="absolute top-2 left-2 bg-white/90 hover:bg-white text-gray-700 p-1.5 rounded-full shadow-sm transition-colors"
+          title="Compare Styles"
+        >
+          <SplitSquareHorizontal size={16} />
+        </button>
       </div>
 
       {/* Badge Info */}
@@ -296,6 +312,7 @@ export const BadgeMarketplace: React.FC<BadgeMarketplaceProps> = ({
   userProfileUrl,
 }) => {
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
+  const [comparingBadge, setComparingBadge] = useState<Badge | null>(null);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [purchasedBadge, setPurchasedBadge] = useState<Badge | null>(null);
@@ -303,10 +320,15 @@ export const BadgeMarketplace: React.FC<BadgeMarketplaceProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [filterTier, setFilterTier] = useState<string>('all');
   const [filterType, setFilterType] = useState<string>('all');
+  const [filterStyle, setFilterStyle] = useState<'geometric' | 'classic'>('geometric');
 
   const handlePurchaseClick = (badge: Badge) => {
     setSelectedBadge(badge);
     setShowPurchaseModal(true);
+  };
+
+  const handleCompareClick = (badge: Badge) => {
+    setComparingBadge(badge);
   };
 
   const handlePurchaseSuccess = () => {
@@ -319,7 +341,7 @@ export const BadgeMarketplace: React.FC<BadgeMarketplaceProps> = ({
   // Filter badges
   const filteredBadges = AVAILABLE_BADGES.filter((badge) => {
     const matchesSearch = badge.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         badge.description.toLowerCase().includes(searchQuery.toLowerCase());
+      badge.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesTier = filterTier === 'all' || badge.tier === filterTier;
     const matchesType = filterType === 'all' || badge.type === filterType;
     return matchesSearch && matchesTier && matchesType;
@@ -348,7 +370,7 @@ export const BadgeMarketplace: React.FC<BadgeMarketplaceProps> = ({
       </div>
 
       {/* Filters */}
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* Search */}
         <div className="md:col-span-1">
           <input
@@ -401,7 +423,9 @@ export const BadgeMarketplace: React.FC<BadgeMarketplaceProps> = ({
             key={badge.id}
             badge={badge}
             onPurchaseClick={handlePurchaseClick}
+            onCompareClick={handleCompareClick}
             getTierColor={getTierColor}
+            style={filterStyle}
           />
         ))}
       </div>
@@ -446,6 +470,15 @@ export const BadgeMarketplace: React.FC<BadgeMarketplaceProps> = ({
           )}
         </>
       )}
+
+      {/* Comparison View Modal */}
+      {comparingBadge && (
+        <BadgeComparisonView
+          badge={comparingBadge}
+          onClose={() => setComparingBadge(null)}
+        />
+      )}
     </div>
   );
 };
+

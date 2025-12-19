@@ -5,8 +5,27 @@
  * Implements Requirements 9.1, 9.2, 9.3
  */
 
+import { createClient } from '@supabase/supabase-js';
 import { badgeMigrationService } from '../src/services/badgeMigration.service';
 import type { MigrationOptions, MigrationResult } from '../src/services/badgeMigration.service';
+
+// Service Role Key provided by User
+const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://wobpryllvdjaapzjbsxx.supabase.co';
+
+if (SERVICE_ROLE_KEY) {
+  console.log('Using Service Role Key for Admin Access');
+  const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+  // Inject admin client
+  badgeMigrationService.setClient(adminClient);
+} else {
+  console.warn('WARNING: No Service Role Key found. Script may fail due to RLS.');
+}
 
 // ANSI color codes for terminal output
 const colors = {

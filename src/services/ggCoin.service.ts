@@ -379,8 +379,72 @@ class GGCoinService {
   }
 
   /**
+   * Calculate level based on total points
+   * Formula: Level = Floor(Total Points / 100) + 1
+   * Example: 0-99 pts = Lvl 1, 100-199 pts = Lvl 2
+   */
+  private calculateLevel(totalPoints: number): number {
+    return Math.floor(totalPoints / 100) + 1;
+  }
+
+  /**
+   * Add experience points to user's gamification profile
+   * Updates total_points and recalculates level
+   * @param userId - User ID
+   * @param points - Points to add
+   */
+  async addExperience(userId: string, points: number): Promise<void> {
+    try {
+      if (points <= 0) return;
+
+      // Get current gamification state
+      const { data: current, error: fetchError } = await supabase
+        .from('user_gamification')
+        .select('total_points, level')
+        .eq('id', userId)
+        .single();
+
+      if (fetchError && fetchError.code !== 'PGRST116') {
+        console.error('[GGCoinService] Error fetching gamification state:', fetchError);
+        return;
+      }
+
+      const currentPoints = current?.total_points || 0;
+      const newTotalPoints = currentPoints + points;
+      const newLevel = this.calculateLevel(newTotalPoints);
+      
+      // Calculate points needed for next level
+      // Next level starts at (newLevel) * 100
+      const nextLevelThreshold = newLevel * 100;
+      const experienceToNextLevel = nextLevelThreshold - newTotalPoints;
+
+      // Update user_gamification
+      const { error: updateError } = await supabase
+        .from('user_gamification')
+        .upsert({
+          id: userId,
+          total_points: newTotalPoints,
+          level: newLevel,
+          experience_to_next_level: experienceToNextLevel,
+          updated_at: new Date().toISOString()
+        });
+
+      if (updateError) {
+        console.error('[GGCoinService] Error updating experience:', updateError);
+      } else {
+        // If level increased, we could emit an event or create a notification here
+        if (current && newLevel > current.level) {
+          console.log(`[GGCoinService] User ${userId} leveled up to ${newLevel}!`);
+        }
+      }
+    } catch (error) {
+      console.error('[GGCoinService] Exception adding experience:', error);
+    }
+  }
+
+  /**
    * Award GG Coins for a verified action
-   * Combines reward calculation with coin crediting
+   * Combines reward calculation with coin crediting and experience updates
    * @param userId - User ID
    * @param actionType - Type of action
    * @param impact - Impact multiplier
@@ -402,202 +466,22 @@ class GGCoinService {
 
     const description = `Earned ${amount.toFixed(3)} GG Coins for ${actionType}`;
 
-    return await this.creditCoins(
+    const transaction = await this.creditCoins(
       userId,
       amount,
       'earn',
       description,
       { actionType, impact, multipliers }
     );
-  }
 
-  /**
-   * Format GG Coins for display
-   * @param amount - Amount to format
-   * @returns Formatted string with 3 decimal places
-   */
-  formatGGCoins(amount: number): string {
-    return amount.toFixed(3);
-  }
-
-  /**
-   * Calculate purchase reward based on badge price
-   * @param badgePrice - Price of the badge
-   * @returns Reward amount (10% of purchase price)
-   */
-  calculatePurchaseReward(badgePrice: number): number {
-    const reward = badgePrice * 0.1; // 10% cashback
-    return Math.round(reward * 1000) / 1000; // Round to 3 decimal places
-  }
-
-  /**
-   * Get transaction history for a user with pagination and filtering
-   * @param userId - User ID
-   * @param limit - Number of transactions to fetch (default: 50)
-   * @param offset - Offset for pagination (default: 0)
-   * @param filters - Optional filters for type and date range
-   * @returns Transaction history with pagination info
-   */
-  async getTransactionHistory(
-    userId: string,
-    limit: number = 50,
-    offset: number = 0,
-    filters?: TransactionFilters
-  ): Promise<TransactionHistory> {
-    try {
-      // Build query
-      let query = supabase
-        .from('gg_coin_transactions')
-        .select('*', { count: 'exact' })
-        .eq('user_id', userId);
-
-      // Apply type filter
-      if (filters?.type) {
-        // Map service type to database transaction_type patterns
-        const typePattern = this.getTypePattern(filters.type);
-        query = query.eq('transaction_type', typePattern);
-      }
-
-      // Apply date range filters
-      if (filters?.startDate) {
-        query = query.gte('created_at', filters.startDate.toISOString());
-      }
-      if (filters?.endDate) {
-        query = query.lte('created_at', filters.endDate.toISOString());
-      }
-
-      // Apply ordering and pagination
-      const { data, error, count } = await query
-        .order('created_at', { ascending: false })
-        .range(offset, offset + limit - 1);
-
-      if (error) {
-        console.error('[GGCoinService] Error fetching transaction history:', error);
-        return { transactions: [], total: 0, hasMore: false };
-      }
-
-      const transactions: GGCoinTransaction[] = (data || []).map(t => ({
-        id: t.id,
-        userId: t.user_id,
-        type: this.mapTransactionType(t.transaction_type),
-        amount: parseFloat(t.amount) || 0,
-        balanceBefore: parseFloat(t.balance_before) || 0,
-        balanceAfter: parseFloat(t.balance_after) || 0,
-        referenceType: t.reference_type,
-        referenceId: t.reference_id,
-        description: t.description || '',
-        metadata: t.metadata,
-        timestamp: new Date(t.created_at),
-      }));
-
-      return {
-        transactions,
-        total: count || 0,
-        hasMore: (count || 0) > offset + limit,
-      };
-    } catch (error) {
-      console.error('[GGCoinService] Exception fetching transaction history:', error);
-      return { transactions: [], total: 0, hasMore: false };
+    if (transaction) {
+      // Add experience points (1 Coin = 1 Point rule)
+      // We use Math.floor to keep points as integers, or we could support decimal points
+      // For now, let's just use the rounded amount as points
+      await this.addExperience(userId, Math.round(amount));
     }
-  }
 
-  /**
-   * Get earning breakdown by action type
-   * @param userId - User ID
-   * @returns Object mapping action types to total earnings
-   */
-  async getEarningBreakdown(userId: string): Promise<Record<string, number>> {
-    try {
-      const { data, error } = await supabase
-        .from('gg_coin_transactions')
-        .select('metadata, amount')
-        .eq('user_id', userId)
-        .gt('amount', 0); // Only positive amounts (earnings)
-
-      if (error) {
-        console.error('[GGCoinService] Error fetching earning breakdown:', error);
-        return {};
-      }
-
-      const breakdown: Record<string, number> = {};
-      for (const transaction of data || []) {
-        const actionType = transaction.metadata?.actionType || 'other';
-        const amount = parseFloat(transaction.amount) || 0;
-        breakdown[actionType] = (breakdown[actionType] || 0) + amount;
-      }
-
-      return breakdown;
-    } catch (error) {
-      console.error('[GGCoinService] Exception fetching earning breakdown:', error);
-      return {};
-    }
-  }
-
-  /**
-   * Subscribe to balance changes for real-time updates
-   * @param userId - User ID
-   * @param callback - Callback function to receive balance updates
-   * @returns Unsubscribe function
-   */
-  subscribeToBalance(userId: string, callback: (balance: number) => void): () => void {
-    const channel = supabase
-      .channel(`gg_coins_${userId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'user_gamification',
-          filter: `id=eq.${userId}`,
-        },
-        (payload) => {
-          try {
-            const newBalance = parseFloat(payload.new.gg_coins) || 0;
-
-            // Update cache
-            this.balanceCache.set(userId, {
-              balance: newBalance,
-              timestamp: Date.now(),
-            });
-
-            callback(newBalance);
-          } catch (error) {
-            console.error('[GGCoinService] Error processing balance update:', error);
-          }
-        }
-      )
-      .subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-          console.log(`[GGCoinService] Subscribed to balance updates for user: ${userId}`);
-        } else if (status === 'CHANNEL_ERROR') {
-          console.error(`[GGCoinService] Channel error for user: ${userId}`);
-        } else if (status === 'TIMED_OUT') {
-          console.error(`[GGCoinService] Subscription timed out for user: ${userId}`);
-        } else if (status === 'CLOSED') {
-          console.log(`[GGCoinService] Subscription closed for user: ${userId}`);
-        }
-      });
-
-    return () => {
-      try {
-        supabase.removeChannel(channel);
-        console.log(`[GGCoinService] Unsubscribed from balance updates for user: ${userId}`);
-      } catch (error) {
-        console.error('[GGCoinService] Error unsubscribing from balance updates:', error);
-      }
-    };
-  }
-
-  /**
-   * Clear balance cache for a user or all users
-   * @param userId - Optional user ID to clear specific cache
-   */
-  clearCache(userId?: string): void {
-    if (userId) {
-      this.balanceCache.delete(userId);
-    } else {
-      this.balanceCache.clear();
-    }
+    return transaction;
   }
 
   /**

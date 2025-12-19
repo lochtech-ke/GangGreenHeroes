@@ -1,23 +1,13 @@
 /**
  * Debug Logger System
- * 
- * Provides enhanced debugging capabilities with:
- * - Log level system (DEBUG, INFO, WARN, ERROR, NONE)
- * - Namespace filtering for targeted debugging
- * - Color-coded console output
- * - Timing utilities for performance measurement
- * 
- * Requirements: C2.1, C2.2, C2.4
+ * Enhanced logging with namespace filtering, color coding, and timing utilities
+ * Requirements: 2.1, 2.2, 2.4
  */
 
-export enum LogLevel {
-  DEBUG = 0,
-  INFO = 1,
-  WARN = 2,
-  ERROR = 3,
-  NONE = 4,
-}
-
+import { 
+  DebugLogger as IDebugLogger, 
+  LogLevel
+} from '../types/errors';
 interface TimingEntry {
   label: string;
   startTime: number;
@@ -30,7 +20,11 @@ interface DebugLoggerConfig {
   colorEnabled: boolean;
 }
 
-class DebugLoggerClass {
+/**
+ * Debug Logger Implementation
+ * Provides structured logging with namespace filtering and color-coded output
+ */
+export class DebugLogger implements IDebugLogger {
   private config: DebugLoggerConfig;
   private timings: Map<string, TimingEntry>;
 
@@ -71,6 +65,23 @@ class DebugLoggerClass {
    */
   private isDevelopment(): boolean {
     return import.meta.env.DEV || import.meta.env.MODE === 'development';
+  }
+
+  /**
+   * Check if running in production mode
+   */
+  private isProduction(): boolean {
+    return import.meta.env.PROD || import.meta.env.MODE === 'production';
+  }
+
+  /**
+   * Execute function only in development mode
+   */
+  private devOnly<T>(fn: () => T): T | undefined {
+    if (this.isDevelopment()) {
+      return fn();
+    }
+    return undefined;
   }
 
   /**
@@ -116,8 +127,7 @@ class DebugLoggerClass {
   private formatMessage(
     level: LogLevel,
     namespace: string,
-    message: string,
-    data?: any
+    message: string
   ): string {
     const timestamp = new Date().toISOString();
     const levelStr = LogLevel[level];
@@ -151,19 +161,21 @@ class DebugLoggerClass {
   }
 
   /**
-   * Log a debug message
+   * Log a debug message (development only)
    */
   debug(namespace: string, message: string, data?: any): void {
-    if (!this.shouldLog(LogLevel.DEBUG) || !this.isNamespaceEnabled(namespace)) {
-      return;
-    }
+    this.devOnly(() => {
+      if (!this.shouldLog(LogLevel.DEBUG) || !this.isNamespaceEnabled(namespace)) {
+        return;
+      }
 
-    const formatted = this.formatMessage(LogLevel.DEBUG, namespace, message, data);
-    console.log(formatted);
-    
-    if (data !== undefined) {
-      console.log(data);
-    }
+      const formatted = this.formatMessage(LogLevel.DEBUG, namespace, message);
+      console.log(formatted);
+      
+      if (data !== undefined) {
+        console.log(data);
+      }
+    });
   }
 
   /**
@@ -174,7 +186,7 @@ class DebugLoggerClass {
       return;
     }
 
-    const formatted = this.formatMessage(LogLevel.INFO, namespace, message, data);
+    const formatted = this.formatMessage(LogLevel.INFO, namespace, message);
     console.log(formatted);
     
     if (data !== undefined) {
@@ -190,7 +202,7 @@ class DebugLoggerClass {
       return;
     }
 
-    const formatted = this.formatMessage(LogLevel.WARN, namespace, message, data);
+    const formatted = this.formatMessage(LogLevel.WARN, namespace, message);
     console.warn(formatted);
     
     if (data !== undefined) {
@@ -206,7 +218,7 @@ class DebugLoggerClass {
       return;
     }
 
-    const formatted = this.formatMessage(LogLevel.ERROR, namespace, message, data);
+    const formatted = this.formatMessage(LogLevel.ERROR, namespace, message);
     console.error(formatted);
     
     if (error) {
@@ -286,28 +298,6 @@ class DebugLoggerClass {
   }
 
   /**
-   * Enable multiple namespaces at once
-   */
-  enableMultiple(namespaces: string[]): void {
-    namespaces.forEach(ns => this.enable(ns));
-  }
-
-  /**
-   * Disable multiple namespaces at once
-   */
-  disableMultiple(namespaces: string[]): void {
-    namespaces.forEach(ns => this.disable(ns));
-  }
-
-  /**
-   * Clear all namespace filters
-   */
-  clearNamespaces(): void {
-    this.config.enabledNamespaces.clear();
-    this.config.disabledNamespaces.clear();
-  }
-
-  /**
    * Set the log level
    */
   setLevel(level: LogLevel): void {
@@ -315,17 +305,10 @@ class DebugLoggerClass {
   }
 
   /**
-   * Get the current log level
+   * Check if a namespace is enabled
    */
-  getLevel(): LogLevel {
-    return this.config.level;
-  }
-
-  /**
-   * Enable or disable color output
-   */
-  setColorEnabled(enabled: boolean): void {
-    this.config.colorEnabled = enabled;
+  isEnabled(namespace: string): boolean {
+    return this.isNamespaceEnabled(namespace);
   }
 
   /**
@@ -336,29 +319,232 @@ class DebugLoggerClass {
   }
 
   /**
-   * Get list of disabled namespaces
+   * Log state snapshot (development only)
    */
-  getDisabledNamespaces(): string[] {
-    return Array.from(this.config.disabledNamespaces);
+  logState(namespace: string, state: any): void {
+    this.devOnly(() => {
+      if (!this.isNamespaceEnabled(namespace)) {
+        return;
+      }
+
+      this.debug(namespace, '📊 State snapshot:', state);
+    });
   }
 
   /**
-   * Create a namespaced logger instance
+   * Log Redux/Context state with sanitization (development only)
    */
-  createNamespacedLogger(namespace: string) {
-    return {
-      debug: (message: string, data?: any) => this.debug(namespace, message, data),
-      info: (message: string, data?: any) => this.info(namespace, message, data),
-      warn: (message: string, data?: any) => this.warn(namespace, message, data),
-      error: (message: string, error?: Error, data?: any) => this.error(namespace, message, error, data),
-      time: (label: string) => this.time(namespace, label),
-      timeEnd: (label: string) => this.timeEnd(namespace, label),
+  logReduxState(namespace: string, state: any, actionType?: string): void {
+    this.devOnly(() => {
+      if (!this.isNamespaceEnabled(namespace)) {
+        return;
+      }
+
+      const message = actionType 
+        ? `🔄 Redux action: ${actionType}` 
+        : '🏪 Redux state snapshot';
+      
+      // Sanitize state to avoid logging sensitive data
+      const sanitizedState = this.sanitizeStateForLogging(state);
+      this.debug(namespace, message, sanitizedState);
+    });
+  }
+
+  /**
+   * Log React Context state (development only)
+   */
+  logContextState(namespace: string, contextName: string, state: any): void {
+    this.devOnly(() => {
+      if (!this.isNamespaceEnabled(namespace)) {
+        return;
+      }
+
+      const sanitizedState = this.sanitizeStateForLogging(state);
+      this.debug(namespace, `⚛️  Context [${contextName}]:`, sanitizedState);
+    });
+  }
+
+  /**
+   * Log performance timing for operations
+   */
+  logPerformance(namespace: string, operation: string, duration: number, metadata?: any): void {
+    if (!this.isNamespaceEnabled(namespace)) {
+      return;
+    }
+
+    // Color-code based on duration
+    let performanceLevel = LogLevel.INFO;
+    let icon = '⚡';
+    
+    if (duration > 1000) {
+      performanceLevel = LogLevel.WARN;
+      icon = '🐌';
+    } else if (duration > 500) {
+      performanceLevel = LogLevel.WARN;
+      icon = '⚠️';
+    }
+
+    const message = `${icon} Performance: ${operation} took ${duration.toFixed(2)}ms`;
+    
+    if (performanceLevel === LogLevel.WARN) {
+      this.warn(namespace, message, metadata);
+    } else {
+      this.info(namespace, message, metadata);
+    }
+  }
+
+  /**
+   * Log component render performance (development only)
+   */
+  logComponentRender(namespace: string, componentName: string, renderTime: number, props?: any): void {
+    this.devOnly(() => {
+      if (!this.isNamespaceEnabled(namespace)) {
+        return;
+      }
+
+      const sanitizedProps = props ? this.sanitizeStateForLogging(props) : undefined;
+      this.logPerformance(namespace, `${componentName} render`, renderTime, {
+        component: componentName,
+        props: sanitizedProps
+      });
+    });
+  }
+
+  /**
+   * Log API call performance
+   */
+  logApiCall(namespace: string, method: string, url: string, duration: number, status?: number): void {
+    if (!this.isNamespaceEnabled(namespace)) {
+      return;
+    }
+
+    const statusIcon = status && status >= 400 ? '❌' : '✅';
+    const message = `${statusIcon} API ${method.toUpperCase()} ${url} - ${duration.toFixed(2)}ms`;
+    
+    const metadata = {
+      method,
+      url,
+      duration,
+      status
     };
+
+    if (status && status >= 400) {
+      this.warn(namespace, message, metadata);
+    } else if (duration > 2000) {
+      this.warn(namespace, message, metadata);
+    } else {
+      this.info(namespace, message, metadata);
+    }
+  }
+
+  /**
+   * Sanitize state object for logging (remove sensitive data)
+   */
+  private sanitizeStateForLogging(state: any): any {
+    if (!state || typeof state !== 'object') {
+      return state;
+    }
+
+    const sensitiveKeys = [
+      'password', 'token', 'secret', 'key', 'auth', 'credential',
+      'privateKey', 'accessToken', 'refreshToken', 'sessionId',
+      'apiKey', 'authToken', 'jwt', 'bearer'
+    ];
+
+    const sanitize = (obj: any): any => {
+      if (Array.isArray(obj)) {
+        return obj.map(sanitize);
+      }
+
+      if (obj && typeof obj === 'object') {
+        const sanitized: any = {};
+        
+        for (const [key, value] of Object.entries(obj)) {
+          const lowerKey = key.toLowerCase();
+          const isSensitive = sensitiveKeys.some(sensitiveKey => 
+            lowerKey.includes(sensitiveKey)
+          );
+
+          if (isSensitive) {
+            sanitized[key] = '[REDACTED]';
+          } else if (typeof value === 'object') {
+            sanitized[key] = sanitize(value);
+          } else {
+            sanitized[key] = value;
+          }
+        }
+        
+        return sanitized;
+      }
+
+      return obj;
+    };
+
+    return sanitize(state);
+  }
+
+  /**
+   * Create a performance timer for measuring operations
+   */
+  createPerformanceTimer(namespace: string) {
+    return {
+      start: (operation: string) => {
+        this.time(namespace, operation);
+      },
+      end: (operation: string, metadata?: any) => {
+        this.timeEnd(namespace, operation);
+        if (metadata) {
+          this.debug(namespace, `📊 ${operation} metadata:`, metadata);
+        }
+      }
+    };
+  }
+
+  /**
+   * Get development mode status
+   */
+  isDevelopmentMode(): boolean {
+    return this.isDevelopment();
+  }
+
+  /**
+   * Get production mode status
+   */
+  isProductionMode(): boolean {
+    return this.isProduction();
+  }
+
+  /**
+   * Execute callback only in development mode
+   */
+  onlyInDevelopment<T>(callback: () => T): T | undefined {
+    return this.devOnly(callback);
+  }
+
+  /**
+   * Get debug configuration (development only)
+   */
+  getDebugConfig(): DebugLoggerConfig | undefined {
+    return this.devOnly(() => ({ ...this.config }));
+  }
+
+  /**
+   * Reset debug configuration to defaults (development only)
+   */
+  resetConfig(): void {
+    this.devOnly(() => {
+      this.config = {
+        level: LogLevel.DEBUG,
+        enabledNamespaces: new Set<string>(),
+        disabledNamespaces: new Set<string>(),
+        colorEnabled: true,
+      };
+    });
   }
 }
 
 // Export singleton instance
-export const DebugLogger = new DebugLoggerClass();
+export const debugLogger = new DebugLogger();
 
 // Export for testing
-export { DebugLoggerClass };
+export { DebugLogger as DebugLoggerClass };
