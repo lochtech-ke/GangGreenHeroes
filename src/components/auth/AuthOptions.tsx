@@ -18,6 +18,7 @@ export function AuthOptions({ onEmailAuth, onWeb3Auth, onGoogleAuth }: AuthOptio
         <div className="space-y-4">
           {/* Google OAuth Authentication */}
           <button
+            type="button"
             onClick={onGoogleAuth}
             className="w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 rounded-lg transition-all group"
           >
@@ -51,6 +52,7 @@ export function AuthOptions({ onEmailAuth, onWeb3Auth, onGoogleAuth }: AuthOptio
 
           {/* Email Authentication */}
           <button
+            type="button"
             onClick={onEmailAuth}
             className="w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 rounded-lg transition-all group"
           >
@@ -75,6 +77,7 @@ export function AuthOptions({ onEmailAuth, onWeb3Auth, onGoogleAuth }: AuthOptio
 
           {/* Web3 Wallet Authentication */}
           <button
+            type="button"
             onClick={onWeb3Auth}
             className="w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 rounded-lg transition-all group"
           >

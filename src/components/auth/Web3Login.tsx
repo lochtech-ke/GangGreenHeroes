@@ -29,7 +29,7 @@ export function Web3Login({ onSuccess, onBack }: Web3LoginProps) {
       if (accounts && accounts.length > 0) {
         const address = accounts[0];
         console.log('Connected wallet:', address);
-        
+
         // TODO: Implement backend authentication with wallet signature
         // For now, just show success
         setError('');
@@ -57,9 +57,11 @@ export function Web3Login({ onSuccess, onBack }: Web3LoginProps) {
         <div className="flex items-center mb-6">
           {onBack && (
             <button
+              type="button"
               onClick={onBack}
               className="mr-3 text-gray-600 hover:text-gray-900"
               disabled={loading}
+              aria-label="Back"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -83,6 +85,7 @@ export function Web3Login({ onSuccess, onBack }: Web3LoginProps) {
         <div className="space-y-4">
           {/* MetaMask */}
           <button
+            type="button"
             onClick={connectMetaMask}
             disabled={loading}
             className="w-full flex items-center gap-4 px-6 py-4 border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
@@ -98,6 +101,7 @@ export function Web3Login({ onSuccess, onBack }: Web3LoginProps) {
 
           {/* WalletConnect */}
           <button
+            type="button"
             onClick={connectWalletConnect}
             disabled={loading}
             className="w-full flex items-center gap-4 px-6 py-4 border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"

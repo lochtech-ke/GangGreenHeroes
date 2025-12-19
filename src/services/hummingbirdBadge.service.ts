@@ -1865,7 +1865,7 @@ export async function validateBadgeAccessibility(svgString: string): Promise<{
   const textElements = svgString.match(/<text[^>]*fill="([^"]+)"[^>]*>/g) || [];
   if (textElements.length > 0) {
     // This is a simplified check - in practice, you'd analyze the actual background colors
-    const hasLowContrastText = textElements.some(text => {
+    const hasLowContrastText = textElements.some((text: string) => {
       const colorMatch = text.match(/fill="([^"]+)"/);
       if (colorMatch) {
         const color = colorMatch[1].toLowerCase();

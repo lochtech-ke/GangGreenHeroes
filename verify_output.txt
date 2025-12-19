@@ -1,0 +1,23 @@
+🔍 Verifying Google Auth Configuration...
+
+1️⃣  Checking Environment Variables:
+✅ VITE_SUPABASE_URL is set.
+✅ VITE_SUPABASE_ANON_KEY is set.
+
+2️⃣  Checking Supabase Connection:
+✅ Successfully connected to Supabase Auth.
+
+3️⃣  Checking Google Provider URL Generation:
+✅ Google Sign-In URL generated successfully.
+   URL Preview: https://wobpryllvdjaapzjbsxx.supabase.co/auth/v1/a...
+
+Attempting to read allowed origins from process.env...
+ℹ️  VITE_ALLOWED_ORIGINS not set (using defaults in code).
+
+✨ Configuration verification complete.
+
+📋 Manual Verification Steps:
+1. Run the app: `npm run dev`
+2. Go to http://localhost:5173/login
+3. Click "Continue with Google"
+4. Verify redirection to Google and back to the dashboard.

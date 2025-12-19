@@ -1,0 +1,78 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.8 [39m[90mD:/Projects/ggh/GangGreenHeroes[39m
+
+[90mstdout[2m | src/test/authFlowCompatibility.ui.test.tsx
+[22m[39mTest environment initialized
+
+[90mstderr[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > [22m[2mAuthOptions Component[2m > [22m[2mshould render all authentication options
+[22m[39m⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstdout[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > [22m[2mWeb3Login Component[2m > [22m[2mshould handle MetaMask connection
+[22m[39mConnected wallet: 0x1234567890abcdef1234567890abcdef12345678
+
+[90mstderr[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > [22m[2mWeb3Login Component[2m > [22m[2mshould handle connection rejection
+[22m[39mMetaMask connection error: { code: [33m4001[39m }
+
+[90mstderr[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > [22m[2mError Handling in UI[2m > [22m[2mshould display Web3 connection errors
+[22m[39mMetaMask connection error: Error: Connection failed
+    at D:/Projects/ggh/GangGreenHeroes/src/test/authFlowCompatibility.ui.test.tsx:212:46
+    at [90mfile:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:157:11
+    at [90mfile:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:753:26
+    at [90mfile:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1636:20
+    at new Promise (<anonymous>)
+    at runWithTimeout [90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1602:10[90m)[39m
+    at runTest [90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1309:12[90m)[39m
+    at runSuite [90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1468:8[90m)[39m
+    at runSuite [90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1468:8[90m)[39m
+    at runSuite [90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1468:8[90m)[39m
+
+[90mstdout[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > [22m[2mAccessibility and UX[2m > [22m[2mshould disable buttons during loading states
+[22m[39mConnected wallet: 0x123
+
+[90mstdout[2m | src/test/authFlowCompatibility.ui.test.tsx
+[22m[39mTest environment cleaned up
+
+ [31m❯[39m src/test/authFlowCompatibility.ui.test.tsx [2m([22m[2m15 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 1449[2mms[22m[39m
+       [32m✓[39m should render all authentication options[32m 75[2mms[22m[39m
+       [32m✓[39m should call correct handlers when options are clicked[32m 26[2mms[22m[39m
+       [32m✓[39m should render wallet connection options[32m 17[2mms[22m[39m
+       [32m✓[39m should handle MetaMask connection[32m 36[2mms[22m[39m
+       [32m✓[39m should handle MetaMask not installed[32m 30[2mms[22m[39m
+       [32m✓[39m should handle connection rejection[32m 38[2mms[22m[39m
+       [33m[2m✓[22m[39m should show back button when onBack is provided [33m 626[2mms[22m[39m
+       [33m[2m✓[22m[39m should allow switching between authentication methods [33m 322[2mms[22m[39m
+       [32m✓[39m should display Web3 connection errors[32m 39[2mms[22m[39m
+       [32m✓[39m should handle WalletConnect not implemented[32m 15[2mms[22m[39m
+[31m       [31m×[31m should have proper button roles and labels[39m[32m 49[2mms[22m[39m
+       [32m✓[39m should disable buttons during loading states[32m 124[2mms[22m[39m
+       [32m✓[39m should provide helpful error messages[32m 15[2mms[22m[39m
+       [32m✓[39m should maintain state across component switches[32m 15[2mms[22m[39m
+       [32m✓[39m should handle rapid method switching[32m 13[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.ui.test.tsx[2m > [22mAuthentication Flow Compatibility - UI Tests[2m > [22mAccessibility and UX[2m > [22mshould have proper button roles and labels
+[31m[1mError[22m: [2mexpect([22m[31melement[31m[2m).toHaveAttribute([22m[32m[32m"type"[32m[31m[2m, [22m[32m[32m"button"[32m[31m[2m) // element.getAttribute("type") === "button"[22m
+
+Expected the element to have attribute:
+[32m  type="button"[31m
+Received:
+[31m  null[31m[39m
+[36m [2m❯[22m src/test/authFlowCompatibility.ui.test.tsx:[2m263:24[22m[39m
+    [90m261| [39m
+    [90m262| [39m      buttons[33m.[39m[34mforEach[39m(button [33m=>[39m {
+    [90m263| [39m        [34mexpect[39m(button)[33m.[39m[34mtoHaveAttribute[39m([32m'type'[39m[33m,[39m [32m'button'[39m)[33m;[39m
+    [90m   | [39m                       [31m^[39m
+    [90m264| [39m      })[33m;[39m
+    [90m265| [39m    })[33m;[39m
+[90m [2m❯[22m src/test/authFlowCompatibility.ui.test.tsx:[2m262:15[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m14 passed[39m[22m[90m (15)[39m
+[2m   Start at [22m 13:29:59
+[2m   Duration [22m 5.96s[2m (transform 202ms, setup 744ms, collect 135ms, tests 1.45s, environment 2.68s, prepare 31ms)[22m
+

@@ -311,6 +311,14 @@ export function AuthCallbackPage() {
 
         const validationResult = validateOAuthParameters(searchParams, hashParams);
 
+        // Helper to enforce timeouts
+        function promiseWithTimeout<T>(promise: Promise<T>, ms: number, errorMsg: string): Promise<T> {
+          return Promise.race([
+            promise,
+            new Promise<T>((_, reject) => setTimeout(() => reject(new Error(errorMsg)), ms))
+          ]);
+        }
+
         // Handle direct access or pre-established session (Supabase client auto-detection)
         if (validationResult.isDirectAccess) {
           // Check if session already exists (Common when Supabase client auto-detects and strips params)
@@ -328,7 +336,12 @@ export function AuthCallbackPage() {
           // Session exists, proceed without calling establishSession
         } else {
           // Establish session with the validated parameters
-          await establishSession(validationResult);
+          // Add 15s timeout for session establishment (critical step)
+          await promiseWithTimeout(
+            establishSession(validationResult),
+            15000,
+            'Session establishment timed out'
+          );
         }
 
         // Get the established session
@@ -347,8 +360,21 @@ export function AuthCallbackPage() {
               avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture,
             };
 
-            // Create profile if needed
-            await authService.ensureUserProfile(user.id, metadata);
+            // Create profile if needed - SOFT FAIL if it takes too long (5s)
+            // We don't want to block login just because profile sync is slow
+            try {
+              await promiseWithTimeout(
+                authService.ensureUserProfile(user.id, metadata),
+                5000,
+                'Profile creation timed out'
+              );
+            } catch (profileTimeoutOrError) {
+              console.warn('[AuthCallback] Profile sync issue (continuing anyway):', profileTimeoutOrError);
+              ErrorLogger.logError('Profile Creation Warning', profileTimeoutOrError, {
+                userId: session.user.id,
+                continuing: true
+              });
+            }
 
             // Clear the URL parameters to prevent re-processing
             window.history.replaceState(null, '', window.location.pathname);
@@ -366,8 +392,8 @@ export function AuthCallbackPage() {
 
             navigate(redirectDestination, { replace: true });
           } catch (profileError) {
-            // Even if profile creation fails, let user through
-            ErrorLogger.logError('Profile Creation Warning', profileError, {
+            // Even if profile logic significantly fails, let user through
+            ErrorLogger.logError('Profile Logic Fatal Error', profileError, {
               userId: session.user.id,
               continuing: true
             });

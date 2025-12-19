@@ -114,7 +114,7 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
     {
       id: 'gbm',
       name: 'Green Belt Movement',
-      logoUrl: '/images/partners/gbm-logo.png',
+      logoUrl: '/images/partners/gbm-logo.svg',
       description:
         'Founded by Nobel Peace Prize laureate Wangari Maathai, leading grassroots environmental conservation in Kenya.',
       websiteUrl: 'https://www.greenbeltmovement.org/',
@@ -123,7 +123,7 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
     {
       id: 'gsma',
       name: 'GSMA',
-      logoUrl: '/images/partners/gsma-logo.png',
+      logoUrl: '/images/partners/gsma-logo.svg',
       description:
         'Global mobile industry organization supporting sustainable development through mobile technology.',
       websiteUrl: 'https://www.gsma.com/',
@@ -132,7 +132,7 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
     {
       id: 'antugrow',
       name: 'Antugrow',
-      logoUrl: '/images/partners/antugrow-logo.png',
+      logoUrl: '/images/partners/antugrow-logo.svg',
       description:
         'AI-powered platform for tree monitoring, growth tracking, and health analysis.',
       websiteUrl: 'https://antugrow.com/',
@@ -168,7 +168,7 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-green-500 to-emerald-600 mx-auto mb-6 rounded-full" />
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Together with leading organizations, we're driving environmental conservation across Africa. 
+              Together with leading organizations, we're driving environmental conservation across Africa.
               <span className="font-semibold text-green-600"> Together We Grow — Ubuntu in Action.</span>
             </p>
           </div>
@@ -189,7 +189,7 @@ export const PartnershipSection: React.FC<PartnershipSectionProps> = ({ partners
                 Built for Collective Impact
               </h3>
               <p className="text-gray-700 max-w-2xl mx-auto">
-                Together, we honor the legacy of Prof. Wangari Maathai, Kenya's environmental champion and Nobel Peace Prize Laureate, 
+                Together, we honor the legacy of Prof. Wangari Maathai, Kenya's environmental champion and Nobel Peace Prize Laureate,
                 through community engagement and sustainability initiatives. We believe in the power of Ubuntu — when we work together, we achieve more.
               </p>
             </div>

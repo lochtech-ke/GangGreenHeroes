@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="white" />
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#166534" font-weight="bold">GBM</text>
+  <path d="M20 60 L180 60" stroke="#166534" stroke-width="4" />
+  <circle cx="100" cy="40" r="15" fill="#166534" opacity="0.2"/>
+</svg>
