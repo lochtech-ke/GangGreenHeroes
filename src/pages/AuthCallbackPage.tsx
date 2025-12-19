@@ -336,12 +336,22 @@ export function AuthCallbackPage() {
           // Session exists, proceed without calling establishSession
         } else {
           // Establish session with the validated parameters
-          // Add 15s timeout for session establishment (critical step)
+          // Add 60s timeout for session establishment (increased from 15s to handle slow networks/retries)
+          console.time('Session Establishment');
+          ErrorLogger.logError('Session Establishment Start', new Error('Starting session establishment'), {
+            timestamp: new Date().toISOString()
+          });
+
           await promiseWithTimeout(
             establishSession(validationResult),
-            15000,
+            60000,
             'Session establishment timed out'
           );
+
+          console.timeEnd('Session Establishment');
+          ErrorLogger.logError('Session Establishment Complete', new Error('Session established successfully'), {
+            timestamp: new Date().toISOString()
+          });
         }
 
         // Get the established session
