@@ -17,6 +17,7 @@ export function AuthCallbackPage() {
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string>('Initializing...');
   const [isLoading, setIsLoading] = useState(true);
+  const [connectivity, setConnectivity] = useState<string>('Checking...');
   const hasProcessed = useRef(false);
 
   // Get allowed origins from environment or use defaults
@@ -55,6 +56,31 @@ export function AuthCallbackPage() {
       setTimeout(() => reject(new Error(message)), ms);
     });
   };
+
+  // Debug check for vars
+  const debugEnv = {
+    url: import.meta.env.VITE_SUPABASE_URL ? 'Set (starts with ' + import.meta.env.VITE_SUPABASE_URL.substring(0, 8) + ')' : 'MISSING',
+    key: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'Set' : 'MISSING'
+  };
+
+  // Connectivity Check Effect
+  useEffect(() => {
+    const checkConn = async () => {
+      if (!import.meta.env.VITE_SUPABASE_URL) {
+        setConnectivity('Skipped (No URL)');
+        return;
+      }
+      try {
+        // Try to hit the health endpoint
+        const res = await fetch(import.meta.env.VITE_SUPABASE_URL + '/auth/v1/health', { method: 'GET' });
+        if (res.ok) setConnectivity('OK (200)');
+        else setConnectivity(`Error: ${res.status}`);
+      } catch (e: any) {
+        setConnectivity(`Failed: ${e.message}`);
+      }
+    };
+    checkConn();
+  }, []);
 
   useEffect(() => {
     console.log('[AuthCallback] Component mounted');
@@ -192,6 +218,12 @@ export function AuthCallbackPage() {
             <p className="font-bold mb-1">Status Log:</p>
             <p className="text-blue-600">&gt; {status}</p>
           </div>
+          <div className="text-left text-xs bg-gray-200 p-2 rounded mb-2">
+            <p><strong>Config Check:</strong></p>
+            <p>URL: {debugEnv.url}</p>
+            <p>Key: {debugEnv.key}</p>
+            <p><strong>Connectivity:</strong> {connectivity}</p>
+          </div>
           <p className="text-xs text-gray-400">
             If you see this, the new code IS loaded on v1 branch. <br />
             Please check the console (F12) for [AuthCallback] logs.
@@ -207,6 +239,12 @@ export function AuthCallbackPage() {
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Sign In Failed</h2>
           <p className="text-gray-600 mb-4">{error}</p>
+          <div className="text-left text-xs bg-gray-100 p-2 rounded mb-4">
+            <p><strong>Debug Info:</strong></p>
+            <p>URL: {debugEnv.url}</p>
+            <p>Key: {debugEnv.key}</p>
+            <p>Connectivity: {connectivity}</p>
+          </div>
           <button
             onClick={() => navigate('/login', { replace: true })}
             className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium"
