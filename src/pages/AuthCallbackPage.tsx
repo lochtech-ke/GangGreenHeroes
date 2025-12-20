@@ -72,7 +72,14 @@ export function AuthCallbackPage() {
       }
       try {
         // Try to hit the health endpoint
-        const res = await fetch(import.meta.env.VITE_SUPABASE_URL + '/auth/v1/health', { method: 'GET' });
+        // MUST include apikey for this to work (even for public projects sometimes)
+        const res = await fetch(import.meta.env.VITE_SUPABASE_URL + '/auth/v1/health', {
+          method: 'GET',
+          headers: {
+            'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + import.meta.env.VITE_SUPABASE_ANON_KEY
+          }
+        });
         if (res.ok) setConnectivity('OK (200)');
         else setConnectivity(`Error: ${res.status}`);
       } catch (e: any) {
