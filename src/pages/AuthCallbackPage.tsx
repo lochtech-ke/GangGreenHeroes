@@ -59,9 +59,6 @@ export function AuthCallbackPage() {
   useEffect(() => {
     console.log('[AuthCallback] Component mounted');
     // In React 18 Strict Mode, effects run twice.
-    // We want to ensure we only process once per mount "session".
-    // However, if the first attempt failed or was interrupted, we might want to allow retry?
-    // For now, strict 'once' policy to avoid double code exchange.
     if (hasProcessed.current) {
       console.log('[AuthCallback] Already processed/processing, skipping.');
       return;
@@ -186,15 +183,19 @@ export function AuthCallbackPage() {
 
   if (isLoading && !error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Completing sign in...</h2>
-          <p className="text-gray-600 mb-2">{status}</p>
-          <div className="text-xs text-gray-400 mt-4 bg-gray-50 p-2 rounded">
-            {/* Technical details hidden in normal view but visible if needed */}
-            <p>If stuck &gt; 10s, please refresh.</p>
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center border-4 border-amber-400">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
+          <h2 className="text-xl font-bold text-amber-900 mb-2">DEBUG MODE ACTIVE</h2>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Completing sign in...</h3>
+          <div className="bg-gray-100 p-4 rounded-md text-left text-xs font-mono mb-4 overflow-auto max-h-40 border border-gray-300">
+            <p className="font-bold mb-1">Status Log:</p>
+            <p className="text-blue-600">&gt; {status}</p>
           </div>
+          <p className="text-xs text-gray-400">
+            If you see this, the new code IS loaded. <br />
+            Please check the console (F12) for [AuthCallback] logs.
+          </p>
         </div>
       </div>
     );
