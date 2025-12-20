@@ -46,7 +46,7 @@ const VivianSplashScreen = ({
   const isAppReady = useAppReady();
 
   // Use provided contributors or load from data file
-  const contributorList: string[] = contributors 
+  const contributorList: string[] = contributors
     ? contributors.map(c => typeof c === 'string' ? c : c.login)
     : contributorsData.contributors.map(c => c.login);
 
@@ -82,7 +82,7 @@ const VivianSplashScreen = ({
     // For extremely fast loads (< 100ms), this ensures users see the splash
     setTimeout(() => {
       setIsFadingOut(true);
-      
+
       // Remove component after fade-out completes
       setTimeout(() => {
         setIsVisible(false);
@@ -156,8 +156,8 @@ const VivianSplashScreen = ({
         </div>
 
         {/* Platform Name */}
-        <h1 
-          className="splash-title font-bold text-white text-center splash-fade-in-delay-1 splash-text-shadow"
+        <h1
+          className="splash-title font-bold text-white text-center splash-fade-in-delay-1"
           id="splash-title"
         >
           #GangGreen
@@ -170,13 +170,13 @@ const VivianSplashScreen = ({
 
         {/* Contributor Ticker */}
         <div className="w-full max-w-2xl splash-fade-in-delay-3">
-          <p 
+          <p
             className="text-white/80 text-sm md:text-base text-center mb-2 md:mb-3"
             id="contributors-label"
           >
             Built with 💚 by our amazing contributors
           </p>
-          <ContributorTicker 
+          <ContributorTicker
             contributors={contributorList}
             ariaLabelledBy="contributors-label"
           />
@@ -184,7 +184,7 @@ const VivianSplashScreen = ({
       </div>
 
       {/* Loading indicator */}
-      <div 
+      <div
         className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
         role="progressbar"
         aria-label="Loading progress"
@@ -195,7 +195,7 @@ const VivianSplashScreen = ({
       >
         {/* Slow load message - shown after 8 seconds */}
         {showSlowLoadMessage && (
-          <div 
+          <div
             className="mb-3 text-white/70 text-sm text-center splash-fade-in"
             role="status"
             aria-live="polite"
@@ -203,7 +203,7 @@ const VivianSplashScreen = ({
             Taking a bit longer than usual...
           </div>
         )}
-        
+
         <div className="flex items-center space-x-2">
           <div className="w-2 h-2 bg-green-400 rounded-full splash-pulse" />
           <div className="w-2 h-2 bg-green-400 rounded-full splash-pulse-delay-75" />

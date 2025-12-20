@@ -24,13 +24,13 @@ const FallbackLoader = ({ backgroundColor }: { backgroundColor: string }) => (
  */
 const supportsAnimations = (): boolean => {
   if (typeof window === 'undefined') return true;
-  
+
   const element = document.createElement('div');
-  const animationSupport = 
+  const animationSupport =
     'animation' in element.style ||
     'webkitAnimation' in element.style ||
     'MozAnimation' in element.style;
-  
+
   return animationSupport;
 };
 
@@ -95,7 +95,7 @@ const StickmanPreloader = ({
     // Wait for remaining time before starting fade-out
     setTimeout(() => {
       setIsFadingOut(true);
-      
+
       // Remove component after fade-out completes
       setTimeout(() => {
         setIsVisible(false);
@@ -157,57 +157,12 @@ const StickmanPreloader = ({
           }
         }
 
-        /* Left arm wave - independent timeline */
+        /* Path animations commented out due to browser compatibility issues causing errors */
+        /* 
         @keyframes arm-wave-left {
-          0%, 100% {
-            d: path("M 100 85 Q 75 80 60 70");
-          }
-          25% {
-            d: path("M 100 85 Q 70 75 55 60");
-          }
-          50% {
-            d: path("M 100 85 Q 75 80 60 70");
-          }
-          75% {
-            d: path("M 100 85 Q 80 85 70 90");
-          }
+           d: path("...");
         }
-
-        /* Right arm wave - independent timeline (offset) */
-        @keyframes arm-wave-right {
-          0%, 100% {
-            d: path("M 100 85 Q 125 80 140 70");
-          }
-          25% {
-            d: path("M 100 85 Q 120 85 130 90");
-          }
-          50% {
-            d: path("M 100 85 Q 125 80 140 70");
-          }
-          75% {
-            d: path("M 100 85 Q 130 75 145 60");
-          }
-        }
-
-        /* Left leg step - independent timeline */
-        @keyframes leg-step-left {
-          0%, 100% {
-            d: path("M 100 130 L 85 160 L 80 175");
-          }
-          50% {
-            d: path("M 100 130 L 90 155 L 88 170");
-          }
-        }
-
-        /* Right leg step - independent timeline (offset) */
-        @keyframes leg-step-right {
-          0%, 100% {
-            d: path("M 100 130 L 115 160 L 120 175");
-          }
-          50% {
-            d: path("M 100 130 L 110 155 L 112 170");
-          }
-        }
+        */
 
         /* Apply animations with independent timelines */
         .stickman-body {
@@ -219,6 +174,8 @@ const StickmanPreloader = ({
           transform-origin: center;
         }
 
+        /* Animations disabled for limbs to prevent SVG path errors */
+        /*
         .stickman-left-arm {
           animation: arm-wave-left 1s ease-in-out infinite;
         }
@@ -234,6 +191,7 @@ const StickmanPreloader = ({
         .stickman-right-leg {
           animation: leg-step-right 0.6s ease-in-out infinite 0.3s;
         }
+        */
 
         @keyframes text-color-cycle {
           0% {
@@ -366,120 +324,120 @@ const StickmanPreloader = ({
           transitionDuration: `${fadeOutDuration}ms`
         }}
       >
-      {/* Speech Bubble with rotating messages */}
-      <div className="relative mb-4">
-        <div
-          key={currentMessageIndex}
-          className="speech-bubble bg-white rounded-2xl px-6 py-3 shadow-lg relative"
-        >
-          <p className="text-gray-800 font-semibold text-lg whitespace-nowrap">
-            {messages[currentMessageIndex]}
-          </p>
-          {/* Speech bubble tail */}
-          <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-white" />
+        {/* Speech Bubble with rotating messages */}
+        <div className="relative mb-4">
+          <div
+            key={currentMessageIndex}
+            className="speech-bubble bg-white rounded-2xl px-6 py-3 shadow-lg relative"
+          >
+            <p className="text-gray-800 font-semibold text-lg whitespace-nowrap">
+              {messages[currentMessageIndex]}
+            </p>
+            {/* Speech bubble tail */}
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-white" />
+          </div>
         </div>
+
+        {/* Stickman SVG with hand-sketch styling */}
+        <svg
+          className="w-48 h-48 md:w-64 md:h-64"
+          viewBox="0 0 200 200"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          {/* Head - bobs independently */}
+          <circle
+            cx="100"
+            cy="50"
+            r="20"
+            className="stickman-head"
+            style={{
+              stroke: 'white',
+              strokeWidth: 3,
+              strokeLinecap: 'round',
+              fill: 'none',
+              filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
+            }}
+          />
+
+          {/* Body - bounces independently */}
+          <line
+            x1="100"
+            y1="70"
+            x2="100"
+            y2="130"
+            className="stickman-body"
+            style={{
+              stroke: 'white',
+              strokeWidth: 3,
+              strokeLinecap: 'round',
+              filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
+            }}
+          />
+
+          {/* Left Arm - waves independently */}
+          <path
+            d="M 100 85 Q 75 80 60 70"
+            className="stickman-left-arm"
+            style={{
+              stroke: 'white',
+              strokeWidth: 3,
+              strokeLinecap: 'round',
+              fill: 'none',
+              filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
+            }}
+          />
+
+          {/* Right Arm - waves independently (offset) */}
+          <path
+            d="M 100 85 Q 125 80 140 70"
+            className="stickman-right-arm"
+            style={{
+              stroke: 'white',
+              strokeWidth: 3,
+              strokeLinecap: 'round',
+              fill: 'none',
+              filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
+            }}
+          />
+
+          {/* Left Leg - steps independently */}
+          <path
+            d="M 100 130 L 85 160 L 80 175"
+            className="stickman-left-leg"
+            style={{
+              stroke: 'white',
+              strokeWidth: 3,
+              strokeLinecap: 'round',
+              fill: 'none',
+              filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
+            }}
+          />
+
+          {/* Right Leg - steps independently (offset) */}
+          <path
+            d="M 100 130 L 115 160 L 120 175"
+            className="stickman-right-leg"
+            style={{
+              stroke: 'white',
+              strokeWidth: 3,
+              strokeLinecap: 'round',
+              fill: 'none',
+              filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
+            }}
+          />
+        </svg>
+
+        {/* Pulsating Text with light box effect */}
+        <h2
+          className="mt-8 text-4xl md:text-6xl font-bold pulsating-text"
+          style={{
+            '--cycle-duration': `${textColorCycleSpeed * 4}ms`
+          } as React.CSSProperties}
+        >
+          Chill Kiasi...
+        </h2>
       </div>
-
-      {/* Stickman SVG with hand-sketch styling */}
-      <svg
-        className="w-48 h-48 md:w-64 md:h-64"
-        viewBox="0 0 200 200"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        {/* Head - bobs independently */}
-        <circle
-          cx="100"
-          cy="50"
-          r="20"
-          className="stickman-head"
-          style={{
-            stroke: 'white',
-            strokeWidth: 3,
-            strokeLinecap: 'round',
-            fill: 'none',
-            filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
-          }}
-        />
-        
-        {/* Body - bounces independently */}
-        <line
-          x1="100"
-          y1="70"
-          x2="100"
-          y2="130"
-          className="stickman-body"
-          style={{
-            stroke: 'white',
-            strokeWidth: 3,
-            strokeLinecap: 'round',
-            filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
-          }}
-        />
-        
-        {/* Left Arm - waves independently */}
-        <path
-          d="M 100 85 Q 75 80 60 70"
-          className="stickman-left-arm"
-          style={{
-            stroke: 'white',
-            strokeWidth: 3,
-            strokeLinecap: 'round',
-            fill: 'none',
-            filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
-          }}
-        />
-        
-        {/* Right Arm - waves independently (offset) */}
-        <path
-          d="M 100 85 Q 125 80 140 70"
-          className="stickman-right-arm"
-          style={{
-            stroke: 'white',
-            strokeWidth: 3,
-            strokeLinecap: 'round',
-            fill: 'none',
-            filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
-          }}
-        />
-        
-        {/* Left Leg - steps independently */}
-        <path
-          d="M 100 130 L 85 160 L 80 175"
-          className="stickman-left-leg"
-          style={{
-            stroke: 'white',
-            strokeWidth: 3,
-            strokeLinecap: 'round',
-            fill: 'none',
-            filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
-          }}
-        />
-        
-        {/* Right Leg - steps independently (offset) */}
-        <path
-          d="M 100 130 L 115 160 L 120 175"
-          className="stickman-right-leg"
-          style={{
-            stroke: 'white',
-            strokeWidth: 3,
-            strokeLinecap: 'round',
-            fill: 'none',
-            filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))'
-          }}
-        />
-      </svg>
-
-      {/* Pulsating Text with light box effect */}
-      <h2
-        className="mt-8 text-4xl md:text-6xl font-bold pulsating-text"
-        style={{
-          '--cycle-duration': `${textColorCycleSpeed * 4}ms`
-        } as React.CSSProperties}
-      >
-        Chill Kiasi...
-      </h2>
-    </div>
     </>
   );
 };

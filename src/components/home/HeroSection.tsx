@@ -92,13 +92,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           className="mb-3"
         >
           <motion.span
-            animate={{ 
+            animate={{
               backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
             }}
-            transition={{ 
-              duration: 5, 
-              repeat: Infinity, 
-              ease: 'linear' 
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: 'linear'
             }}
             className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-kente-gold via-sunset-orange to-kente-gold bg-[length:200%_auto] bg-clip-text text-transparent drop-shadow-lg"
             style={{
@@ -112,14 +112,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             •
           </span>
           <motion.span
-            animate={{ 
+            animate={{
               backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
             }}
-            transition={{ 
-              duration: 5, 
+            transition={{
+              duration: 5,
               delay: 0.5,
-              repeat: Infinity, 
-              ease: 'linear' 
+              repeat: Infinity,
+              ease: 'linear'
             }}
             className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-terracotta via-ochre to-terracotta bg-[length:200%_auto] bg-clip-text text-transparent drop-shadow-lg"
             style={{
@@ -138,7 +138,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold mb-4"
         >
-          <span className="text-gradient animate-pulse-glow inline-block">
+          <span className="text-gradient inline-block">
             #GangGreen
           </span>
         </motion.h1>
@@ -160,7 +160,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-lg sm:text-xl md:text-2xl text-white/90 mb-4 max-w-4xl mx-auto drop-shadow-lg"
         >
-          Join thousands of us making a difference through collective action and community engagement. 
+          Join thousands of us making a difference through collective action and community engagement.
           Because we are stronger together.
         </motion.p>
 
@@ -173,8 +173,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         >
           <div className="flex items-center justify-center gap-3 mb-2">
             {/* Hummingbird Icon */}
-            <motion.svg 
-              viewBox="0 0 100 100" 
+            <motion.svg
+              viewBox="0 0 100 100"
               className="w-8 h-8 sm:w-10 sm:h-10"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

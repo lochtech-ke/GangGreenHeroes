@@ -22,13 +22,13 @@ const VersionDisplay = ({
   className = ''
 }: VersionDisplayProps) => {
   return (
-    <div 
+    <div
       className={`text-center ${className}`}
       role="contentinfo"
       aria-label={`Application version ${version}, codename ${codename}`}
     >
-      <p className="text-white splash-version font-medium tracking-wide splash-text-shadow">
-        Version {version} - Codename: <span className="font-bold text-green-400 splash-glow">{codename}</span>
+      <p className="text-white splash-version font-medium tracking-wide">
+        Version {version} - Codename: <span className="font-bold text-green-400">{codename}</span>
       </p>
     </div>
   );

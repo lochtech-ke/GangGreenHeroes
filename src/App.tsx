@@ -39,7 +39,7 @@ import { ProtectedRoute } from './components/auth';
 import { ChatWidget } from './components/chatbot/ChatWidget';
 import { Layout } from './components/layout';
 import { SupabaseTest } from './components/auth/SupabaseTest';
-import StickmanPreloader from './components/common/StickmanPreloader';
+
 import VivianSplashScreen from './components/common/VivianSplashScreen';
 import { DeprecatedRouteHandler } from './components/routing';
 import { HummingbirdWelcome } from './components/badges';
@@ -168,7 +168,7 @@ function AppContent() {
     <>
       {/* Hummingbird Welcome Modal for New Users */}
       <HummingbirdWelcome isOpen={showWelcome} onComplete={handleComplete} />
-      
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -186,7 +186,7 @@ function AppContent() {
             </Layout>
           }
         />
-        
+
         {/* Legal Pages - Dynamic route using Strapi CMS */}
         <Route
           path="/legal/:slug"
@@ -196,7 +196,7 @@ function AppContent() {
             </Layout>
           }
         />
-        
+
         {/* Legacy Legal Pages - Keep for backwards compatibility */}
         <Route
           path="/legal/terms"
@@ -238,7 +238,7 @@ function AppContent() {
             </Layout>
           }
         />
-        
+
         <Route
           path="/onboarding-guide"
           element={
@@ -643,7 +643,7 @@ function AppContent() {
             </RouteErrorBoundary>
           }
         />
-        
+
         {/* Catch-all route for 404 errors */}
         <Route
           path="*"
@@ -684,7 +684,7 @@ function App() {
 function AppWithRouter() {
   const location = useLocation();
   const [showVivianSplash, setShowVivianSplash] = useState(true);
-  const [showStickmanPreloader, setShowStickmanPreloader] = useState(true);
+
 
   // Setup OAuth 404 error handler on app initialization
   useEffect(() => {
@@ -704,16 +704,16 @@ function AppWithRouter() {
     ];
 
     const isDynamicRoute = location.pathname.match(/^\/legal\/[^/]+$/) ||
-                          location.pathname.match(/^\/initiatives\/[^/]+$/) ||
-                          location.pathname.match(/^\/communities\/[^/]+$/) ||
-                          location.pathname.match(/^\/learning\/[^/]+$/) ||
-                          location.pathname.match(/^\/missions\/[^/]+$/) ||
-                          location.pathname.match(/^\/governance\/[^/]+$/) ||
-                          location.pathname.match(/^\/petitions\/[^/]+$/) ||
-                          location.pathname.match(/^\/ambassador\/[^/]+$/);
+      location.pathname.match(/^\/initiatives\/[^/]+$/) ||
+      location.pathname.match(/^\/communities\/[^/]+$/) ||
+      location.pathname.match(/^\/learning\/[^/]+$/) ||
+      location.pathname.match(/^\/missions\/[^/]+$/) ||
+      location.pathname.match(/^\/governance\/[^/]+$/) ||
+      location.pathname.match(/^\/petitions\/[^/]+$/) ||
+      location.pathname.match(/^\/ambassador\/[^/]+$/);
 
-    const isKnownRoute = knownRoutes.some(route => 
-      location.pathname === route || 
+    const isKnownRoute = knownRoutes.some(route =>
+      location.pathname === route ||
       location.pathname.startsWith(route + '/')
     ) || isDynamicRoute;
 
@@ -734,7 +734,7 @@ function AppWithRouter() {
 
   // Determine which splash screen to show based on feature flag
   const useVivianSplash = VIVIAN_SPLASH_ENABLED && shouldShowSplash;
-  const useStickmanPreloader = !VIVIAN_SPLASH_ENABLED && shouldShowSplash;
+
 
   return (
     <>
@@ -749,15 +749,7 @@ function AppWithRouter() {
       )}
 
       {/* Legacy Stickman Preloader - Fallback when Vivian splash is disabled */}
-      {useStickmanPreloader && showStickmanPreloader && (
-        <StickmanPreloader
-          minDisplayDuration={1500}
-          fadeOutDuration={500}
-          backgroundColor="#0D4D2D"
-          textColorCycleSpeed={800}
-          onComplete={() => setShowStickmanPreloader(false)}
-        />
-      )}
+
 
       <AuthProvider>
         <JourneyProviderWrapper>

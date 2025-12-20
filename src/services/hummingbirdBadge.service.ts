@@ -518,7 +518,18 @@ class HummingbirdBadgeService {
     
     let result = template;
     for (const [placeholder, value] of Object.entries(replacements)) {
+      if (value === undefined || value === null) {
+        console.error(`[HummingbirdBadgeService] Warning: Value for placeholder ${placeholder} is ${value}. Setting to empty string.`);
+      }
       result = result.replace(new RegExp(placeholder, 'g'), value || '');
+    }
+
+    // DEBUG: Check for undefined d attributes in the generated SVG
+    if (result.includes('d="undefined')) {
+         console.error('[HummingbirdBadgeService] CRITICAL: Generated SVG contains d="undefined"!', {
+            replacements,
+            config: { tier: config.tier, forest: config.forest }
+         });
     }
     
     return result;

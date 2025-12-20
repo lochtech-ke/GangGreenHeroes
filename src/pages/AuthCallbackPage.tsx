@@ -144,42 +144,97 @@ export function AuthCallbackPage() {
         // Exchange Code or Tokens if present
         if (code) {
           console.log('[AuthCallback] Exchanging code for session...');
-          // Add timeout to prevent hanging
-          const exchangePromise = supabase.auth.exchangeCodeForSession(code);
-          const { error: exchangeError } = await Promise.race([
-            exchangePromise,
-            timeoutPromise(10000, 'Token exchange timed out')
-          ]) as any;
+          console.log('[AuthCallback] Code length:', code.length);
 
-          if (exchangeError) throw exchangeError;
-          console.log('[AuthCallback] Code exchange successful');
+          // Increase timeout and add better error context
+          const exchangeStart = performance.now();
+          const exchangePromise = supabase.auth.exchangeCodeForSession(code);
+
+          try {
+            const { error: exchangeError } = await Promise.race([
+              exchangePromise,
+              timeoutPromise(20000, 'Token exchange timed out after 20 seconds')
+            ]) as any;
+
+            const exchangeDuration = performance.now() - exchangeStart;
+            console.log(`[AuthCallback] Exchange attempt completed in ${exchangeDuration.toFixed(0)}ms`);
+
+            if (exchangeError) {
+              console.error('[AuthCallback] Exchange error details:', {
+                message: exchangeError.message,
+                status: exchangeError.status,
+                name: exchangeError.name,
+              });
+              throw exchangeError;
+            }
+            console.log('[AuthCallback] Code exchange successful');
+          } catch (err: any) {
+            console.error('[AuthCallback] Exchange failed:', err.message);
+            throw new Error(`Token exchange failed: ${err.message}. This usually indicates a network issue or invalid OAuth state.`);
+          }
         } else if (accessToken && refreshToken) {
           console.log('[AuthCallback] Setting session from hash params...');
-          // Add timeout
+          console.log('[AuthCallback] Token lengths - access:', accessToken.length, 'refresh:', refreshToken.length);
+
+          // Increase timeout and add detailed diagnostics
+          const sessionStart = performance.now();
           const setSessionPromise = supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken,
           });
-          const { error: setSessionError } = await Promise.race([
-            setSessionPromise,
-            timeoutPromise(10000, 'Setting session timed out')
-          ]) as any;
 
-          if (setSessionError) throw setSessionError;
-          console.log('[AuthCallback] Session set successfully');
+          try {
+            const { error: setSessionError, data } = await Promise.race([
+              setSessionPromise,
+              timeoutPromise(20000, 'Setting session timed out after 20 seconds')
+            ]) as any;
+
+            const sessionDuration = performance.now() - sessionStart;
+            console.log(`[AuthCallback] Session attempt completed in ${sessionDuration.toFixed(0)}ms`);
+
+            if (setSessionError) {
+              console.error('[AuthCallback] Session error details:', {
+                message: setSessionError.message,
+                status: setSessionError.status,
+                name: setSessionError.name,
+              });
+              throw setSessionError;
+            }
+
+            console.log('[AuthCallback] Session set successfully, user:', data?.session?.user?.id);
+          } catch (err: any) {
+            console.error('[AuthCallback] Session establishment failed:', err.message);
+
+            // Provide user-friendly error message with troubleshooting hints
+            if (err.message.includes('timed out')) {
+              throw new Error(
+                'Session establishment timed out. This may be due to slow network connection. ' +
+                'Please check your internet connection and try again. If the issue persists, ' +
+                'try clearing your browser cache or using a different browser.'
+              );
+            }
+            throw new Error(`Session setup failed: ${err.message}`);
+          }
         } else {
           console.log('[AuthCallback] No tokens found in URL, checking existing session...');
         }
 
         setStatus('Verifying session...');
-        // Final Session Check (Fast)
+        // Final Session Check - increased timeout for slow connections
+        const verifyStart = performance.now();
         const getSessionPromise = supabase.auth.getSession();
         const { data: { session }, error: sessionError } = await Promise.race([
           getSessionPromise,
-          timeoutPromise(5000, 'Session verification timed out')
+          timeoutPromise(10000, 'Session verification timed out after 10 seconds')
         ]) as any;
 
-        if (sessionError) throw sessionError;
+        const verifyDuration = performance.now() - verifyStart;
+        console.log(`[AuthCallback] Verification completed in ${verifyDuration.toFixed(0)}ms`);
+
+        if (sessionError) {
+          console.error('[AuthCallback] Session verification error:', sessionError);
+          throw sessionError;
+        }
 
         console.log('[AuthCallback] Session verification complete. User ID:', session?.user?.id);
 
@@ -233,7 +288,8 @@ export function AuthCallbackPage() {
           </div>
           <p className="text-xs text-gray-400">
             If you see this, the new code IS loaded on v1 branch. <br />
-            Please check the console (F12) for [AuthCallback] logs.
+            Please check the console (F12) for [AuthCallback] logs.<br />
+            Timeouts: Exchange(20s), Session(20s), Verify(10s)
           </p>
         </div>
       </div>

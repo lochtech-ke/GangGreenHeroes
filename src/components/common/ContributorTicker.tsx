@@ -27,7 +27,7 @@ const ContributorTicker = ({
   // Handle empty contributor list
   if (!contributors || contributors.length === 0) {
     return (
-      <div 
+      <div
         className={`text-center text-white/60 text-sm ${className}`}
         role="status"
         aria-label="No contributors to display"
@@ -39,7 +39,7 @@ const ContributorTicker = ({
 
   // Format contributor names with @ prefix
   const formattedContributors = contributors.map(name => `@${name}`);
-  
+
   // Duplicate the list for seamless looping
   const displayList = [...formattedContributors, ...formattedContributors];
 
@@ -49,7 +49,7 @@ const ContributorTicker = ({
   const animationDuration = Math.max(20, contributors.length * 2);
 
   return (
-    <div 
+    <div
       className={`relative overflow-hidden ${className}`}
       role="region"
       aria-label="GitHub contributors"
@@ -57,11 +57,10 @@ const ContributorTicker = ({
       aria-live="off"
     >
       {/* Gradient fade on edges for smooth appearance */}
-      <div className="ticker-gradient-left" />
-      <div className="ticker-gradient-right" />
-      
+      {/* Gradient fade removed for cleaner look */}\n
+
       {/* Scrolling ticker container */}
-      <div 
+      <div
         ref={tickerRef}
         className="flex gap-6 md:gap-8 ticker-scroll gpu-accelerated"
         style={{

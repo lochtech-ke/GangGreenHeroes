@@ -14,6 +14,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -45,6 +46,7 @@
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -64,10 +66,13 @@
 /* ===== Loading Pulse Animation ===== */
 
 @keyframes splash-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.5;
     transform: scale(0.8);
@@ -100,9 +105,12 @@
 
 /* Add subtle floating effect to hummingbird */
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -118,7 +126,8 @@
   background: #0D4D2D;
   /* Fix for mobile viewport height issues */
   min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport height */
+  min-height: 100dvh;
+  /* Dynamic viewport height */
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
@@ -131,7 +140,8 @@
   padding: var(--space-md);
   /* Ensure content fits on mobile screens */
   max-height: 100vh;
-  max-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  max-height: 100dvh;
+  /* Dynamic viewport height for mobile browsers */
   overflow: hidden;
 }
 
@@ -193,33 +203,48 @@
   }
 }
 
-/* ===== Ticker Edge Gradients ===== */
-
+/* ===== Ticker Edge Gradients - Removed for cleaner look ===== */
+/* 
 .ticker-gradient-left {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  background: linear-gradient(to right, #0D4D2D, transparent);
-  z-index: 10;
-  pointer-events: none;
+  ... 
 }
-
 .ticker-gradient-right {
+  ...
+}
+*/
+
+/* ===== Utility Classes ===== */
+
+/* Screen reader only - visually hidden but accessible to screen readers */
+.sr-only {
   position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  background: linear-gradient(to left, #0D4D2D, transparent);
-  z-index: 10;
-  pointer-events: none;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
-/* ===== Accessibility: Reduced Motion Support ===== */
+.splash-text-shadow {
+  /* Removed shadow for cleaner look */
+  text-shadow: none;
+}
+
+.splash-glow {
+  /* Removed glow for cleaner look */
+  box-shadow: none;
+}
+
+.splash-glow-strong {
+  /* Removed glow for cleaner look */
+  box-shadow: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
+
   /* Disable all animations */
   .splash-fade-in,
   .splash-fade-in-delay-1,
@@ -301,6 +326,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -362,6 +388,7 @@
 /* ===== Dark Mode Support (Future Enhancement) ===== */
 
 @media (prefers-color-scheme: dark) {
+
   /* Already using dark theme, but can be adjusted if needed */
   .splash-gradient-bg {
     background: #0a3d24;
@@ -467,18 +494,18 @@ img {
     padding: 1rem;
     gap: 1rem;
   }
-  
+
   .splash-title {
     font-size: clamp(1.75rem, 10vw, 2.5rem);
     margin: 0.5rem 0;
   }
-  
+
   /* Reduce spacing on very small screens */
   @media (max-height: 667px) {
     .splash-container {
       gap: 0.75rem;
     }
-    
+
     .hummingbird-container {
       max-width: min(150px, 35vw);
       max-height: min(150px, 35vw);
@@ -486,18 +513,18 @@ img {
       min-width: min(150px, 35vw);
     }
   }
-  
+
   /* Extra small screens (iPhone SE, etc.) */
   @media (max-height: 568px) {
     .splash-container {
       gap: 0.5rem;
       padding: 0.75rem;
     }
-    
+
     .splash-title {
       font-size: clamp(1.5rem, 9vw, 2rem);
     }
-    
+
     .hummingbird-container {
       max-width: min(120px, 30vw);
       max-height: min(120px, 30vw);
@@ -523,15 +550,15 @@ img {
 }
 
 .splash-text-shadow {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
 }
 
 .splash-glow {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  box-shadow: none;
 }
 
 .splash-glow-strong {
-  box-shadow: 0 0 40px rgba(16, 185, 129, 0.5);
+  box-shadow: none;
 }
 
 /* ===== Transition Classes ===== */

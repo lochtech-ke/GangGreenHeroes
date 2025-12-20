@@ -36,6 +36,8 @@
 }
 
 /* Left arm planting motion */
+/* Left arm planting motion - Commented out to prevent SVG path errors */
+/*
 @keyframes arm-plant-left {
   0%, 100% {
     d: path("M 100 85 Q 75 95 65 110");
@@ -44,8 +46,10 @@
     d: path("M 100 85 Q 80 120 75 145");
   }
 }
+*/
 
-/* Right arm planting motion */
+/* Right arm planting motion - Commented out to prevent SVG path errors */
+/*
 @keyframes arm-plant-right {
   0%, 100% {
     d: path("M 100 85 Q 125 95 135 110");
@@ -54,6 +58,7 @@
     d: path("M 100 85 Q 120 120 125 145");
   }
 }
+*/
 
 /* Seedling appear/disappear animation */
 @keyframes seedling-appear {
