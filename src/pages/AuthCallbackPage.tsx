@@ -193,7 +193,7 @@ export function AuthCallbackPage() {
             <p className="text-blue-600">&gt; {status}</p>
           </div>
           <p className="text-xs text-gray-400">
-            If you see this, the new code IS loaded. <br />
+            If you see this, the new code IS loaded on v1 branch. <br />
             Please check the console (F12) for [AuthCallback] logs.
           </p>
         </div>
