@@ -15,6 +15,7 @@ import { detectOAuthFlow, logOAuth404Error } from '../utils/oauthErrorHandler';
 export function AuthCallbackPage() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string>('Initializing...');
   const [isLoading, setIsLoading] = useState(true);
   const hasProcessed = useRef(false);
 
@@ -49,13 +50,29 @@ export function AuthCallbackPage() {
     return true;
   };
 
+  const timeoutPromise = (ms: number, message: string) => {
+    return new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(message)), ms);
+    });
+  };
+
   useEffect(() => {
-    if (hasProcessed.current) return;
+    console.log('[AuthCallback] Component mounted');
+    // In React 18 Strict Mode, effects run twice.
+    // We want to ensure we only process once per mount "session".
+    // However, if the first attempt failed or was interrupted, we might want to allow retry?
+    // For now, strict 'once' policy to avoid double code exchange.
+    if (hasProcessed.current) {
+      console.log('[AuthCallback] Already processed/processing, skipping.');
+      return;
+    }
     hasProcessed.current = true;
 
     const handleCallback = async () => {
+      console.log('[AuthCallback] Starting callback handling...');
       try {
         const oauthContext = detectOAuthFlow();
+        console.log('[AuthCallback] OAuth Context:', oauthContext);
 
         if (oauthContext.isOAuthFlow && window.location.pathname !== '/auth/callback') {
           logOAuth404Error(window.location.href, {
@@ -70,6 +87,7 @@ export function AuthCallbackPage() {
           throw new Error('OAuth callback from unauthorized origin.');
         }
 
+        setStatus('Parsing parameters...');
         // Parse Params
         const searchParams = new URLSearchParams(window.location.search);
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
@@ -85,35 +103,79 @@ export function AuthCallbackPage() {
         const accessToken = hashParams.get('access_token');
         const refreshToken = hashParams.get('refresh_token');
 
+        console.log('[AuthCallback] Params found:', {
+          hasCode: !!code,
+          hasAccessToken: !!accessToken,
+          hasRefreshToken: !!refreshToken
+        });
+
+        setStatus('Exchanging tokens...');
+
         // Exchange Code or Tokens if present
         if (code) {
-          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+          console.log('[AuthCallback] Exchanging code for session...');
+          // Add timeout to prevent hanging
+          const exchangePromise = supabase.auth.exchangeCodeForSession(code);
+          const { error: exchangeError } = await Promise.race([
+            exchangePromise,
+            timeoutPromise(10000, 'Token exchange timed out')
+          ]) as any;
+
           if (exchangeError) throw exchangeError;
+          console.log('[AuthCallback] Code exchange successful');
         } else if (accessToken && refreshToken) {
-          const { error: setSessionError } = await supabase.auth.setSession({
+          console.log('[AuthCallback] Setting session from hash params...');
+          // Add timeout
+          const setSessionPromise = supabase.auth.setSession({
             access_token: accessToken,
             refresh_token: refreshToken,
           });
+          const { error: setSessionError } = await Promise.race([
+            setSessionPromise,
+            timeoutPromise(10000, 'Setting session timed out')
+          ]) as any;
+
           if (setSessionError) throw setSessionError;
+          console.log('[AuthCallback] Session set successfully');
+        } else {
+          console.log('[AuthCallback] No tokens found in URL, checking existing session...');
         }
 
+        setStatus('Verifying session...');
         // Final Session Check (Fast)
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        const getSessionPromise = supabase.auth.getSession();
+        const { data: { session }, error: sessionError } = await Promise.race([
+          getSessionPromise,
+          timeoutPromise(5000, 'Session verification timed out')
+        ]) as any;
 
         if (sessionError) throw sessionError;
 
+        console.log('[AuthCallback] Session verification complete. User ID:', session?.user?.id);
+
         if (session?.user) {
           // SUCCESS: Redirect immediately.
+          setStatus('Redirecting...');
+          console.log('[AuthCallback] Redirecting...');
+
+          // Clear hash to prevent reprocessing if user refreshes (though replaceState does this)
           window.history.replaceState(null, '', window.location.pathname);
+
           const redirectDestination = getAndClearRedirectDestination() || '/dashboard';
-          navigate(redirectDestination, { replace: true });
+          console.log('[AuthCallback] Destination:', redirectDestination);
+
+          // Small delay to ensure state is flushed if needed (helps with race conditions in some browsers)
+          setTimeout(() => {
+            navigate(redirectDestination, { replace: true });
+          }, 100);
+
         } else {
           throw new Error('No session established. Please try logging in again.');
         }
 
-      } catch (err) {
+      } catch (err: any) {
         console.error('[AuthCallback] Error:', err);
-        const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
+        const errorMessage = err?.message || 'Authentication failed';
         setError(errorMessage);
         setIsLoading(false);
       }
@@ -128,7 +190,11 @@ export function AuthCallbackPage() {
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Completing sign in...</h2>
-          <p className="text-gray-600">Please wait...</p>
+          <p className="text-gray-600 mb-2">{status}</p>
+          <div className="text-xs text-gray-400 mt-4 bg-gray-50 p-2 rounded">
+            {/* Technical details hidden in normal view but visible if needed */}
+            <p>If stuck &gt; 10s, please refresh.</p>
+          </div>
         </div>
       </div>
     );
