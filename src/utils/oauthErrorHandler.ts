@@ -22,7 +22,7 @@ export interface OAuthFlowContext {
  * Detects if the current request is part of an OAuth flow
  */
 export function detectOAuthFlow(): OAuthFlowContext {
-  const url = window.location.href;
+
   const hash = window.location.hash;
   const search = window.location.search;
   const referrer = document.referrer;
@@ -34,7 +34,7 @@ export function detectOAuthFlow(): OAuthFlowContext {
   const hasOAuthError = search.includes('error') || hash.includes('error');
 
   // Check for OAuth referrers
-  const isFromGoogleOAuth = referrer.includes('accounts.google.com') || referrer.includes('oauth');
+  const isFromGoogleOAuth = referrer.includes('accounts.google.com') || (referrer.includes('google.com') && referrer.includes('oauth'));
   const isFromGitHubOAuth = referrer.includes('github.com') && referrer.includes('oauth');
 
   // Determine if this is an OAuth flow
@@ -227,7 +227,18 @@ export function isValidOAuthCallbackUrl(url: string): boolean {
                           urlObj.search.includes('code') || 
                           urlObj.search.includes('error');
     
-    return pathname === '/auth/callback' && hasOAuthParams;
+    const allowedOrigins = [
+      window.location.origin,
+      'https://gg.lochtech.africa',
+      'https://ganggreen-platform.vercel.app',
+      'http://localhost:5173',
+      'http://localhost:3000'
+    ];
+    
+    // Check if origin is allowed or if it matches the current window origin
+    const isValidOrigin = allowedOrigins.some(origin => urlObj.origin === origin) || urlObj.origin === window.location.origin;
+    
+    return pathname === '/auth/callback' && hasOAuthParams && isValidOrigin;
   } catch {
     return false;
   }

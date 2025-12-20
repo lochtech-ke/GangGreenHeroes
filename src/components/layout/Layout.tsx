@@ -2,6 +2,7 @@ import { ReactNode, useState } from 'react';
 import { Navigation, BottomNavBar } from '../navigation';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { Search, Bell } from 'lucide-react';
+import { UserInitializer } from '../auth/UserInitializer';
 
 interface LayoutProps {
   children: ReactNode;
@@ -69,6 +70,9 @@ export function Layout({ children }: LayoutProps) {
 
         {/* Bottom Navigation Bar - Mobile Only */}
         {user && <BottomNavBar />}
+
+        {/* Background User Initialization */}
+        <UserInitializer />
       </div>
     </div>
   );

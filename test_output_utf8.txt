@@ -1,0 +1,1852 @@
+﻿
+[1m[46m RUN [49m[22m [36mv4.0.8 [39m[90mD:/Projects/ggh/GangGreenHeroes[39m
+
+[90mstdout[2m | src/test/authFlowCompatibility.ui.test.tsx
+[22m[39mTest environment initialized
+
+node.exe : [90mstderr[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI 
+Tests[2m > [22m[2mAuthOptions Component[2m > [22m[2mshould render all authentication options
+At C:\Program Files\nodejs\npx.ps1:29 char:3
++   & $NODE_EXE $NPX_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([90mstderr[2m...ication options:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[22m[39mΓÜá∩╕Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in 
+v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see 
+https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+ΓÜá∩╕Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the 
+`v7_relativeSplatPath` future flag to opt-in early. For more information, see 
+https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstdout[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > [22m[2mWeb3Login Component[2m > [22m[2mshould handle MetaMask connection
+[22m[39mConnected wallet: 0x1234567890abcdef1234567890abcdef12345678
+
+[90mstderr[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > 
+[22m[2mWeb3Login Component[2m > [22m[2mshould handle connection rejection
+[22m[39mMetaMask connection error: { code: [33m4001[39m }
+
+[90mstdout[2m | src/test/authFlowCompatibility.test.tsx
+[22m[39mTest environment initialized
+
+[90mstderr[2m | src/test/authFlowCompatibility.test.tsx[2m > [22m[2mAuthentication Flow Compatibility[2m > 
+[22m[2mEmail/Password Authentication Compatibility[2m > [22m[2mshould successfully authenticate with email and password
+[22m[39mΓÜá∩╕Å React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in 
+v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see 
+https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+ΓÜá∩╕Å React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the 
+`v7_relativeSplatPath` future flag to opt-in early. For more information, see 
+https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+[90mstderr[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > 
+[22m[2mError Handling in UI[2m > [22m[2mshould display Web3 connection errors
+[22m[39mMetaMask connection error: Error: Connection failed
+    at D:/Projects/ggh/GangGreenHeroes/src/test/authFlowCompatibility.ui.test.tsx:212:46
+    at [90mfile:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:157:11
+    at [90mfile:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:753:26
+    at [90mfile:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1636:20
+    at new Promise (<anonymous>)
+    at runWithTimeout 
+[90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1602:10[90m)[39m
+    at runTest 
+[90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1309:12[90m)[39m
+    at runSuite 
+[90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1468:8[90m)[39m
+    at runSuite 
+[90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1468:8[90m)[39m
+    at runSuite 
+[90m(file:///D:/Projects/ggh/GangGreenHeroes/[39mnode_modules/[4m@vitest[24m/runner/dist/index.js:1468:8[90m)[39m
+
+[90mstdout[2m | src/test/authFlowCompatibility.ui.test.tsx[2m > [22m[2mAuthentication Flow Compatibility - UI Tests[2m > [22m[2mAccessibility and UX[2m > [22m[2mshould disable buttons during loading states
+[22m[39mConnected wallet: 0x123
+
+[90mstdout[2m | src/test/authFlowCompatibility.ui.test.tsx
+[22m[39mTest environment cleaned up
+
+ [32mΓ£ô[39m src/test/authFlowCompatibility.ui.test.tsx [2m([22m[2m15 tests[22m[2m)[22m[33m 1260[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should show back button when onBack is provided [33m 437[2mms[22m[39m
+[90mstdout[2m | src/test/authFlowCompatibility.test.tsx[2m > [22m[2mAuthentication Flow Compatibility[2m > [22m[2mWeb3 Authentication Compatibility[2m > [22m[2mshould successfully connect MetaMask wallet
+[22m[39mConnected wallet: 0x1234567890abcdef1234567890abcdef12345678
+
+[90mstderr[2m | src/test/authFlowCompatibility.test.tsx[2m > [22m[2mAuthentication Flow Compatibility[2m > [22m[2mWeb3 
+Authentication Compatibility[2m > [22m[2mshould handle MetaMask connection rejection
+[22m[39mMetaMask connection error: { code: [33m4001[39m }
+
+[90mstdout[2m | src/test/authFlowCompatibility.test.tsx[2m > [22m[2mAuthentication Flow Compatibility[2m > [22m[2mWeb3 Authentication Compatibility[2m > [22m[2mshould maintain Web3 auth routing after OAuth callback changes
+[22m[39mConnected wallet: 0x1234567890abcdef1234567890abcdef12345678
+
+[90mstderr[2m | src/test/authFlowCompatibility.test.tsx[2m > [22m[2mAuthentication Flow Compatibility[2m > [22m[2mOAuth 
+Authentication Compatibility[2m > [22m[2mshould handle OAuth callback processing
+[22m[39m[AuthCallback] Error: Error: OAuth callback from unauthorized origin.
+    at handleCallback (D:/Projects/ggh/GangGreenHeroes/src/pages/AuthCallbackPage.tsx:70:17)
+    at D:/Projects/ggh/GangGreenHeroes/src/pages/AuthCallbackPage.tsx:122:5
+    at commitHookEffectListMount 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:23189:26[90m)[39m
+    at commitPassiveMountOnFiber 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:24970:11[90m)[39m
+    at commitPassiveMountEffects_complete 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:24930:9[90m)[39m
+    at commitPassiveMountEffects_begin 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:24917:7[90m)[39m
+    at commitPassiveMountEffects 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:24905:3[90m)[39m
+    at flushPassiveEffectsImpl 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:27078:3[90m)[39m
+    at flushPassiveEffects 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:27023:14[90m)[39m
+    at commitRootImpl 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:26974:5[90m)[39m
+
+[90mstdout[2m | src/test/oauthCallbackRouting.test.ts
+[22m[39mTest environment initialized
+
+[90mstdout[2m | src/test/oauthCallbackRouting.test.ts
+[22m[39mTest environment cleaned up
+
+ [31mΓ¥»[39m src/test/oauthCallbackRouting.test.ts [2m([22m[2m9 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 99[2mms[22m[39m
+     [32mΓ£ô[39m OAuth callback routing consistency - **Feature: oauth-callback-production-fix, Property 1: OAuth callback routing consistency** **Validates: Requirements 1.1, 4.3**[32m 37[2mms[22m[39m
+[31m     [31m├ù[31m Invalid OAuth callback URL rejection - **Feature: oauth-callback-production-fix, Property 2: Invalid OAuth callback URL rejection** **Validates: Requirements 1.1, 4.3**[39m[32m 12[2mms[22m[39m
+     [32mΓ£ô[39m OAuth flow detection with referrers - **Feature: oauth-callback-production-fix, Property 3: OAuth flow detection with referrers** **Validates: Requirements 1.1, 4.3**[32m 12[2mms[22m[39m
+     [32mΓ£ô[39m OAuth parameter combination handling - **Feature: oauth-callback-production-fix, Property 4: OAuth parameter combination handling** **Validates: Requirements 1.1, 4.3**[32m 8[2mms[22m[39m
+     [32mΓ£ô[39m Production routing configuration - **Feature: oauth-callback-production-fix, Property 5: Production routing configuration** **Validates: Requirements 1.1, 4.3**[32m 3[2mms[22m[39m
+     [32mΓ£ô[39m should recognize valid OAuth callback URLs[32m 2[2mms[22m[39m
+[31m     [31m├ù[31m should reject invalid OAuth callback URLs[39m[32m 13[2mms[22m[39m
+[31m     [31m├ù[31m should detect OAuth flow context correctly[39m[32m 3[2mms[22m[39m
+     [32mΓ£ô[39m should not detect OAuth flow for non-OAuth requests[32m 1[2mms[22m[39m
+[90mstderr[2m | src/test/authFlowCompatibility.test.tsx[2m > [22m[2mAuthentication Flow Compatibility[2m > [22m[2mOAuth 
+Authentication Compatibility[2m > [22m[2mshould maintain OAuth routing after vercel.json changes
+[22m[39m[AuthCallback] Error: TypeError: __vite_ssr_import_3__.supabase.auth.setSession is not a function
+    at handleCallback (D:/Projects/ggh/GangGreenHeroes/src/pages/AuthCallbackPage.tsx:93:66)
+    at D:/Projects/ggh/GangGreenHeroes/src/pages/AuthCallbackPage.tsx:122:5
+    at commitHookEffectListMount 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:23189:26[90m)[39m
+    at commitPassiveMountOnFiber 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:24970:11[90m)[39m
+    at commitPassiveMountEffects_complete 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:24930:9[90m)[39m
+    at commitPassiveMountEffects_begin 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:24917:7[90m)[39m
+    at commitPassiveMountEffects 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:24905:3[90m)[39m
+    at flushPassiveEffectsImpl 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:27078:3[90m)[39m
+    at flushPassiveEffects 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:27023:14[90m)[39m
+    at commitRootImpl 
+[90m(D:\Projects\ggh\GangGreenHeroes\[39mnode_modules\[4mreact-dom[24m\cjs\react-dom.development.js:26974:5[90m)[39m
+
+[90mstdout[2m | src/test/authFlowCompatibility.test.tsx
+[22m[39mTest environment cleaned up
+
+ [31mΓ¥»[39m src/test/authFlowCompatibility.test.tsx [2m([22m[2m18 tests[22m[2m | [22m[31m9 failed[39m[2m)[22m[33m 4636[2mms[22m[39m
+[31m       [31m├ù[31m should successfully authenticate with email and password[39m[33m 696[2mms[22m[39m
+[31m       [31m├ù[31m should handle email authentication errors gracefully[39m[32m 193[2mms[22m[39m
+[31m       [31m├ù[31m should maintain email auth routing after OAuth callback changes[39m[32m 150[2mms[22m[39m
+       [32mΓ£ô[39m should successfully connect MetaMask wallet[32m 22[2mms[22m[39m
+       [32mΓ£ô[39m should handle MetaMask not installed[32m 15[2mms[22m[39m
+       [32mΓ£ô[39m should handle MetaMask connection rejection[32m 16[2mms[22m[39m
+       [32mΓ£ô[39m should maintain Web3 auth routing after OAuth callback changes[32m 21[2mms[22m[39m
+       [32mΓ£ô[39m should successfully initiate Google OAuth[32m 8[2mms[22m[39m
+[31m       [31m├ù[31m should handle OAuth callback processing[39m[33m 1026[2mms[22m[39m
+[31m       [31m├ù[31m should maintain OAuth routing after vercel.json changes[39m[33m 1013[2mms[22m[39m
+       [32mΓ£ô[39m should allow switching between authentication methods[32m 109[2mms[22m[39m
+[31m       [31m├ù[31m should maintain session state across auth method switches[39m[33m 1026[2mms[22m[39m
+[31m       [31m├ù[31m should handle authentication errors consistently across methods[39m[32m 128[2mms[22m[39m
+       [32mΓ£ô[39m should not interfere with non-auth routes[32m 1[2mms[22m[39m
+       [32mΓ£ô[39m should preserve OAuth callback route caching headers[32m 1[2mms[22m[39m
+       [32mΓ£ô[39m should maintain favicon serving after routing changes[32m 1[2mms[22m[39m
+[31m       [31m├ù[31m should maintain consistent error handling across auth methods[39m[32m 102[2mms[22m[39m
+[31m       [31m├ù[31m should handle network errors consistently[39m[32m 99[2mms[22m[39m
+
+[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m[1m[41m Failed Tests 12 [49m[22m[31mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > 
+[22mEmail/Password Authentication Compatibility[2m > [22mshould successfully authenticate with email and password
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the role "button" and name `/sign in/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition-colors 
+duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"submit"[39m
+[36m>[39m
+  [0mSign In[0m
+[36m</button>[39m
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 
+text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"button"[39m
+[36m>[39m
+  [36m<svg[39m
+    [33mclass[39m=[32m"w-5 h-5"[39m
+    [33mviewBox[39m=[32m"0 0 24 24"[39m
+  [36m>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 
+3.28-4.74 3.28-8.09z"[39m
+      [33mfill[39m=[32m"#4285F4"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+      [33mfill[39m=[32m"#34A853"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 
+4.93l2.85-2.22.81-.62z"[39m
+      [33mfill[39m=[32m"#FBBC05"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 
+2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+      [33mfill[39m=[32m"#EA4335"[39m
+    [36m/>[39m
+  [36m</svg>[39m
+  [0mSign in with Google[0m
+[36m</button>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-full max-w-md"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"w-full max-w-md mx-auto"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"bg-white rounded-lg shadow-lg p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-green-700 mb-6 text-center"[39m
+            [36m>[39m
+              [0mWelcome Back[0m
+            [36m</h2>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"space-y-4"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"email"[39m
+                [36m>[39m
+                  [0mEmail Address[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"you@example.com"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"password"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mplaceholder[39m=[32m"ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"text-sm text-green-600 hover:text-green-700"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md 
+transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mSign In[0m
+              [36m</button>[39m
+            [36m</form>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mt-6"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"w-full border-t border-gray-300"[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative flex justify-center text-sm"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"px-2 bg-white text-gray-500"[39m
+                  [36m>[39m
+                    [0mOr continue with[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 
+hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-5 h-5"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 
+3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                    [33mfill[39m=[32m"#4285F4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                    [33mfill[39m=[32m"#34A853"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 
+12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                    [33mfill[39m=[32m"#FBBC05"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 
+7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                    [33mfill[39m=[32m"#EA4335"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mSign in with Google[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mt-4 text-center"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"text-green-600 hover:text-green-700 font-medium"[39m
+          [36m>[39m
+            [0mΓåÉ Back to options[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mΓ¥»[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2mΓ¥»[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2mΓ¥»[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m150:35[22m[39m
+    [90m148| [39m      [35mconst[39m emailInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/email/i[39m)[33m;[39m
+    [90m149| [39m      [35mconst[39m passwordInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m)[33m;[39m
+    [90m150| [39m      const submitButton = screen.getByRole('button', { name: /sign inΓÇª
+    [90m   | [39m                                  [31m^[39m
+    [90m151| [39m
+    [90m152| [39m      fireEvent.change(emailInput, { target: { value: 'test@example.coΓÇª
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > 
+[22mEmail/Password Authentication Compatibility[2m > [22mshould handle email authentication errors gracefully
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the role "button" and name `/sign in/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition-colors 
+duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"submit"[39m
+[36m>[39m
+  [0mSign In[0m
+[36m</button>[39m
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 
+text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"button"[39m
+[36m>[39m
+  [36m<svg[39m
+    [33mclass[39m=[32m"w-5 h-5"[39m
+    [33mviewBox[39m=[32m"0 0 24 24"[39m
+  [36m>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 
+3.28-4.74 3.28-8.09z"[39m
+      [33mfill[39m=[32m"#4285F4"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+      [33mfill[39m=[32m"#34A853"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 
+4.93l2.85-2.22.81-.62z"[39m
+      [33mfill[39m=[32m"#FBBC05"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 
+2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+      [33mfill[39m=[32m"#EA4335"[39m
+    [36m/>[39m
+  [36m</svg>[39m
+  [0mSign in with Google[0m
+[36m</button>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-full max-w-md"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"w-full max-w-md mx-auto"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"bg-white rounded-lg shadow-lg p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-green-700 mb-6 text-center"[39m
+            [36m>[39m
+              [0mWelcome Back[0m
+            [36m</h2>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"space-y-4"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"email"[39m
+                [36m>[39m
+                  [0mEmail Address[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"you@example.com"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"password"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mplaceholder[39m=[32m"ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"text-sm text-green-600 hover:text-green-700"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md 
+transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mSign In[0m
+              [36m</button>[39m
+            [36m</form>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mt-6"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"w-full border-t border-gray-300"[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative flex justify-center text-sm"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"px-2 bg-white text-gray-500"[39m
+                  [36m>[39m
+                    [0mOr continue with[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 
+hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-5 h-5"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 
+3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                    [33mfill[39m=[32m"#4285F4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                    [33mfill[39m=[32m"#34A853"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 
+12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                    [33mfill[39m=[32m"#FBBC05"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 
+7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                    [33mfill[39m=[32m"#EA4335"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mSign in with Google[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mt-4 text-center"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"text-green-600 hover:text-green-700 font-medium"[39m
+          [36m>[39m
+            [0mΓåÉ Back to options[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mΓ¥»[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2mΓ¥»[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2mΓ¥»[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m189:35[22m[39m
+    [90m187| [39m      [35mconst[39m emailInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/email/i[39m)[33m;[39m
+    [90m188| [39m      [35mconst[39m passwordInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m)[33m;[39m
+    [90m189| [39m      const submitButton = screen.getByRole('button', { name: /sign inΓÇª
+    [90m   | [39m                                  [31m^[39m
+    [90m190| [39m
+    [90m191| [39m      fireEvent.change(emailInput, { target: { value: 'test@example.coΓÇª
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > 
+[22mEmail/Password Authentication Compatibility[2m > [22mshould maintain email auth routing after OAuth callback changes
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the role "button" and name `/sign in/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition-colors 
+duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"submit"[39m
+[36m>[39m
+  [0mSign In[0m
+[36m</button>[39m
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 
+text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"button"[39m
+[36m>[39m
+  [36m<svg[39m
+    [33mclass[39m=[32m"w-5 h-5"[39m
+    [33mviewBox[39m=[32m"0 0 24 24"[39m
+  [36m>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 
+3.28-4.74 3.28-8.09z"[39m
+      [33mfill[39m=[32m"#4285F4"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+      [33mfill[39m=[32m"#34A853"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 
+4.93l2.85-2.22.81-.62z"[39m
+      [33mfill[39m=[32m"#FBBC05"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 
+2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+      [33mfill[39m=[32m"#EA4335"[39m
+    [36m/>[39m
+  [36m</svg>[39m
+  [0mSign in with Google[0m
+[36m</button>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-full max-w-md"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"w-full max-w-md mx-auto"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"bg-white rounded-lg shadow-lg p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-green-700 mb-6 text-center"[39m
+            [36m>[39m
+              [0mWelcome Back[0m
+            [36m</h2>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"space-y-4"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"email"[39m
+                [36m>[39m
+                  [0mEmail Address[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"you@example.com"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"password"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mplaceholder[39m=[32m"ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"text-sm text-green-600 hover:text-green-700"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md 
+transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mSign In[0m
+              [36m</button>[39m
+            [36m</form>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mt-6"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"w-full border-t border-gray-300"[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative flex justify-center text-sm"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"px-2 bg-white text-gray-500"[39m
+                  [36m>[39m
+                    [0mOr continue with[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 
+hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-5 h-5"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 
+3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                    [33mfill[39m=[32m"#4285F4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                    [33mfill[39m=[32m"#34A853"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 
+12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                    [33mfill[39m=[32m"#FBBC05"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 
+7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                    [33mfill[39m=[32m"#EA4335"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mSign in with Google[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mt-4 text-center"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"text-green-600 hover:text-green-700 font-medium"[39m
+          [36m>[39m
+            [0mΓåÉ Back to options[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mΓ¥»[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2mΓ¥»[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2mΓ¥»[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m233:35[22m[39m
+    [90m231| [39m      [35mconst[39m emailInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/email/i[39m)[33m;[39m
+    [90m232| [39m      [35mconst[39m passwordInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m)[33m;[39m
+    [90m233| [39m      const submitButton = screen.getByRole('button', { name: /sign inΓÇª
+    [90m   | [39m                                  [31m^[39m
+    [90m234| [39m
+    [90m235| [39m      fireEvent.change(emailInput, { target: { value: 'test@example.coΓÇª
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > [22mOAuth 
+Authentication Compatibility[2m > [22mshould handle OAuth callback processing
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called at least once
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center"[31m
+        [36m>[31m
+          [36m<h2[31m
+            [33mclass[31m=[32m"text-xl font-semibold text-gray-900 mb-2"[31m
+          [36m>[31m
+            [0mSign In Failed[0m
+          [36m</h2>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-gray-600 mb-4"[31m
+          [36m>[31m
+            [0mOAuth callback from unauthorized origin.[0m
+          [36m</p>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors 
+font-medium"[31m
+          [36m>[31m
+            [0mReturn to Login[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m422:42[22m[39m
+    [90m420| [39m      [90m// Verify OAuth callback processing[39m
+    [90m421| [39m      [35mawait[39m [34mwaitFor[39m(() [33m=>[39m {
+    [90m422| [39m        
+[34mexpect[39m(supabase[33m.[39mauth[33m.[39mgetSession)[33m.[39m[34mtoHaveBeenCalled[39m()[33m;[39m
+    [90m   | [39m                                         [31m^[39m
+    [90m423| [39m      })[33m;[39m
+    [90m424| [39m
+[90m [2mΓ¥»[22m runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:[2m47:12[22m[39m
+[90m [2mΓ¥»[22m checkCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m124:77[22m[39m
+[90m [2mΓ¥»[22m Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m118:16[22m[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[4/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > [22mOAuth 
+Authentication Compatibility[2m > [22mshould maintain OAuth routing after vercel.json changes
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: /completing sign in/i. This could be because 
+the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher 
+more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-4"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center"[31m
+      [36m>[31m
+        [36m<h2[31m
+          [33mclass[31m=[32m"text-xl font-semibold text-gray-900 mb-2"[31m
+        [36m>[31m
+          [0mSign In Failed[0m
+        [36m</h2>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-gray-600 mb-4"[31m
+        [36m>[31m
+          [0m__vite_ssr_import_3__.supabase.auth.setSession is not a function[0m
+        [36m</p>[31m
+        [36m<button[31m
+          [33mclass[31m=[32m"w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors 
+font-medium"[31m
+        [36m>[31m
+          [0mReturn to Login[0m
+        [36m</button>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m
+
+Ignored nodes: comments, script, style
+[36m<html>[31m
+  [36m<head />[31m
+  [36m<body>[31m
+    [36m<div>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-4"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center"[31m
+        [36m>[31m
+          [36m<h2[31m
+            [33mclass[31m=[32m"text-xl font-semibold text-gray-900 mb-2"[31m
+          [36m>[31m
+            [0mSign In Failed[0m
+          [36m</h2>[31m
+          [36m<p[31m
+            [33mclass[31m=[32m"text-gray-600 mb-4"[31m
+          [36m>[31m
+            [0m__vite_ssr_import_3__.supabase.auth.setSession is not a function[0m
+          [36m</p>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors 
+font-medium"[31m
+          [36m>[31m
+            [0mReturn to Login[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</body>[31m
+[36m</html>[31m[39m
+[90m [2mΓ¥»[22m Proxy.waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:[2m163:27[22m[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m470:13[22m[39m
+    [90m468| [39m
+    [90m469| [39m      [90m// Verify the callback page loads and processes OAuth[39m
+    [90m470| [39m      [35mawait[39m [34mwaitFor[39m(() [33m=>[39m {
+    [90m   | [39m            [31m^[39m
+    [90m471| [39m        expect(screen.getByText(/completing sign in/i)).toBeInTheDocumΓÇª
+    [90m472| [39m      })[33m;[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[5/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > 
+[22mCross-Authentication Method Compatibility[2m > [22mshould maintain session state across auth method switches
+[31m[1mAssertionError[22m[39m: expected "vi.fn()" to be called at least once
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"w-full max-w-md"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-full max-w-md mx-auto"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white rounded-lg shadow-lg p-8"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mclass[39m=[32m"text-2xl font-bold text-green-700 mb-2 text-center"[39m
+              [36m>[39m
+                [0mChoose Sign In Method[0m
+              [36m</h2>[39m
+              [36m<p[39m
+                [33mclass[39m=[32m"text-gray-600 text-center mb-6"[39m
+              [36m>[39m
+                [0mSelect how you'd like to authenticate[0m
+              [36m</p>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"space-y-4"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-gray-300 
+hover:border-green-500 hover:bg-green-50 rounded-lg transition-all group"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33mclass[39m=[32m"w-6 h-6"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 
+3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                      [33mfill[39m=[32m"#4285F4"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                      [33mfill[39m=[32m"#34A853"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 
+12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                      [33mfill[39m=[32m"#FBBC05"[39m
+                    [36m/>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 
+7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                      [33mfill[39m=[32m"#EA4335"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-left"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"font-semibold text-gray-900"[39m
+                    [36m>[39m
+                      [0mContinue with Google[0m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-sm text-gray-600"[39m
+                    [36m>[39m
+                      [0mQuick and secure[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</button>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-gray-300 
+hover:border-green-500 hover:bg-green-50 rounded-lg transition-all group"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33mclass[39m=[32m"w-6 h-6 text-gray-600 group-hover:text-green-600"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 
+2 0 002 2z"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-left"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"font-semibold text-gray-900"[39m
+                    [36m>[39m
+                      [0mEmail & Password[0m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-sm text-gray-600"[39m
+                    [36m>[39m
+                      [0mTraditional authentication[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</button>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"w-full flex items-center justify-center gap-3 px-6 py-4 border-2 border-gray-300 
+hover:border-green-500 hover:bg-green-50 rounded-lg transition-all group"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [36m<svg[39m
+                    [33mclass[39m=[32m"w-6 h-6 text-gray-600 group-hover:text-green-600"[39m
+                    [33mfill[39m=[32m"none"[39m
+                    [33mstroke[39m=[32m"currentColor"[39m
+                    [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [36m>[39m
+                    [36m<path[39m
+                      [33md[39m=[32m"M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 
+00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"[39m
+                      [33mstroke-linecap[39m=[32m"round"[39m
+                      [33mstroke-linejoin[39m=[32m"round"[39m
+                      [33mstroke-width[39m=[32m"2"[39m
+                    [36m/>[39m
+                  [36m</svg>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-left"[39m
+                  [36m>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"font-semibold text-gray-900"[39m
+                    [36m>[39m
+                      [0mWeb3 Wallet[0m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-sm text-gray-600"[39m
+                    [36m>[39m
+                      [0mMetaMask, WalletConnect[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"mt-6 text-center"[39m
+              [36m>[39m
+                [36m<p[39m
+                  [33mclass[39m=[32m"text-sm text-gray-500"[39m
+                [36m>[39m
+                  [0mBy signing in, you agree to our Terms of Service and Privacy Policy[0m
+                [36m</p>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"mt-4 text-center"[39m
+          [36m>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-gray-600"[39m
+            [36m>[39m
+              [0mDon't have an account?[0m
+              [0m [0m
+              [36m<button[39m
+                [33mclass[39m=[32m"text-green-600 hover:text-green-700 font-medium"[39m
+              [36m>[39m
+                [0mSign up[0m
+              [36m</button>[39m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"text-gray-600 mt-2"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"text-green-600 hover:text-green-700 font-medium"[39m
+              [36m>[39m
+                [0mΓåÉ Back to Home[0m
+              [36m</button>[39m
+            [36m</p>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m546:42[22m[39m
+    [90m544| [39m      [90m// Verify session check is performed[39m
+    [90m545| [39m      [35mawait[39m [34mwaitFor[39m(() [33m=>[39m {
+    [90m546| [39m        
+[34mexpect[39m(supabase[33m.[39mauth[33m.[39mgetSession)[33m.[39m[34mtoHaveBeenCalled[39m()[33m;[39m
+    [90m   | [39m                                         [31m^[39m
+    [90m547| [39m      })[33m;[39m
+    [90m548| [39m    })[33m;[39m
+[90m [2mΓ¥»[22m runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:[2m47:12[22m[39m
+[90m [2mΓ¥»[22m checkCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m124:77[22m[39m
+[90m [2mΓ¥»[22m Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:[2m118:16[22m[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[6/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > 
+[22mCross-Authentication Method Compatibility[2m > [22mshould handle authentication errors consistently across methods
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the role "button" and name `/sign in/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition-colors 
+duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"submit"[39m
+[36m>[39m
+  [0mSign In[0m
+[36m</button>[39m
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 
+text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"button"[39m
+[36m>[39m
+  [36m<svg[39m
+    [33mclass[39m=[32m"w-5 h-5"[39m
+    [33mviewBox[39m=[32m"0 0 24 24"[39m
+  [36m>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 
+3.28-4.74 3.28-8.09z"[39m
+      [33mfill[39m=[32m"#4285F4"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+      [33mfill[39m=[32m"#34A853"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 
+4.93l2.85-2.22.81-.62z"[39m
+      [33mfill[39m=[32m"#FBBC05"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 
+2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+      [33mfill[39m=[32m"#EA4335"[39m
+    [36m/>[39m
+  [36m</svg>[39m
+  [0mSign in with Google[0m
+[36m</button>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-full max-w-md"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"w-full max-w-md mx-auto"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"bg-white rounded-lg shadow-lg p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-green-700 mb-6 text-center"[39m
+            [36m>[39m
+              [0mWelcome Back[0m
+            [36m</h2>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"space-y-4"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"email"[39m
+                [36m>[39m
+                  [0mEmail Address[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"you@example.com"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"password"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mplaceholder[39m=[32m"ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"text-sm text-green-600 hover:text-green-700"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md 
+transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mSign In[0m
+              [36m</button>[39m
+            [36m</form>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mt-6"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"w-full border-t border-gray-300"[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative flex justify-center text-sm"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"px-2 bg-white text-gray-500"[39m
+                  [36m>[39m
+                    [0mOr continue with[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 
+hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-5 h-5"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 
+3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                    [33mfill[39m=[32m"#4285F4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                    [33mfill[39m=[32m"#34A853"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 
+12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                    [33mfill[39m=[32m"#FBBC05"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 
+7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                    [33mfill[39m=[32m"#EA4335"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mSign in with Google[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mt-4 text-center"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"text-green-600 hover:text-green-700 font-medium"[39m
+          [36m>[39m
+            [0mΓåÉ Back to options[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mΓ¥»[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2mΓ¥»[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2mΓ¥»[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m573:35[22m[39m
+    [90m571| [39m      [35mconst[39m emailInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/email/i[39m)[33m;[39m
+    [90m572| [39m      [35mconst[39m passwordInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m)[33m;[39m
+    [90m573| [39m      const submitButton = screen.getByRole('button', { name: /sign inΓÇª
+    [90m   | [39m                                  [31m^[39m
+    [90m574| [39m
+    [90m575| [39m      fireEvent.change(emailInput, { target: { value: 'test@example.coΓÇª
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[7/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > [22mError 
+Handling Compatibility[2m > [22mshould maintain consistent error handling across auth methods
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the role "button" and name `/sign in/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition-colors 
+duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"submit"[39m
+[36m>[39m
+  [0mSign In[0m
+[36m</button>[39m
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 
+text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"button"[39m
+[36m>[39m
+  [36m<svg[39m
+    [33mclass[39m=[32m"w-5 h-5"[39m
+    [33mviewBox[39m=[32m"0 0 24 24"[39m
+  [36m>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 
+3.28-4.74 3.28-8.09z"[39m
+      [33mfill[39m=[32m"#4285F4"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+      [33mfill[39m=[32m"#34A853"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 
+4.93l2.85-2.22.81-.62z"[39m
+      [33mfill[39m=[32m"#FBBC05"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 
+2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+      [33mfill[39m=[32m"#EA4335"[39m
+    [36m/>[39m
+  [36m</svg>[39m
+  [0mSign in with Google[0m
+[36m</button>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-full max-w-md"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"w-full max-w-md mx-auto"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"bg-white rounded-lg shadow-lg p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-green-700 mb-6 text-center"[39m
+            [36m>[39m
+              [0mWelcome Back[0m
+            [36m</h2>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"space-y-4"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"email"[39m
+                [36m>[39m
+                  [0mEmail Address[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"you@example.com"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"password"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mplaceholder[39m=[32m"ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"text-sm text-green-600 hover:text-green-700"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md 
+transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mSign In[0m
+              [36m</button>[39m
+            [36m</form>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mt-6"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"w-full border-t border-gray-300"[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative flex justify-center text-sm"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"px-2 bg-white text-gray-500"[39m
+                  [36m>[39m
+                    [0mOr continue with[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 
+hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-5 h-5"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 
+3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                    [33mfill[39m=[32m"#4285F4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                    [33mfill[39m=[32m"#34A853"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 
+12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                    [33mfill[39m=[32m"#FBBC05"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 
+7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                    [33mfill[39m=[32m"#EA4335"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mSign in with Google[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mt-4 text-center"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"text-green-600 hover:text-green-700 font-medium"[39m
+          [36m>[39m
+            [0mΓåÉ Back to options[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mΓ¥»[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2mΓ¥»[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2mΓ¥»[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m722:39[22m[39m
+    [90m720| [39m          [35mconst[39m emailInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/email/i[39m)[33m;[39m
+    [90m721| [39m          [35mconst[39m passwordInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m)[33m;[39m
+    [90m722| [39m          const submitButton = screen.getByRole('button', { name: /sigΓÇª
+    [90m   | [39m                                      [31m^[39m
+    [90m723| [39m
+    [90m724| [39m          fireEvent.change(emailInput, { target: { value: 'test@examplΓÇª
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[8/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/authFlowCompatibility.test.tsx[2m > [22mAuthentication Flow Compatibility[2m > [22mError 
+Handling Compatibility[2m > [22mshould handle network errors consistently
+[31m[1mTestingLibraryElementError[22m[39m: Found multiple elements with the role "button" and name `/sign in/i`
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition-colors 
+duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"submit"[39m
+[36m>[39m
+  [0mSign In[0m
+[36m</button>[39m
+
+Ignored nodes: comments, script, style
+[36m<button[39m
+  [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 
+text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+  [33mtype[39m=[32m"button"[39m
+[36m>[39m
+  [36m<svg[39m
+    [33mclass[39m=[32m"w-5 h-5"[39m
+    [33mviewBox[39m=[32m"0 0 24 24"[39m
+  [36m>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 
+3.28-4.74 3.28-8.09z"[39m
+      [33mfill[39m=[32m"#4285F4"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+      [33mfill[39m=[32m"#34A853"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 
+4.93l2.85-2.22.81-.62z"[39m
+      [33mfill[39m=[32m"#FBBC05"[39m
+    [36m/>[39m
+    [36m<path[39m
+      [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 
+2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+      [33mfill[39m=[32m"#EA4335"[39m
+    [36m/>[39m
+  [36m</svg>[39m
+  [0mSign in with Google[0m
+[36m</button>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"w-full max-w-md"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"w-full max-w-md mx-auto"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"bg-white rounded-lg shadow-lg p-8"[39m
+          [36m>[39m
+            [36m<h2[39m
+              [33mclass[39m=[32m"text-2xl font-bold text-green-700 mb-6 text-center"[39m
+            [36m>[39m
+              [0mWelcome Back[0m
+            [36m</h2>[39m
+            [36m<form[39m
+              [33mclass[39m=[32m"space-y-4"[39m
+            [36m>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"email"[39m
+                [36m>[39m
+                  [0mEmail Address[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"email"[39m
+                  [33mplaceholder[39m=[32m"you@example.com"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"email"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"block text-sm font-medium text-gray-700 mb-1"[39m
+                  [33mfor[39m=[32m"password"[39m
+                [36m>[39m
+                  [0mPassword[0m
+                [36m</label>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 
+focus:border-transparent"[39m
+                  [33mid[39m=[32m"password"[39m
+                  [33mplaceholder[39m=[32m"ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó"[39m
+                  [33mrequired[39m=[32m""[39m
+                  [33mtype[39m=[32m"password"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"text-sm text-green-600 hover:text-green-700"[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mForgot password?[0m
+                [36m</button>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md 
+transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"submit"[39m
+              [36m>[39m
+                [0mSign In[0m
+              [36m</button>[39m
+            [36m</form>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mt-6"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"absolute inset-0 flex items-center"[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"w-full border-t border-gray-300"[39m
+                  [36m/>[39m
+                [36m</div>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"relative flex justify-center text-sm"[39m
+                [36m>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"px-2 bg-white text-gray-500"[39m
+                  [36m>[39m
+                    [0mOr continue with[0m
+                  [36m</span>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"mt-4 w-full flex items-center justify-center gap-3 bg-white border border-gray-300 
+hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-md transition-colors duration-200 disabled:bg-gray-100 
+disabled:cursor-not-allowed"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-5 h-5"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 
+3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"[39m
+                    [33mfill[39m=[32m"#4285F4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 
+0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"[39m
+                    [33mfill[39m=[32m"#34A853"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 
+12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"[39m
+                    [33mfill[39m=[32m"#FBBC05"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 
+7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"[39m
+                    [33mfill[39m=[32m"#EA4335"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mSign in with Google[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"mt-4 text-center"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"text-green-600 hover:text-green-700 font-medium"[39m
+          [36m>[39m
+            [0mΓåÉ Back to options[0m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2mΓ¥»[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2mΓ¥»[22m getElementError node_modules/@testing-library/dom/dist/query-helpers.js:[2m20:35[22m[39m
+[90m [2mΓ¥»[22m getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:[2m23:10[22m[39m
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m55:13[22m[39m
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (3)[39m
+[2m      Tests [22m [1m[31m12 failed[39m[22m[2m | [22m[1m[32m30 passed[39m[22m[90m (42)[39m
+[2m   Start at [22m 09:04:08
+[2m   Duration [22m 8.27s[2m (transform 833ms, setup 2.34s, collect 2.64s, tests 5.99s, environment 5.54s, prepare 145ms)[22m
+
+[90m [2mΓ¥»[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2mΓ¥»[22m src/test/authFlowCompatibility.test.tsx:[2m761:35[22m[39m
+    [90m759| [39m      [35mconst[39m emailInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/email/i[39m)[33m;[39m
+    [90m760| [39m      [35mconst[39m passwordInput [33m=[39m 
+screen[33m.[39m[34mgetByLabelText[39m([36m/password/i[39m)[33m;[39m
+    [90m761| [39m      const submitButton = screen.getByRole('button', { name: /sign inΓÇª
+    [90m   | [39m                                  [31m^[39m
+    [90m762| [39m
+    [90m763| [39m      fireEvent.change(emailInput, { target: { value: 'test@example.coΓÇª
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[9/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/oauthCallbackRouting.test.ts[2m > [22mOAuth Callback Routing Property Tests[2m > 
+[22mInvalid OAuth callback URL rejection - **Feature: oauth-callback-production-fix, Property 2: Invalid OAuth callback URL 
+rejection** **Validates: Requirements 1.1, 4.3**
+[31m[1mError[22m: Property failed after 5 tests
+{ seed: -280911453, path: "4:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0", endOnFailure: true }
+Counterexample: ["https://malicious-site.com/auth/callback#access_token=eyJ"]
+Shrunk 23 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run[39m
+[90m [2mΓ¥»[22m buildError node_modules/fast-check/lib/check/runner/utils/RunDetailsFormatter.js:[2m156:19[22m[39m
+[90m [2mΓ¥»[22m asyncThrowIfFailed node_modules/fast-check/lib/check/runner/utils/RunDetailsFormatter.js:[2m170:11[22m[39m
+
+[31m[1mCaused by: Error[22m: Property failed by returning false[39m
+[90m [2mΓ¥»[22m AsyncProperty.run node_modules/fast-check/lib/check/property/AsyncProperty.generic.js:[2m46:28[22m[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[10/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/oauthCallbackRouting.test.ts[2m > [22mOAuth Callback Routing Property Tests[2m > 
+[22mshould reject invalid OAuth callback URLs
+[31m[1mAssertionError[22m: expected true to be false // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- false[39m
+[31m+ true[39m
+
+[36m [2mΓ¥»[22m src/test/oauthCallbackRouting.test.ts:[2m481:44[22m[39m
+    [90m479| [39m
+    [90m480| [39m    invalidUrls[33m.[39m[34mforEach[39m(url [33m=>[39m {
+    [90m481| [39m      
+[34mexpect[39m([34misValidOAuthCallbackUrl[39m(url))[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+    [90m   | [39m                                           [31m^[39m
+    [90m482| [39m    })[33m;[39m
+    [90m483| [39m  })[33m;[39m
+[90m [2mΓ¥»[22m src/test/oauthCallbackRouting.test.ts:[2m480:17[22m[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[11/12]ΓÄ»[22m[39m
+
+[41m[1m FAIL [22m[49m src/test/oauthCallbackRouting.test.ts[2m > [22mOAuth Callback Routing Property Tests[2m > 
+[22mshould detect OAuth flow context correctly
+[31m[1mAssertionError[22m: expected 'google' to be 'github' // Object.is equality[39m
+
+Expected: [32m"g[7mithub[27m"[39m
+Received: [31m"g[7moogle[27m"[39m
+
+[36m [2mΓ¥»[22m src/test/oauthCallbackRouting.test.ts:[2m505:31[22m[39m
+    [90m503| [39m    [34mexpect[39m(context2[33m.[39misOAuthFlow)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m504| [39m    [34mexpect[39m(context2[33m.[39mhasAuthCode)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m505| [39m    [34mexpect[39m(context2[33m.[39mflowType)[33m.[39m[34mtoBe[39m([32m'github'[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m506| [39m
+    [90m507| [39m    [90m// Test with error[39m
+
+[31m[2mΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[12/12]ΓÄ»[22m[39m
+

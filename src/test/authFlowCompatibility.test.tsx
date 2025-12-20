@@ -29,6 +29,8 @@ vi.mock('../services/supabase', () => ({
       getUser: vi.fn(),
       getSession: vi.fn(),
       onAuthStateChange: vi.fn(() => ({ data: { subscription: {} } })),
+      setSession: vi.fn(() => ({ data: { session: null }, error: null })),
+      exchangeCodeForSession: vi.fn(() => ({ data: { session: null }, error: null })),
     },
     from: vi.fn(),
   },
@@ -90,7 +92,7 @@ vi.mock('react-router-dom', async () => {
 describe('Authentication Flow Compatibility', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Reset window.ethereum
     Object.defineProperty(window, 'ethereum', {
       value: mockEthereum,
@@ -147,7 +149,7 @@ describe('Authentication Flow Compatibility', () => {
       // Fill in credentials
       const emailInput = screen.getByLabelText(/email/i);
       const passwordInput = screen.getByLabelText(/password/i);
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
+      const submitButton = screen.getByRole('button', { name: /^Sign In$/i });
 
       fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
       fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -186,7 +188,7 @@ describe('Authentication Flow Compatibility', () => {
 
       const emailInput = screen.getByLabelText(/email/i);
       const passwordInput = screen.getByLabelText(/password/i);
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
+      const submitButton = screen.getByRole('button', { name: /^Sign In$/i });
 
       fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
       fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
@@ -230,7 +232,7 @@ describe('Authentication Flow Compatibility', () => {
 
       const emailInput = screen.getByLabelText(/email/i);
       const passwordInput = screen.getByLabelText(/password/i);
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
+      const submitButton = screen.getByRole('button', { name: /^Sign In$/i });
 
       fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
       fireEvent.change(passwordInput, { target: { value: 'password123' } });
@@ -249,7 +251,7 @@ describe('Authentication Flow Compatibility', () => {
       mockEthereum.request.mockResolvedValue(['0x1234567890abcdef1234567890abcdef12345678']);
 
       const mockOnSuccess = vi.fn();
-      
+
       render(
         <BrowserRouter>
           <Web3Login onSuccess={mockOnSuccess} />
@@ -358,8 +360,8 @@ describe('Authentication Flow Compatibility', () => {
       render(
         <BrowserRouter>
           <AuthOptions
-            onEmailAuth={() => {}}
-            onWeb3Auth={() => {}}
+            onEmailAuth={() => { }}
+            onWeb3Auth={() => { }}
             onGoogleAuth={mockOnGoogleAuth}
           />
         </BrowserRouter>
@@ -406,7 +408,7 @@ describe('Authentication Flow Compatibility', () => {
           hash: '#access_token=test_token&refresh_token=refresh_token',
           search: '',
           pathname: '/auth/callback',
-          origin: 'https://example.com',
+          origin: 'http://localhost:3000',
         },
         writable: true,
       });
@@ -422,16 +424,13 @@ describe('Authentication Flow Compatibility', () => {
         expect(supabase.auth.getSession).toHaveBeenCalled();
       });
 
-      // Verify profile creation was attempted
-      await waitFor(() => {
-        expect(authService.ensureUserProfile).toHaveBeenCalled();
-      });
+      // Profile creation is handled by UserInitializer in Layout, not AuthCallbackPage directly
     });
 
     it('should maintain OAuth routing after vercel.json changes', async () => {
       // This test verifies that the OAuth callback route is properly handled by vercel.json
       // The routing configuration should serve the React app for /auth/callback
-      
+
       // Mock successful OAuth callback processing
       vi.mocked(supabase.auth.getSession).mockResolvedValue({
         data: {
@@ -570,7 +569,7 @@ describe('Authentication Flow Compatibility', () => {
 
       const emailInput = screen.getByLabelText(/email/i);
       const passwordInput = screen.getByLabelText(/password/i);
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
+      const submitButton = screen.getByRole('button', { name: /^Sign In$/i });
 
       fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
       fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
@@ -607,7 +606,7 @@ describe('Authentication Flow Compatibility', () => {
     it('should not interfere with non-auth routes', async () => {
       // This test ensures that the vercel.json routing changes only affect the intended routes
       // and don't break other application routes
-      
+
       // Mock various route scenarios that should not be affected
       const testRoutes = [
         '/dashboard',
@@ -637,7 +636,7 @@ describe('Authentication Flow Compatibility', () => {
     it('should preserve OAuth callback route caching headers', async () => {
       // This test verifies that the OAuth callback route has proper cache headers
       // as defined in vercel.json to prevent caching issues
-      
+
       Object.defineProperty(window, 'location', {
         value: {
           pathname: '/auth/callback',
@@ -650,7 +649,7 @@ describe('Authentication Flow Compatibility', () => {
       // - Cache-Control: no-cache, no-store, must-revalidate
       // - Pragma: no-cache
       // - Expires: 0
-      
+
       // This ensures OAuth callbacks are never cached and always processed fresh
       expect(window.location.pathname).toBe('/auth/callback');
     });
@@ -658,7 +657,7 @@ describe('Authentication Flow Compatibility', () => {
     it('should maintain favicon serving after routing changes', async () => {
       // This test verifies that favicon routes are properly excluded from React app serving
       // and have appropriate cache headers
-      
+
       const faviconRoutes = [
         '/favicon.ico',
         '/favicon-16x16.png',
@@ -669,7 +668,7 @@ describe('Authentication Flow Compatibility', () => {
       // The vercel.json configuration should:
       // 1. Exclude these routes from React app serving
       // 2. Set long-term cache headers for performance
-      
+
       faviconRoutes.forEach(route => {
         expect(route.startsWith('/favicon') || route.includes('apple-touch-icon')).toBe(true);
       });
@@ -719,7 +718,7 @@ describe('Authentication Flow Compatibility', () => {
 
           const emailInput = screen.getByLabelText(/email/i);
           const passwordInput = screen.getByLabelText(/password/i);
-          const submitButton = screen.getByRole('button', { name: /sign in/i });
+          const submitButton = screen.getByRole('button', { name: /^Sign In$/i });
 
           fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
           fireEvent.change(passwordInput, { target: { value: 'password' } });
@@ -758,7 +757,7 @@ describe('Authentication Flow Compatibility', () => {
 
       const emailInput = screen.getByLabelText(/email/i);
       const passwordInput = screen.getByLabelText(/password/i);
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
+      const submitButton = screen.getByRole('button', { name: /^Sign In$/i });
 
       fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
       fireEvent.change(passwordInput, { target: { value: 'password123' } });
